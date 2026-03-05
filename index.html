@@ -3,80 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xtourny - Tournament Bracket System</title>
+    <title>Xtournyyste</title>
     <style>
-        /* ==================== CSS Variables & Themes ==================== */
+        /* ==================== CSS Variables & Premium Themes ==================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
+        /* Import Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
         :root {
-            /* Light Theme (Default) */
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #f1f5f9;
-            --text-primary: #0f172a;
-            --text-secondary: #334155;
-            --text-muted: #64748b;
-            --accent-primary: #8b5cf6;
-            --accent-secondary: #ec4899;
-            --accent-gradient: linear-gradient(135deg, #8b5cf6, #ec4899);
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #3b82f6;
-            --border: #e2e8f0;
-            --card-bg: #ffffff;
-            --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --hover-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --input-bg: #ffffff;
-            --modal-overlay: rgba(0, 0, 0, 0.5);
+            /* Red & Black Theme (Default) */
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-card: #1e1e1e;
+            --bg-gradient: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --text-muted: #808080;
+            --accent-primary: #ff0000;
+            --accent-secondary: #cc0000;
+            --accent-gradient: linear-gradient(135deg, #ff0000, #990000);
+            --accent-glow: 0 0 20px rgba(255, 0, 0, 0.3);
+            --success: #00ff00;
+            --warning: #ffaa00;
+            --danger: #ff4444;
+            --info: #0066ff;
+            --border: #333333;
+            --border-light: #404040;
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            --hover-shadow: 0 15px 40px rgba(255, 0, 0, 0.2);
+            --input-bg: #222222;
+            --modal-overlay: rgba(0, 0, 0, 0.95);
+            --header-bg: linear-gradient(135deg, #1a1a1a, #0a0a0a);
         }
 
         [data-theme="dark"] {
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
             --bg-tertiary: #334155;
+            --bg-card: #1e293b;
+            --bg-gradient: linear-gradient(135deg, #1e293b, #0f172a);
             --text-primary: #f8fafc;
             --text-secondary: #cbd5e1;
             --text-muted: #94a3b8;
-            --accent-primary: #a78bfa;
-            --accent-secondary: #f472b6;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #2563eb;
+            --accent-gradient: linear-gradient(135deg, #3b82f6, #1d4ed8);
             --border: #334155;
-            --card-bg: #1e293b;
-            --input-bg: #334155;
-            --modal-overlay: rgba(0, 0, 0, 0.8);
+            --input-bg: #1e293b;
         }
 
-        [data-theme="forest"] {
-            --bg-primary: #14532d;
-            --bg-secondary: #166534;
-            --bg-tertiary: #15803d;
-            --text-primary: #f0fdf4;
-            --text-secondary: #bbf7d0;
-            --text-muted: #86efac;
-            --accent-primary: #4ade80;
-            --accent-secondary: #fbbf24;
-            --border: #22c55e;
-            --card-bg: #15803d;
-            --input-bg: #166534;
-        }
-
-        [data-theme="ocean"] {
-            --bg-primary: #0c4a6e;
-            --bg-secondary: #075985;
-            --bg-tertiary: #0369a1;
-            --text-primary: #f0f9ff;
-            --text-secondary: #bae6fd;
-            --text-muted: #7dd3fc;
-            --accent-primary: #38bdf8;
-            --accent-secondary: #f472b6;
-            --border: #0284c7;
-            --card-bg: #0369a1;
-            --input-bg: #075985;
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-gradient: linear-gradient(135deg, #ffffff, #f8fafc);
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            --border: #e2e8f0;
+            --input-bg: #ffffff;
         }
 
         /* ==================== Base Styles ==================== */
@@ -84,114 +80,196 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: pulseBg 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseBg {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         /* ==================== Typography ==================== */
         h1, h2, h3, h4, h5, h6 {
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.2;
             margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
-        h1 { font-size: 2.5rem; }
-        h2 { font-size: 2rem; }
+        h1 { 
+            font-size: 3rem; 
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        h2 { font-size: 2.25rem; }
         h3 { font-size: 1.5rem; }
+
+        /* ==================== Glitch Effect ==================== */
+        .glitch {
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            92% { transform: translate(0); }
+            93% { transform: translate(-2px, 1px); }
+            94% { transform: translate(2px, -1px); }
+            95% { transform: translate(-1px, 2px); }
+            96% { transform: translate(1px, -2px); }
+            97% { transform: translate(0); }
+        }
 
         /* ==================== Header & Navigation ==================== */
         .header {
-            background: var(--accent-gradient);
-            padding: 1rem 2rem;
-            border-radius: 1rem;
+            background: var(--header-bg);
+            padding: 1.5rem 2rem;
+            border-radius: 20px;
             margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: white;
-            box-shadow: var(--card-shadow);
+            border: 1px solid var(--accent-primary);
+            box-shadow: var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 0, 0, 0.1) 50%,
+                transparent 70%
+            );
+            animation: shine 6s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .logo {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
         }
 
         .logo span {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.25rem 0.75rem;
-            border-radius: 2rem;
+            background: var(--accent-gradient);
+            padding: 0.25rem 1rem;
+            border-radius: 30px;
             font-size: 0.875rem;
-            font-weight: 500;
+            font-weight: 600;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .nav-buttons {
             display: flex;
             gap: 1rem;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
-        /* ==================== Buttons ==================== */
+        /* ==================== Premium Buttons ==================== */
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.875rem 2rem;
             border: none;
-            border-radius: 0.5rem;
+            border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
-            background: white;
-            color: var(--accent-primary);
+            background: var(--accent-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: var(--hover-shadow);
+            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--accent-primary);
             backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-warning {
-            background: var(--warning);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-info {
-            background: var(--info);
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
             color: white;
         }
 
@@ -202,65 +280,66 @@
         }
 
         .btn-outline:hover {
-            background: var(--bg-tertiary);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
         }
 
         /* ==================== Theme Switcher ==================== */
         .theme-switcher {
             display: flex;
             gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
             padding: 0.5rem;
-            border-radius: 2rem;
+            border-radius: 50px;
             backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
         }
 
         .theme-btn {
-            width: 2rem;
-            height: 2rem;
+            width: 2.5rem;
+            height: 2.5rem;
             border-radius: 50%;
             border: 2px solid transparent;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .theme-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
+            box-shadow: 0 0 20px currentColor;
         }
 
         .theme-btn.active {
-            border-color: white;
-            box-shadow: 0 0 0 2px var(--accent-primary);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--accent-primary);
         }
 
-        .theme-btn.light { background: #ffffff; }
+        .theme-btn.redblack { 
+            background: linear-gradient(135deg, #ff0000, #000000);
+        }
         .theme-btn.dark { background: #0f172a; }
-        .theme-btn.forest { background: #14532d; }
-        .theme-btn.ocean { background: #0c4a6e; }
+        .theme-btn.light { background: #ffffff; border: 1px solid #000; }
 
-        /* ==================== Tournament Grid ==================== */
+        /* ==================== Tournament Cards ==================== */
         .tournament-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
             margin-top: 2rem;
         }
 
         .tournament-card {
-            background: var(--card-bg);
-            border-radius: 1rem;
+            background: var(--bg-card);
+            border-radius: 20px;
             padding: 1.5rem;
             box-shadow: var(--card-shadow);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
         .tournament-card::before {
@@ -271,11 +350,18 @@
             right: 0;
             height: 4px;
             background: var(--accent-gradient);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .tournament-card:hover::before {
+            transform: translateX(0);
         }
 
         .tournament-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px) scale(1.02);
             box-shadow: var(--hover-shadow);
+            border-color: var(--accent-primary);
         }
 
         .tournament-header {
@@ -286,158 +372,228 @@
         }
 
         .tournament-name {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--text-primary);
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .tournament-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 2rem;
+            padding: 0.35rem 1rem;
+            border-radius: 30px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .status-pending { background: var(--warning); color: #000; }
-        .status-active { background: var(--success); color: white; }
-        .status-paused { background: var(--text-muted); color: white; }
-        .status-completed { background: var(--accent-primary); color: white; }
+        .status-pending { 
+            background: var(--warning); 
+            color: #000;
+            box-shadow: 0 0 15px var(--warning);
+        }
+        .status-active { 
+            background: var(--success); 
+            color: #000;
+            box-shadow: 0 0 15px var(--success);
+        }
+        .status-paused { 
+            background: var(--text-muted); 
+            color: white;
+            box-shadow: 0 0 15px var(--text-muted);
+        }
+        .status-completed { 
+            background: var(--accent-gradient); 
+            color: white;
+            box-shadow: var(--accent-glow);
+        }
 
         .tournament-details {
             display: flex;
-            gap: 1rem;
-            margin: 1rem 0;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .tournament-details span {
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.5rem;
         }
 
         .tournament-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
         }
 
         .join-code {
             background: var(--bg-tertiary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.5rem;
-            font-family: monospace;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-family: 'Monaco', 'Menlo', monospace;
             font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            border: 1px solid var(--border);
         }
 
-        /* ==================== Bracket Display ==================== */
+        /* ==================== Premium Bracket Display ==================== */
         .bracket-container {
             background: var(--bg-secondary);
-            border-radius: 1rem;
-            padding: 2rem;
+            border-radius: 30px;
+            padding: 3rem;
             margin-top: 2rem;
             overflow-x: auto;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .bracket {
             display: flex;
-            gap: 3rem;
+            gap: 4rem;
             min-width: min-content;
+            padding: 1rem;
         }
 
         .round {
             flex: 1;
-            min-width: 280px;
+            min-width: 300px;
+            position: relative;
         }
 
         .round-title {
             text-align: center;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 2rem;
-            padding: 0.5rem;
+            padding: 1rem;
             background: var(--accent-gradient);
             color: white;
-            border-radius: 0.5rem;
-            font-size: 1.1rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: var(--accent-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .round-title::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.2) 50%,
+                transparent 70%
+            );
+            animation: shine 3s infinite;
         }
 
         .matches {
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .match-card {
-            background: var(--card-bg);
+            background: var(--bg-card);
             border: 2px solid var(--border);
-            border-radius: 0.75rem;
-            padding: 1rem;
+            border-radius: 15px;
+            padding: 1.25rem;
             position: relative;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
         }
 
         .match-card:hover {
             border-color: var(--accent-primary);
-            transform: scale(1.02);
+            transform: scale(1.05) translateX(10px);
+            box-shadow: var(--accent-glow);
         }
 
         .match-card.final {
-            border-color: gold;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            background: linear-gradient(135deg, var(--bg-card), #2a0000);
         }
 
         .match-participants {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
         .participant {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
             background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            transition: all 0.2s ease;
         }
 
         .participant.winner {
-            background: var(--success);
+            background: var(--accent-gradient);
             color: white;
-            font-weight: 600;
+            font-weight: 700;
+            border-color: var(--accent-primary);
+            box-shadow: var(--accent-glow);
         }
 
         .participant-name {
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 0.3px;
         }
 
         .participant-score {
-            font-weight: 700;
+            font-weight: 800;
             background: var(--bg-primary);
             padding: 0.25rem 0.75rem;
-            border-radius: 0.5rem;
+            border-radius: 20px;
+            font-size: 1.1rem;
         }
 
         .match-connector {
             position: absolute;
-            right: -2rem;
+            right: -3rem;
             top: 50%;
-            width: 2rem;
-            height: 2px;
-            background: var(--border);
+            width: 3rem;
+            height: 3px;
+            background: var(--accent-gradient);
+            transform: translateY(-50%);
         }
 
-        /* ==================== Round Robin Standings ==================== */
+        .match-connector::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+        }
+
+        /* ==================== Premium Standings Table ==================== */
         .standings-table {
-            background: var(--card-bg);
-            border-radius: 1rem;
+            background: var(--bg-card);
+            border-radius: 20px;
             overflow: hidden;
             border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
         }
 
         .standings-table table {
@@ -446,64 +602,82 @@
         }
 
         .standings-table th {
-            background: var(--bg-tertiary);
-            padding: 1rem;
+            background: var(--accent-gradient);
+            padding: 1.25rem 1rem;
             text-align: left;
-            font-weight: 600;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .standings-table td {
-            padding: 1rem;
+            padding: 1.25rem 1rem;
             border-bottom: 1px solid var(--border);
+            font-weight: 500;
         }
 
-        .standings-table tr:last-child td {
-            border-bottom: none;
+        .standings-table tr {
+            transition: all 0.2s ease;
         }
 
         .standings-table tr:hover {
             background: var(--bg-tertiary);
+            transform: scale(1.01);
         }
 
-        .rank-1 { background: linear-gradient(135deg, gold, rgba(255, 215, 0, 0.1)); }
-        .rank-2 { background: linear-gradient(135deg, silver, rgba(192, 192, 192, 0.1)); }
-        .rank-3 { background: linear-gradient(135deg, #cd7f32, rgba(205, 127, 50, 0.1)); }
+        .rank-1 { 
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), transparent);
+            border-left: 4px solid gold;
+        }
+        .rank-2 { 
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.2), transparent);
+            border-left: 4px solid silver;
+        }
+        .rank-3 { 
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.2), transparent);
+            border-left: 4px solid #cd7f32;
+        }
 
-        /* ==================== Forms ==================== */
+        /* ==================== Premium Forms ==================== */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
             color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.5rem;
             border: 2px solid var(--border);
-            border-radius: 0.5rem;
+            border-radius: 15px;
             background: var(--input-bg);
             color: var(--text-primary);
             font-size: 1rem;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 0 4px rgba(255, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         textarea.form-control {
-            min-height: 120px;
+            min-height: 150px;
             resize: vertical;
         }
 
-        /* ==================== Modal ==================== */
+        /* ==================== Premium Modal ==================== */
         .modal {
             display: none;
             position: fixed;
@@ -513,34 +687,46 @@
             height: 100%;
             background: var(--modal-overlay);
             z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal.active {
-            display: flex;
+            backdrop-filter: blur(15px);
             align-items: center;
             justify-content: center;
         }
 
+        .modal.active {
+            display: flex;
+        }
+
         .modal-content {
-            background: var(--bg-primary);
-            border-radius: 1rem;
-            padding: 2rem;
-            max-width: 500px;
+            background: var(--bg-card);
+            border-radius: 30px;
+            padding: 3rem;
+            max-width: 600px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
+            border: 1px solid var(--accent-primary);
             box-shadow: var(--hover-shadow);
-            animation: modalSlideIn 0.3s ease;
+            animation: modalSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
         }
 
         @keyframes modalSlideIn {
             from {
-                transform: translateY(-50px);
+                transform: translateY(-100px) scale(0.9);
                 opacity: 0;
             }
             to {
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
                 opacity: 1;
             }
         }
@@ -549,31 +735,39 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid var(--border);
         }
 
         .modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 2rem;
+            font-weight: 800;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .modal-close {
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
             color: var(--text-muted);
-            transition: color 0.2s ease;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .modal-close:hover {
-            color: var(--danger);
+            color: var(--accent-primary);
+            background: rgba(255, 0, 0, 0.1);
+            transform: rotate(90deg);
         }
 
-        /* ==================== Host Panel ==================== */
+        /* ==================== Premium Host Panel ==================== */
         .host-panel {
             display: none;
             position: fixed;
@@ -591,11 +785,12 @@
         }
 
         .host-sidebar {
-            width: 280px;
-            background: var(--bg-secondary);
-            padding: 2rem 1rem;
-            border-right: 2px solid var(--border);
+            width: 320px;
+            background: var(--bg-card);
+            padding: 2rem 1.5rem;
+            border-right: 2px solid var(--accent-primary);
             overflow-y: auto;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.5);
         }
 
         .host-sidebar-header {
@@ -605,6 +800,7 @@
         }
 
         .host-sidebar-header h3 {
+            font-size: 1.8rem;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -612,35 +808,41 @@
         }
 
         .host-nav-item {
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border-radius: 0.5rem;
+            padding: 1.25rem 1.5rem;
+            margin: 0.75rem 0;
+            border-radius: 15px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
             color: var(--text-secondary);
+            font-weight: 600;
+            border: 1px solid transparent;
         }
 
         .host-nav-item:hover {
             background: var(--bg-tertiary);
-            color: var(--text-primary);
+            border-color: var(--border);
+            transform: translateX(5px);
         }
 
         .host-nav-item.active {
             background: var(--accent-gradient);
             color: white;
+            box-shadow: var(--accent-glow);
         }
 
         .host-main {
             flex: 1;
             padding: 2rem;
             overflow-y: auto;
+            background: var(--bg-secondary);
         }
 
         .host-section {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         .host-section.active {
@@ -648,7 +850,7 @@
         }
 
         .host-section-title {
-            font-size: 1.75rem;
+            font-size: 2.5rem;
             margin-bottom: 2rem;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
@@ -657,54 +859,96 @@
 
         /* ==================== Match Controls ==================== */
         .match-controls {
-            background: var(--card-bg);
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .match-controls:hover {
+            border-color: var(--accent-primary);
+            box-shadow: var(--accent-glow);
+            transform: translateX(5px);
         }
 
         .match-controls-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .match-controls-header strong {
+            font-size: 1.3rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .match-controls-participants {
             display: grid;
             grid-template-columns: 1fr auto 1fr;
-            gap: 1rem;
+            gap: 1.5rem;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
         .match-score-input {
-            width: 80px;
+            width: 100px;
             text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
         }
 
         .match-actions {
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
             justify-content: flex-end;
         }
 
         /* ==================== Progress Bar ==================== */
         .progress-bar {
             background: var(--bg-tertiary);
-            border-radius: 1rem;
-            height: 1rem;
+            border-radius: 50px;
+            height: 1.5rem;
             overflow: hidden;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
+            border: 1px solid var(--border);
         }
 
         .progress-bar-fill {
             height: 100%;
             background: var(--accent-gradient);
-            transition: width 0.3s ease;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
         /* ==================== Toast Notifications ==================== */
@@ -716,44 +960,60 @@
         }
 
         .toast {
-            background: var(--card-bg);
+            background: var(--bg-card);
             color: var(--text-primary);
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            margin-top: 0.5rem;
+            padding: 1.25rem 2rem;
+            border-radius: 15px;
+            margin-top: 1rem;
             box-shadow: var(--hover-shadow);
-            border-left: 4px solid;
-            animation: slideInRight 0.3s ease;
+            border-left: 6px solid;
+            animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            min-width: 300px;
+            gap: 1rem;
+            min-width: 350px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
         }
 
-        .toast.success { border-color: var(--success); }
-        .toast.error { border-color: var(--danger); }
-        .toast.warning { border-color: var(--warning); }
-        .toast.info { border-color: var(--info); }
+        .toast.success { 
+            border-left-color: var(--success);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        .toast.error { 
+            border-left-color: var(--danger);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+        .toast.warning { 
+            border-left-color: var(--warning);
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.3);
+        }
+        .toast.info { 
+            border-left-color: var(--info);
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
+        }
 
         @keyframes slideInRight {
             from {
-                transform: translateX(100%);
+                transform: translateX(100%) scale(0.8);
                 opacity: 0;
             }
             to {
-                transform: translateX(0);
+                transform: translateX(0) scale(1);
                 opacity: 1;
             }
         }
 
         /* ==================== Loading Spinner ==================== */
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--border);
+            width: 60px;
+            height: 60px;
+            border: 6px solid var(--border);
             border-top-color: var(--accent-primary);
+            border-right-color: var(--accent-primary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
         @keyframes spin {
@@ -771,21 +1031,79 @@
             align-items: center;
             justify-content: center;
             z-index: 2000;
+            backdrop-filter: blur(10px);
         }
 
         /* ==================== QR Code ==================== */
         .qr-container {
             display: flex;
             justify-content: center;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .qr-code {
             max-width: 200px;
-            border: 2px solid var(--border);
-            border-radius: 1rem;
+            border: 3px solid var(--accent-primary);
+            border-radius: 20px;
             padding: 1rem;
             background: white;
+            box-shadow: var(--accent-glow);
+            transition: all 0.3s ease;
+        }
+
+        .qr-code:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--accent-primary);
+        }
+
+        /* ==================== Stats Cards ==================== */
+        .stats-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .stats-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .stats-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .stats-label {
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* ==================== Tabs ==================== */
@@ -794,15 +1112,23 @@
             gap: 0.5rem;
             border-bottom: 2px solid var(--border);
             margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
         }
 
         .tab {
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 2rem;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
+            border-bottom: 3px solid transparent;
             margin-bottom: -2px;
-            font-weight: 500;
+            font-weight: 700;
             color: var(--text-muted);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab:hover {
+            color: var(--accent-primary);
         }
 
         .tab.active {
@@ -814,77 +1140,13 @@
         .row {
             display: flex;
             flex-wrap: wrap;
-            margin: -0.5rem;
+            margin: -0.75rem;
         }
 
         .col {
             flex: 1;
-            padding: 0.5rem;
-            min-width: 250px;
-        }
-
-        /* ==================== Cards ==================== */
-        .stats-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .stats-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stats-label {
-            color: var(--text-muted);
-            margin-top: 0.5rem;
-        }
-
-        /* ==================== Responsive ==================== */
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .nav-buttons {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .tournament-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .host-panel {
-                flex-direction: column;
-            }
-
-            .host-sidebar {
-                width: 100%;
-                border-right: none;
-                border-bottom: 2px solid var(--border);
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 1rem;
-            }
-
-            .toast-container {
-                left: 1rem;
-                right: 1rem;
-            }
-
-            .toast {
-                min-width: auto;
-            }
+            padding: 0.75rem;
+            min-width: 280px;
         }
 
         /* ==================== Animations ==================== */
@@ -902,11 +1164,95 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ==================== Utilities ==================== */
+        /* ==================== Responsive Design ==================== */
+        @media (max-width: 1200px) {
+            .container { padding: 15px; }
+            h1 { font-size: 2.5rem; }
+            .tournament-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .tournament-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .host-panel {
+                flex-direction: column;
+            }
+
+            .host-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid var(--accent-primary);
+            }
+
+            .bracket {
+                gap: 2rem;
+            }
+
+            .round {
+                min-width: 250px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 2rem;
+            }
+
+            .toast-container {
+                left: 1rem;
+                right: 1rem;
+            }
+
+            .toast {
+                min-width: auto;
+                width: 100%;
+            }
+
+            .match-controls-participants {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .match-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            .logo { font-size: 2rem; }
+            .theme-switcher { gap: 0.25rem; }
+            .theme-btn { width: 2rem; height: 2rem; }
+        }
+
+        /* ==================== Utility Classes ==================== */
         .text-center { text-align: center; }
         .text-right { text-align: right; }
         .mt-1 { margin-top: 0.5rem; }
@@ -931,8 +1277,8 @@
         .gap-2 { gap: 1rem; }
         .gap-3 { gap: 1.5rem; }
 
-        .rounded { border-radius: 0.5rem; }
-        .rounded-full { border-radius: 9999px; }
+        .rounded { border-radius: 15px; }
+        .rounded-full { border-radius: 50px; }
 
         .shadow { box-shadow: var(--card-shadow); }
         .shadow-hover:hover { box-shadow: var(--hover-shadow); }
@@ -942,25 +1288,44 @@
 
         .w-100 { width: 100%; }
         .h-100 { height: 100%; }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-gradient);
+            border-radius: 10px;
+            border: 3px solid var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <div class="logo">
-                🎮 Xtourny
-                <span>v1.0</span>
+            <div class="logo glitch">
+                🔥 Xtourny
+                <span>ELITE</span>
             </div>
             <div class="nav-buttons">
                 <div class="theme-switcher">
-                    <div class="theme-btn light" onclick="setTheme('light')" title="Light Theme"></div>
-                    <div class="theme-btn dark" onclick="setTheme('dark')" title="Dark Theme"></div>
-                    <div class="theme-btn forest" onclick="setTheme('forest')" title="Forest Theme"></div>
-                    <div class="theme-btn ocean" onclick="setTheme('ocean')" title="Ocean Theme"></div>
+                    <div class="theme-btn redblack" onclick="setTheme('redblack')" title="Red & Black"></div>
+                    <div class="theme-btn dark" onclick="setTheme('dark')" title="Dark Blue"></div>
+                    <div class="theme-btn light" onclick="setTheme('light')" title="Light"></div>
                 </div>
                 <button class="btn btn-primary" onclick="showCreateModal()">
-                    <span>➕</span> Create Tournament
+                    <span>⚡</span> Create Tournament
                 </button>
                 <button class="btn btn-secondary" onclick="refreshTournaments()">
                     <span>🔄</span> Refresh
@@ -971,15 +1336,15 @@
         <!-- Main Content -->
         <main>
             <!-- Tournaments List View -->
-            <div id="tournaments-view">
-                <div class="flex-between mb-3">
-                    <h2>🎯 Active Tournaments</h2>
-                    <div class="flex gap-1">
-                        <input type="text" class="form-control" placeholder="Search tournaments..." id="searchInput" oninput="searchTournaments()" style="width: 250px;">
-                        <select class="form-control" id="filterType" onchange="filterTournaments()" style="width: 150px;">
-                            <option value="all">All Types</option>
-                            <option value="single">Single Elim</option>
-                            <option value="double">Double Elim</option>
+            <div id="tournaments-view" class="fade-in">
+                <div class="flex-between mb-4">
+                    <h1>🔥 ACTIVE BATTLES</h1>
+                    <div class="flex gap-2">
+                        <input type="text" class="form-control" placeholder="Search tournaments..." id="searchInput" oninput="searchTournaments()" style="width: 300px;">
+                        <select class="form-control" id="filterType" onchange="filterTournaments()" style="width: 180px;">
+                            <option value="all">All Formats</option>
+                            <option value="single">Single Elimination</option>
+                            <option value="double">Double Elimination</option>
                             <option value="round_robin">Round Robin</option>
                         </select>
                     </div>
@@ -994,7 +1359,7 @@
                 <div class="flex-between mb-3">
                     <div>
                         <button class="btn btn-outline" onclick="showTournamentsView()">
-                            <span>←</span> Back to Tournaments
+                            <span>←</span> Back to Arena
                         </button>
                     </div>
                     <div class="flex gap-2">
@@ -1002,23 +1367,23 @@
                             <span>🔗</span> Share
                         </button>
                         <button class="btn btn-primary" onclick="showHostAuth()">
-                            <span>🎮</span> Host Panel
+                            <span>👑</span> Host Panel
                         </button>
                     </div>
                 </div>
 
                 <!-- Tournament Header -->
-                <div class="card mb-3 p-3" style="background: var(--card-bg); border-radius: 1rem;">
+                <div class="card mb-4 p-4" style="background: var(--bg-card); border-radius: 30px; border: 1px solid var(--accent-primary);">
                     <div class="flex-between">
                         <div>
-                            <h1 id="tournamentName"></h1>
-                            <div class="flex gap-2 mt-1">
+                            <h1 id="tournamentName" class="glitch"></h1>
+                            <div class="flex gap-3 mt-2">
                                 <span class="tournament-status" id="tournamentStatus"></span>
                                 <span class="join-code" id="tournamentJoinCode"></span>
-                                <span id="tournamentType" class="text-muted"></span>
+                                <span id="tournamentType" class="text-muted" style="font-size: 1.1rem;"></span>
                             </div>
                         </div>
-                        <div class="qr-container" id="qrContainer" style="width: 100px;">
+                        <div class="qr-container" id="qrContainer" style="width: 120px;">
                             <!-- QR code will be inserted here -->
                         </div>
                     </div>
@@ -1026,10 +1391,10 @@
 
                 <!-- Tabs -->
                 <div class="tabs">
-                    <div class="tab active" onclick="switchTab('bracket')" id="tabBracket">Bracket</div>
-                    <div class="tab" onclick="switchTab('participants')" id="tabParticipants">Participants</div>
-                    <div class="tab" onclick="switchTab('matches')" id="tabMatches">Matches</div>
-                    <div class="tab" onclick="switchTab('stats')" id="tabStats">Statistics</div>
+                    <div class="tab active" onclick="switchTab('bracket')" id="tabBracket">BRACKET</div>
+                    <div class="tab" onclick="switchTab('participants')" id="tabParticipants">WARRIORS</div>
+                    <div class="tab" onclick="switchTab('matches')" id="tabMatches">BATTLES</div>
+                    <div class="tab" onclick="switchTab('stats')" id="tabStats">STATISTICS</div>
                 </div>
 
                 <!-- Bracket Tab -->
@@ -1041,8 +1406,8 @@
 
                 <!-- Participants Tab -->
                 <div id="participantsTab" class="tab-content" style="display: none;">
-                    <div class="card p-3" style="background: var(--card-bg); border-radius: 1rem;">
-                        <h3 class="mb-2">Participants</h3>
+                    <div class="card p-4" style="background: var(--bg-card); border-radius: 30px;">
+                        <h2 class="mb-3">⚔️ PARTICIPANTS</h2>
                         <div id="participantsList" class="row">
                             <!-- Participants will be listed here -->
                         </div>
@@ -1051,8 +1416,8 @@
 
                 <!-- Matches Tab -->
                 <div id="matchesTab" class="tab-content" style="display: none;">
-                    <div class="card p-3" style="background: var(--card-bg); border-radius: 1rem;">
-                        <h3 class="mb-2">All Matches</h3>
+                    <div class="card p-4" style="background: var(--bg-card); border-radius: 30px;">
+                        <h2 class="mb-3">⚡ ALL BATTLES</h2>
                         <div id="allMatchesList">
                             <!-- All matches will be listed here -->
                         </div>
@@ -1065,7 +1430,7 @@
                         <div class="col">
                             <div class="stats-card">
                                 <div class="stats-number" id="statTotalMatches">0</div>
-                                <div class="stats-label">Total Matches</div>
+                                <div class="stats-label">Total Battles</div>
                             </div>
                         </div>
                         <div class="col">
@@ -1077,7 +1442,7 @@
                         <div class="col">
                             <div class="stats-card">
                                 <div class="stats-number" id="statParticipants">0</div>
-                                <div class="stats-label">Participants</div>
+                                <div class="stats-label">Warriors</div>
                             </div>
                         </div>
                         <div class="col">
@@ -1088,7 +1453,7 @@
                         </div>
                     </div>
                     
-                    <div class="mt-3" id="standingsDisplay">
+                    <div class="mt-4" id="standingsDisplay">
                         <!-- Standings for round robin -->
                     </div>
                 </div>
@@ -1100,7 +1465,7 @@
     <div id="createModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Create Tournament</h2>
+                <h2 class="modal-title">CREATE TOURNAMENT</h2>
                 <span class="modal-close" onclick="hideModal('createModal')">&times;</span>
             </div>
             <form id="createTournamentForm" onsubmit="createTournament(event)">
@@ -1111,7 +1476,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="form-label">Tournament Type</label>
+                    <label class="form-label">Tournament Format</label>
                     <select class="form-control" id="tournamentTypeInput" required>
                         <option value="single">Single Elimination</option>
                         <option value="double">Double Elimination</option>
@@ -1123,19 +1488,18 @@
                     <label class="form-label">Participants (one per line, 2-64)</label>
                     <textarea class="form-control" id="participantsInput" rows="6" 
                               placeholder="Team Alpha&#10;Team Bravo&#10;Team Charlie&#10;Team Delta" required></textarea>
-                    <small class="text-muted">Enter one participant name per line</small>
+                    <small class="text-muted">Enter one warrior name per line</small>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Host Password (optional)</label>
                     <input type="password" class="form-control" id="hostPasswordInput" 
-                           placeholder="Leave empty for auto-generated">
-                    <small class="text-muted">Set a password to protect host controls</small>
+                           placeholder="Set password for host controls">
                 </div>
                 
                 <div class="form-group flex gap-2">
-                    <button type="submit" class="btn btn-primary w-100">Create Tournament</button>
-                    <button type="button" class="btn btn-outline w-100" onclick="hideModal('createModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary w-100">CREATE BATTLE</button>
+                    <button type="button" class="btn btn-outline w-100" onclick="hideModal('createModal')">CANCEL</button>
                 </div>
             </form>
         </div>
@@ -1145,7 +1509,7 @@
     <div id="hostAuthModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Host Authentication</h2>
+                <h2 class="modal-title">HOST AUTHENTICATION</h2>
                 <span class="modal-close" onclick="hideModal('hostAuthModal')">&times;</span>
             </div>
             <form id="hostAuthForm" onsubmit="authenticateHost(event)">
@@ -1158,15 +1522,15 @@
                 </div>
                 
                 <div class="form-group">
-                    <label class="flex-center gap-1">
+                    <label class="flex-center gap-2">
                         <input type="checkbox" id="rememberDevice"> 
                         Remember this device for 24 hours
                     </label>
                 </div>
                 
                 <div class="form-group flex gap-2">
-                    <button type="submit" class="btn btn-primary w-100">Authenticate</button>
-                    <button type="button" class="btn btn-outline w-100" onclick="hideModal('hostAuthModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary w-100">AUTHENTICATE</button>
+                    <button type="button" class="btn btn-outline w-100" onclick="hideModal('hostAuthModal')">CANCEL</button>
                 </div>
             </form>
         </div>
@@ -1176,39 +1540,39 @@
     <div id="hostPanel" class="host-panel">
         <div class="host-sidebar">
             <div class="host-sidebar-header">
-                <h3>Host Controls</h3>
+                <h3>HOST CONTROLS</h3>
                 <small id="hostTournamentName" class="text-muted"></small>
             </div>
             
             <div class="host-nav-item active" onclick="showHostSection('matches')">
-                <span>🎮</span> Matches
+                <span>⚡</span> MATCHES
             </div>
             <div class="host-nav-item" onclick="showHostSection('rounds')">
-                <span>🔄</span> Rounds
+                <span>🔄</span> ROUNDS
             </div>
             <div class="host-nav-item" onclick="showHostSection('participants')">
-                <span>👥</span> Participants
+                <span>👥</span> WARRIORS
             </div>
             <div class="host-nav-item" onclick="showHostSection('settings')">
-                <span>⚙️</span> Settings
+                <span>⚙️</span> SETTINGS
             </div>
             <div class="host-nav-item" onclick="showHostSection('export')">
-                <span>📤</span> Export
+                <span>📤</span> EXPORT
             </div>
             
-            <hr style="margin: 1rem 0; border-color: var(--border);">
+            <hr style="margin: 2rem 0; border-color: var(--border);">
             
             <div class="host-nav-item" onclick="hideHostPanel()">
-                <span>🚪</span> Close Panel
+                <span>🚪</span> CLOSE
             </div>
         </div>
         
         <div class="host-main">
             <!-- Matches Section -->
             <div id="matchesSection" class="host-section active">
-                <h2 class="host-section-title">Match Management</h2>
+                <h2 class="host-section-title">⚡ MATCH CONTROL</h2>
                 
-                <div class="progress-bar mb-3">
+                <div class="progress-bar mb-4">
                     <div class="progress-bar-fill" id="matchProgress" style="width: 0%;"></div>
                 </div>
                 
@@ -1219,41 +1583,41 @@
 
             <!-- Rounds Section -->
             <div id="roundsSection" class="host-section">
-                <h2 class="host-section-title">Round Controls</h2>
+                <h2 class="host-section-title">🔄 ROUND CONTROL</h2>
                 
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col">
-                        <div class="stats-card mb-2">
+                        <div class="stats-card">
                             <div class="stats-number" id="currentRound">1</div>
                             <div class="stats-label">Current Round</div>
                         </div>
                     </div>
                     <div class="col">
-                        <div class="stats-card mb-2">
+                        <div class="stats-card">
                             <div class="stats-number" id="totalRounds">0</div>
                             <div class="stats-label">Total Rounds</div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card p-3 mt-2" style="background: var(--card-bg); border-radius: 1rem;">
-                    <h3 class="mb-2">Round Actions</h3>
+                <div class="card p-4" style="background: var(--bg-card); border-radius: 20px;">
+                    <h3 class="mb-3">Round Actions</h3>
                     
                     <div class="form-group">
-                        <button class="btn btn-success w-100 mb-1" onclick="startNextRound()">
-                            <span>▶️</span> Start Next Round
+                        <button class="btn btn-success w-100 mb-2" onclick="startNextRound()">
+                            <span>▶️</span> START NEXT ROUND
                         </button>
                     </div>
                     
                     <div class="form-group">
-                        <button class="btn btn-warning w-100 mb-1" onclick="pauseTournament()">
-                            <span>⏸️</span> Pause Tournament
+                        <button class="btn btn-warning w-100 mb-2" onclick="pauseTournament()">
+                            <span>⏸️</span> PAUSE TOURNAMENT
                         </button>
                     </div>
                     
                     <div class="form-group">
-                        <button class="btn btn-info w-100 mb-1" onclick="resumeTournament()">
-                            <span>▶️</span> Resume Tournament
+                        <button class="btn btn-info w-100 mb-2" onclick="resumeTournament()">
+                            <span>▶️</span> RESUME TOURNAMENT
                         </button>
                     </div>
                     
@@ -1268,25 +1632,25 @@
 
             <!-- Participants Section -->
             <div id="participantsSection" class="host-section">
-                <h2 class="host-section-title">Participant Management</h2>
+                <h2 class="host-section-title">👥 WARRIOR MANAGEMENT</h2>
                 
-                <div class="card p-3 mb-3" style="background: var(--card-bg); border-radius: 1rem;">
-                    <h3 class="mb-2">Add Participant</h3>
+                <div class="card p-4 mb-4" style="background: var(--bg-card); border-radius: 20px;">
+                    <h3 class="mb-3">Add Warrior</h3>
                     
                     <div class="form-group">
                         <input type="text" class="form-control" id="newParticipantName" 
-                               placeholder="Participant name">
+                               placeholder="Warrior name">
                     </div>
                     
                     <div class="form-group">
                         <button class="btn btn-success w-100" onclick="addParticipant()">
-                            <span>➕</span> Add Participant
+                            <span>➕</span> ADD WARRIOR
                         </button>
                     </div>
                 </div>
                 
-                <div class="card p-3" style="background: var(--card-bg); border-radius: 1rem;">
-                    <h3 class="mb-2">Current Participants</h3>
+                <div class="card p-4" style="background: var(--bg-card); border-radius: 20px;">
+                    <h3 class="mb-3">Current Warriors</h3>
                     <div id="hostParticipantsList">
                         <!-- Participants will be loaded here -->
                     </div>
@@ -1295,22 +1659,22 @@
 
             <!-- Settings Section -->
             <div id="settingsSection" class="host-section">
-                <h2 class="host-section-title">Tournament Settings</h2>
+                <h2 class="host-section-title">⚙️ TOURNAMENT SETTINGS</h2>
                 
-                <div class="card p-3 mb-3" style="background: var(--card-bg); border-radius: 1rem;">
-                    <h3 class="mb-2">General Settings</h3>
+                <div class="card p-4 mb-4" style="background: var(--bg-card); border-radius: 20px;">
+                    <h3 class="mb-3">General Settings</h3>
                     
                     <div class="form-group">
                         <label class="form-label">Tournament Name</label>
                         <input type="text" class="form-control" id="settingsName">
-                        <button class="btn btn-primary mt-1" onclick="updateTournamentName()">Update Name</button>
+                        <button class="btn btn-primary mt-2" onclick="updateTournamentName()">Update Name</button>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">Change Host Password</label>
                         <input type="password" class="form-control" id="newPassword" 
                                placeholder="New password">
-                        <button class="btn btn-warning mt-1" onclick="updatePassword()">Update Password</button>
+                        <button class="btn btn-warning mt-2" onclick="updatePassword()">Update Password</button>
                     </div>
                     
                     <div class="form-group">
@@ -1319,22 +1683,22 @@
                             <option value="public">Public</option>
                             <option value="private">Private</option>
                         </select>
-                        <button class="btn btn-info mt-1" onclick="updateVisibility()">Update Visibility</button>
+                        <button class="btn btn-info mt-2" onclick="updateVisibility()">Update Visibility</button>
                     </div>
                 </div>
                 
-                <div class="card p-3 mb-3" style="background: var(--card-bg); border-radius: 1rem;">
-                    <h3 class="mb-2">Danger Zone</h3>
+                <div class="card p-4" style="background: var(--bg-card); border-radius: 20px; border: 2px solid var(--danger);">
+                    <h3 class="mb-3" style="color: var(--danger);">⚠️ DANGER ZONE</h3>
                     
                     <div class="form-group">
-                        <button class="btn btn-warning w-100 mb-1" onclick="resetTournament()">
-                            <span>🔄</span> Reset Tournament
+                        <button class="btn btn-warning w-100 mb-2" onclick="resetTournament()">
+                            <span>🔄</span> RESET TOURNAMENT
                         </button>
                     </div>
                     
                     <div class="form-group">
                         <button class="btn btn-danger w-100" onclick="deleteTournament()">
-                            <span>🗑️</span> Delete Tournament
+                            <span>🗑️</span> DELETE TOURNAMENT
                         </button>
                     </div>
                 </div>
@@ -1342,40 +1706,40 @@
 
             <!-- Export Section -->
             <div id="exportSection" class="host-section">
-                <h2 class="host-section-title">Export Bracket</h2>
+                <h2 class="host-section-title">📤 EXPORT BRACKET</h2>
                 
                 <div class="row">
                     <div class="col">
-                        <div class="card p-3 text-center" style="background: var(--card-bg); border-radius: 1rem;">
-                            <h3 class="mb-2">Image Export</h3>
-                            <p class="text-muted mb-2">Export bracket as PNG image</p>
+                        <div class="card p-4 text-center" style="background: var(--bg-card); border-radius: 20px;">
+                            <h3 class="mb-3">Image Export</h3>
+                            <p class="text-muted mb-3">Export bracket as PNG</p>
                             <button class="btn btn-primary w-100" onclick="exportAsImage()">
-                                <span>📸</span> Export as Image
+                                <span>📸</span> EXPORT AS IMAGE
                             </button>
                         </div>
                     </div>
                     
                     <div class="col">
-                        <div class="card p-3 text-center" style="background: var(--card-bg); border-radius: 1rem;">
-                            <h3 class="mb-2">PDF Export</h3>
-                            <p class="text-muted mb-2">Export bracket as PDF document</p>
+                        <div class="card p-4 text-center" style="background: var(--bg-card); border-radius: 20px;">
+                            <h3 class="mb-3">PDF Export</h3>
+                            <p class="text-muted mb-3">Export bracket as PDF</p>
                             <button class="btn btn-primary w-100" onclick="exportAsPDF()">
-                                <span>📄</span> Export as PDF
+                                <span>📄</span> EXPORT AS PDF
                             </button>
                         </div>
                     </div>
                 </div>
                 
-                <div class="card p-3 mt-3" style="background: var(--card-bg); border-radius: 1rem;">
-                    <h3 class="mb-2">Share Tournament</h3>
+                <div class="card p-4 mt-4" style="background: var(--bg-card); border-radius: 20px;">
+                    <h3 class="mb-3">Share Tournament</h3>
                     <div class="qr-container" id="hostQRContainer">
                         <!-- QR code will be inserted here -->
                     </div>
-                    <div class="form-group mt-2">
+                    <div class="form-group mt-3">
                         <label class="form-label">Join Code</label>
-                        <div class="flex gap-1">
+                        <div class="flex gap-2">
                             <input type="text" class="form-control" id="joinCodeDisplay" readonly>
-                            <button class="btn btn-outline" onclick="copyJoinCode()">Copy</button>
+                            <button class="btn btn-outline" onclick="copyJoinCode()">COPY</button>
                         </div>
                     </div>
                 </div>
@@ -1395,12 +1759,12 @@
         // ==================== Configuration ====================
         const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
             ? 'http://localhost:8000'
-            : 'https://xtournyb.onrender.com';
+            : 'https://xtourny-api.onrender.com';
 
         // State
         let currentTournament = null;
         let hostToken = null;
-        let currentTheme = localStorage.getItem('xtourny-theme') || 'light';
+        let currentTheme = localStorage.getItem('xtourny-theme') || 'redblack';
         let tournaments = [];
         let filteredTournaments = [];
         let wsConnection = null;
@@ -1426,7 +1790,7 @@
                 } else if (currentTournament) {
                     refreshCurrentTournament();
                 }
-            }, 30000); // Refresh every 30 seconds
+            }, 30000);
         }
 
         // ==================== WebSocket ====================
@@ -1469,7 +1833,6 @@
             localStorage.setItem('xtourny-theme', theme);
             currentTheme = theme;
             
-            // Update active theme button
             document.querySelectorAll('.theme-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -1481,8 +1844,8 @@
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.innerHTML = `
-                <span>${getToastIcon(type)}</span>
-                <span>${message}</span>
+                <span style="font-size: 1.5rem;">${getToastIcon(type)}</span>
+                <span style="flex: 1;">${message}</span>
             `;
             
             document.getElementById('toastContainer').appendChild(toast);
@@ -1581,11 +1944,12 @@
             
             if (filteredTournaments.length === 0) {
                 grid.innerHTML = `
-                    <div class="text-center p-4" style="grid-column: 1/-1;">
+                    <div class="text-center p-5" style="grid-column: 1/-1;">
+                        <h2 style="font-size: 3rem; margin-bottom: 1rem;">⚔️</h2>
                         <h3>No tournaments found</h3>
-                        <p class="text-muted">Create your first tournament to get started!</p>
-                        <button class="btn btn-primary mt-2" onclick="showCreateModal()">
-                            Create Tournament
+                        <p class="text-muted">Create your first battle to get started!</p>
+                        <button class="btn btn-primary mt-3" onclick="showCreateModal()">
+                            CREATE TOURNAMENT
                         </button>
                     </div>
                 `;
@@ -1599,11 +1963,11 @@
                         <span class="tournament-status status-${t.status}">${t.status}</span>
                     </div>
                     <div class="tournament-details">
-                        <span>🎮 ${t.type.replace('_', ' ')}</span>
-                        <span>👥 ${t.participant_count || 0} participants</span>
+                        <span>🎮 ${t.type.replace('_', ' ').toUpperCase()}</span>
+                        <span>👥 ${t.participant_count || 0} warriors</span>
                     </div>
                     <div class="tournament-meta">
-                        <span class="join-code">📋 ${t.join_code || 'N/A'}</span>
+                        <span class="join-code">🔑 ${t.join_code || 'N/A'}</span>
                         <span class="text-muted">${new Date(t.created_at).toLocaleDateString()}</span>
                     </div>
                 </div>
@@ -1621,7 +1985,6 @@
                 updateTournamentDisplay();
                 startWebSocket();
                 
-                // Update URL without reload
                 history.pushState({tournamentId: id}, '', `?tournament=${id}`);
             } catch (error) {
                 console.error('Failed to view tournament:', error);
@@ -1643,19 +2006,16 @@
         function updateTournamentDisplay() {
             if (!currentTournament) return;
             
-            // Update header
             document.getElementById('tournamentName').textContent = currentTournament.name;
             document.getElementById('tournamentStatus').textContent = currentTournament.status;
             document.getElementById('tournamentStatus').className = `tournament-status status-${currentTournament.status}`;
-            document.getElementById('tournamentJoinCode').textContent = `📋 ${currentTournament.join_code}`;
-            document.getElementById('tournamentType').textContent = currentTournament.type.replace('_', ' ');
+            document.getElementById('tournamentJoinCode').textContent = `🔑 ${currentTournament.join_code}`;
+            document.getElementById('tournamentType').textContent = currentTournament.type.replace('_', ' ').toUpperCase();
             
-            // Update QR code
             if (currentTournament.qr_code) {
                 document.getElementById('qrContainer').innerHTML = `<img src="${currentTournament.qr_code}" class="qr-code" alt="QR Code">`;
             }
             
-            // Update stats
             const matches = currentTournament.matches || [];
             const participants = currentTournament.participants || [];
             const completedMatches = matches.filter(m => m.status === 'completed').length;
@@ -1666,21 +2026,14 @@
             document.getElementById('statParticipants').textContent = participants.length;
             document.getElementById('statProgress').textContent = progress + '%';
             
-            // Update bracket display
             displayBracket();
-            
-            // Update participants list
             displayParticipantsList();
-            
-            // Update matches list
             displayAllMatches();
             
-            // Update standings for round robin
             if (currentTournament.type === 'round_robin' && currentTournament.standings) {
                 displayStandings(currentTournament.standings);
             }
             
-            // Update host panel if open
             if (document.getElementById('hostPanel').classList.contains('active')) {
                 loadHostData();
             }
@@ -1716,7 +2069,6 @@
             const container = document.getElementById('bracketDisplay');
             const matches = currentTournament.matches || [];
             
-            // Group matches by round and bracket
             const rounds = {};
             matches.forEach(match => {
                 const roundKey = `${match.bracket || 'winners'}-${match.round}`;
@@ -1726,7 +2078,6 @@
             
             let html = '<div class="bracket">';
             
-            // Sort rounds
             const sortedRounds = Object.keys(rounds).sort((a, b) => {
                 const [bracketA, roundA] = a.split('-');
                 const [bracketB, roundB] = b.split('-');
@@ -1739,7 +2090,7 @@
                 const roundMatches = rounds[roundKey];
                 
                 html += `<div class="round">`;
-                html += `<div class="round-title">${bracket === 'winners' ? 'Winners' : bracket === 'losers' ? 'Losers' : 'Grand Finals'} Round ${roundNum}</div>`;
+                html += `<div class="round-title">${bracket === 'winners' ? 'WINNERS' : bracket === 'losers' ? 'LOSERS' : 'GRAND FINALS'} R${roundNum}</div>`;
                 html += `<div class="matches">`;
                 
                 roundMatches.sort((a, b) => a.match_number - b.match_number).forEach(match => {
@@ -1776,32 +2127,30 @@
             const matches = currentTournament.matches || [];
             
             let html = '<div class="round-robin">';
-            
-            // Display matches grid
-            html += '<h3>Matches</h3>';
-            html += '<div class="matches-grid">';
+            html += '<h3 class="mb-3">ALL BATTLES</h3>';
+            html += '<div class="row">';
             
             matches.forEach(match => {
                 html += `
-                    <div class="match-card" data-match-id="${match.id}">
-                        <div class="match-participants">
-                            <div class="participant ${match.winner_id === match.participant1_id ? 'winner' : ''}">
-                                <span>${escapeHtml(match.participant1_name || 'TBD')}</span>
-                                <span>${match.score1 !== null ? match.score1 : ''}</span>
-                            </div>
-                            <div style="text-align: center; font-weight: bold;">vs</div>
-                            <div class="participant ${match.winner_id === match.participant2_id ? 'winner' : ''}">
-                                <span>${escapeHtml(match.participant2_name || 'TBD')}</span>
-                                <span>${match.score2 !== null ? match.score2 : ''}</span>
+                    <div class="col">
+                        <div class="match-card" data-match-id="${match.id}">
+                            <div class="match-participants">
+                                <div class="participant ${match.winner_id === match.participant1_id ? 'winner' : ''}">
+                                    <span>${escapeHtml(match.participant1_name || 'TBD')}</span>
+                                    <span>${match.score1 !== null ? match.score1 : ''}</span>
+                                </div>
+                                <div style="text-align: center; font-weight: 700;">VS</div>
+                                <div class="participant ${match.winner_id === match.participant2_id ? 'winner' : ''}">
+                                    <span>${escapeHtml(match.participant2_name || 'TBD')}</span>
+                                    <span>${match.score2 !== null ? match.score2 : ''}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 `;
             });
             
-            html += '</div>';
-            html += '</div>';
-            
+            html += '</div></div>';
             container.innerHTML = html;
         }
 
@@ -1813,13 +2162,13 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Rank</th>
-                                <th>Participant</th>
-                                <th>Wins</th>
-                                <th>Losses</th>
-                                <th>Draws</th>
-                                <th>Points</th>
-                                <th>Games</th>
+                                <th>RANK</th>
+                                <th>WARRIOR</th>
+                                <th>WINS</th>
+                                <th>LOSSES</th>
+                                <th>DRAWS</th>
+                                <th>POINTS</th>
+                                <th>GAMES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1831,11 +2180,11 @@
                 html += `
                     <tr class="${rankClass}">
                         <td><strong>#${index + 1}</strong></td>
-                        <td>${escapeHtml(s.participant_name)}</td>
+                        <td><strong>${escapeHtml(s.participant_name)}</strong></td>
                         <td>${s.wins}</td>
                         <td>${s.losses}</td>
                         <td>${s.draws || 0}</td>
-                        <td><strong>${s.points}</strong></td>
+                        <td><strong style="color: var(--accent-primary);">${s.points}</strong></td>
                         <td>${s.games_played || 0}</td>
                     </tr>
                 `;
@@ -1853,16 +2202,16 @@
             participants.forEach((p, index) => {
                 html += `
                     <div class="col">
-                        <div class="card p-2 text-center" style="background: var(--bg-tertiary); border-radius: 0.5rem;">
-                            <strong>#${index + 1}</strong>
-                            <div>${escapeHtml(p.name)}</div>
-                            ${p.discord_id ? '<small class="text-muted">Discord</small>' : ''}
+                        <div class="card p-3 text-center" style="background: var(--bg-tertiary); border-radius: 15px;">
+                            <strong style="font-size: 1.2rem;">#${index + 1}</strong>
+                            <div style="font-size: 1.3rem; font-weight: 700; margin: 0.5rem 0;">${escapeHtml(p.name)}</div>
+                            ${p.discord_id ? '<small class="text-muted">🎮 Discord</small>' : ''}
                         </div>
                     </div>
                 `;
             });
             
-            container.innerHTML = html || '<p class="text-muted text-center">No participants yet</p>';
+            container.innerHTML = html || '<p class="text-muted text-center">No warriors yet</p>';
         }
 
         function displayAllMatches() {
@@ -1870,7 +2219,7 @@
             const matches = currentTournament?.matches || [];
             
             if (matches.length === 0) {
-                container.innerHTML = '<p class="text-muted text-center">No matches yet</p>';
+                container.innerHTML = '<p class="text-muted text-center">No battles yet</p>';
                 return;
             }
             
@@ -1879,18 +2228,18 @@
                 html += `
                     <div class="match-controls">
                         <div class="match-controls-header">
-                            <strong>Round ${match.round} - Match ${match.match_number}</strong>
+                            <strong>ROUND ${match.round} - BATTLE ${match.match_number}</strong>
                             <span class="tournament-status status-${match.status}">${match.status}</span>
                         </div>
                         <div class="match-controls-participants">
-                            <div class="text-right">${escapeHtml(match.participant1_name || 'TBD')}</div>
-                            <div style="font-weight: bold;">vs</div>
-                            <div>${escapeHtml(match.participant2_name || 'TBD')}</div>
+                            <div class="text-right" style="font-size: 1.2rem;">${escapeHtml(match.participant1_name || 'TBD')}</div>
+                            <div style="font-size: 1.5rem; font-weight: 800;">VS</div>
+                            <div style="font-size: 1.2rem;">${escapeHtml(match.participant2_name || 'TBD')}</div>
                         </div>
                         <div class="match-controls-participants">
-                            <div class="text-right">${match.score1 !== null ? match.score1 : '-'}</div>
-                            <div>-</div>
-                            <div>${match.score2 !== null ? match.score2 : '-'}</div>
+                            <div class="text-right" style="font-size: 2rem; font-weight: 800;">${match.score1 !== null ? match.score1 : '-'}</div>
+                            <div style="font-size: 1.2rem;">-</div>
+                            <div style="font-size: 2rem; font-weight: 800;">${match.score2 !== null ? match.score2 : '-'}</div>
                         </div>
                     </div>
                 `;
@@ -1901,11 +2250,9 @@
 
         // ==================== Tab Management ====================
         function switchTab(tab) {
-            // Update tab buttons
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
             
-            // Update tab content
             document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
             document.getElementById(`${tab}Tab`).style.display = 'block';
         }
@@ -1928,12 +2275,12 @@
                 .filter(p => p);
             
             if (participants.length < 2) {
-                showToast('At least 2 participants required', 'error');
+                showToast('At least 2 warriors required', 'error');
                 return;
             }
             
             if (participants.length > 64) {
-                showToast('Maximum 64 participants allowed', 'error');
+                showToast('Maximum 64 warriors allowed', 'error');
                 return;
             }
             
@@ -2033,19 +2380,16 @@
         }
 
         function showHostSection(section) {
-            // Update navigation
             document.querySelectorAll('.host-nav-item').forEach(item => {
                 item.classList.remove('active');
             });
             event.target.closest('.host-nav-item').classList.add('active');
             
-            // Show section
             document.querySelectorAll('.host-section').forEach(s => {
                 s.classList.remove('active');
             });
             document.getElementById(`${section}Section`).classList.add('active');
             
-            // Load section data if needed
             if (section === 'matches') loadMatchesSection();
             if (section === 'participants') loadParticipantsSection();
             if (section === 'export') loadExportSection();
@@ -2068,30 +2412,23 @@
         }
 
         function updateHostPanel(data) {
-            // Update match progress
             const progress = data.progress || 0;
             document.getElementById('matchProgress').style.width = `${progress}%`;
             
-            // Update rounds info
             const matches = data.matches || [];
             const maxRound = Math.max(...matches.map(m => m.round), 0);
             document.getElementById('currentRound').textContent = maxRound;
             document.getElementById('totalRounds').textContent = Math.ceil(Math.log2(data.participants?.length || 2));
             
-            // Update auto-advance checkbox
             document.getElementById('autoAdvance').checked = data.settings?.auto_advance || false;
-            
-            // Update settings
             document.getElementById('settingsName').value = data.name || '';
             document.getElementById('visibilitySelect').value = data.visibility || 'public';
             document.getElementById('joinCodeDisplay').value = data.join_code || '';
             
-            // Update QR code
             if (data.qr_code) {
                 document.getElementById('hostQRContainer').innerHTML = `<img src="${data.qr_code}" class="qr-code" alt="QR Code">`;
             }
             
-            // Load matches section
             loadMatchesSection();
         }
 
@@ -2102,7 +2439,7 @@
             const container = document.getElementById('hostMatchesList');
             
             if (matches.length === 0) {
-                container.innerHTML = '<p class="text-muted text-center">No matches yet</p>';
+                container.innerHTML = '<p class="text-muted text-center">No battles yet</p>';
                 return;
             }
             
@@ -2111,12 +2448,12 @@
                 html += `
                     <div class="match-controls">
                         <div class="match-controls-header">
-                            <strong>Round ${match.round} - Match ${match.match_number}</strong>
+                            <strong>ROUND ${match.round} - BATTLE ${match.match_number}</strong>
                             <span class="tournament-status status-${match.status}">${match.status}</span>
                         </div>
                         <div class="match-controls-participants">
                             <div class="text-right">${escapeHtml(match.participant1_name || 'TBD')}</div>
-                            <div>vs</div>
+                            <div style="font-weight: 800;">VS</div>
                             <div>${escapeHtml(match.participant2_name || 'TBD')}</div>
                         </div>
                         <div class="match-controls-participants">
@@ -2127,9 +2464,9 @@
                                    value="${match.score2 !== null ? match.score2 : ''}" placeholder="Score">
                         </div>
                         <div class="match-actions">
-                            <button class="btn btn-success" onclick="submitMatchScore('${match.id}')">Submit Score</button>
-                            <button class="btn btn-warning" onclick="advanceMatch('${match.id}')">Force Advance</button>
-                            <button class="btn btn-danger" onclick="forfeitMatch('${match.id}')">Forfeit</button>
+                            <button class="btn btn-success" onclick="submitMatchScore('${match.id}')">SUBMIT</button>
+                            <button class="btn btn-warning" onclick="advanceMatch('${match.id}')">ADVANCE</button>
+                            <button class="btn btn-danger" onclick="forfeitMatch('${match.id}')">FORFEIT</button>
                         </div>
                     </div>
                 `;
@@ -2145,19 +2482,20 @@
             const container = document.getElementById('hostParticipantsList');
             
             if (participants.length === 0) {
-                container.innerHTML = '<p class="text-muted text-center">No participants yet</p>';
+                container.innerHTML = '<p class="text-muted text-center">No warriors yet</p>';
                 return;
             }
             
             let html = '';
             participants.forEach((p, index) => {
                 html += `
-                    <div class="flex-between p-2" style="border-bottom: 1px solid var(--border);">
+                    <div class="flex-between p-3" style="border-bottom: 1px solid var(--border);">
                         <div>
-                            <strong>#${index + 1}</strong> - ${escapeHtml(p.name)}
-                            ${p.discord_id ? '<small class="text-muted"> (Discord)</small>' : ''}
+                            <strong style="font-size: 1.2rem;">#${index + 1}</strong> - 
+                            <span style="font-size: 1.2rem;">${escapeHtml(p.name)}</span>
+                            ${p.discord_id ? '<span class="text-muted ml-2">🎮</span>' : ''}
                         </div>
-                        <button class="btn btn-danger btn-small" onclick="removeParticipant('${p.id}')">Remove</button>
+                        <button class="btn btn-danger btn-small" onclick="removeParticipant('${p.id}')">REMOVE</button>
                     </div>
                 `;
             });
@@ -2165,9 +2503,7 @@
             container.innerHTML = html;
         }
 
-        function loadExportSection() {
-            // Already loaded via updateHostPanel
-        }
+        function loadExportSection() {}
 
         // ==================== Host Actions ====================
         async function submitMatchScore(matchId) {
@@ -2194,7 +2530,7 @@
         }
 
         async function advanceMatch(matchId) {
-            if (!confirm('Force advance this match?')) return;
+            if (!confirm('Force advance this battle?')) return;
             
             try {
                 await apiCall(`/matches/${matchId}/advance`, 'POST');
@@ -2210,7 +2546,7 @@
             const match = currentTournament.matches.find(m => m.id === matchId);
             if (!match) return;
             
-            const participant = prompt('Enter participant name to forfeit:');
+            const participant = prompt('Enter warrior name to forfeit:');
             if (!participant) return;
             
             try {
@@ -2265,7 +2601,6 @@
         function toggleAutoAdvance() {
             const autoAdvance = document.getElementById('autoAdvance').checked;
             showToast(`Auto-advance ${autoAdvance ? 'enabled' : 'disabled'}`, 'info');
-            // In production, save this setting
         }
 
         async function addParticipant() {
@@ -2280,7 +2615,7 @@
                     name: name
                 });
                 
-                showToast('Participant added!', 'success');
+                showToast('Warrior added!', 'success');
                 document.getElementById('newParticipantName').value = '';
                 await refreshCurrentTournament();
                 loadParticipantsSection();
@@ -2290,11 +2625,11 @@
         }
 
         async function removeParticipant(participantId) {
-            if (!confirm('Remove this participant?')) return;
+            if (!confirm('Remove this warrior?')) return;
             
             try {
                 await apiCall(`/tournaments/${currentTournament.id}/participants/${participantId}`, 'DELETE');
-                showToast('Participant removed!', 'success');
+                showToast('Warrior removed!', 'success');
                 await refreshCurrentTournament();
                 loadParticipantsSection();
             } catch (error) {
@@ -2353,7 +2688,7 @@
         }
 
         async function resetTournament() {
-            if (!confirm('⚠️ Are you sure you want to reset the tournament? This cannot be undone!')) return;
+            if (!confirm('⚠️ ARE YOU SURE? This will reset the entire tournament!')) return;
             
             try {
                 await apiCall(`/tournaments/${currentTournament.id}/reset`, 'POST');
@@ -2366,7 +2701,7 @@
         }
 
         async function deleteTournament() {
-            if (!confirm('⚠️⚠️⚠️ Are you absolutely sure you want to delete this tournament? This cannot be undone!')) return;
+            if (!confirm('⚠️⚠️⚠️ THIS WILL PERMANENTLY DELETE THE TOURNAMENT! Continue?')) return;
             
             try {
                 await apiCall(`/tournaments/${currentTournament.id}`, 'DELETE');
@@ -2383,7 +2718,6 @@
             try {
                 const response = await apiCall(`/tournaments/${currentTournament.id}/export/image`, 'POST');
                 
-                // Create download link
                 const link = document.createElement('a');
                 link.download = `xtourny-${currentTournament.name}.png`;
                 link.href = response.image;
@@ -2397,7 +2731,6 @@
 
         async function exportAsPDF() {
             try {
-                // Open PDF in new tab
                 window.open(`${API_BASE}/api/tournaments/${currentTournament.id}/export/pdf`, '_blank');
                 showToast('PDF generated successfully!', 'success');
             } catch (error) {
