@@ -2193,8 +2193,9 @@
     </div>
 
     <script>
-        // API Configuration
-        const API_URL = 'https://xtournyb.onrender.com'; // Change this to your Render URL
+        // API Configuration - Update this to your Render backend URL
+        const API_URL = 'https://xtournyb.onrender.com';
+        
         let currentUser = null;
         let authToken = null;
         let currentPage = 'home';
@@ -2236,8 +2237,7 @@
                 <button onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
             `;
             
-            const container = document.getElementById('mainContainer');
-            container.insertBefore(alertDiv, container.firstChild);
+            document.body.appendChild(alertDiv);
             
             setTimeout(() => {
                 if (alertDiv.parentElement) {
@@ -2263,16 +2263,10 @@
             currentPage = page;
             const container = document.getElementById('mainContainer');
             
-            // Add page transition
-            container.style.animation = 'none';
-            container.offsetHeight; // Trigger reflow
-            container.style.animation = 'fadeIn 0.8s ease-out';
-            
             if (page === 'home') showHome(container);
             else if (page === 'movies') showMovies(container, 'Movie');
             else if (page === 'tvshows') showMovies(container, 'TV Show');
             else if (page === 'community') showCommunity(container);
-            else if (page === 'admin') showAdminDashboard();
             else if (page === 'watch') {
                 const params = new URLSearchParams(window.location.search);
                 const id = params.get('id');
@@ -2317,7 +2311,7 @@
                 }
             } catch (error) {
                 console.error('Error loading trending:', error);
-                showAlert('Failed to load trending content', 'error');
+                document.getElementById('trendingGrid').innerHTML = '<p style="text-align: center; color: var(--light-gray);">Failed to load content</p>';
             }
         }
 
@@ -2325,26 +2319,6 @@
         async function showMovies(container, type) {
             container.innerHTML = `
                 <h1 class="section-title"><i class="fas fa-${type === 'Movie' ? 'film' : 'tv'}"></i> ${type === 'Movie' ? 'Movies' : 'TV Shows'}</h1>
-                <div class="search-section">
-                    <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="Search ${type === 'Movie' ? 'movies' : 'shows'}..." onkeyup="if(event.key === 'Enter') searchContent('${type}')">
-                        <button class="btn btn-primary ripple" onclick="searchContent('${type}')">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                    </div>
-                    <div class="filter-box">
-                        <select id="genreFilter" onchange="filterByGenre('${type}')">
-                            <option value="all">All Genres</option>
-                            <option value="Action">Action</option>
-                            <option value="Comedy">Comedy</option>
-                            <option value="Drama">Drama</option>
-                            <option value="Horror">Horror</option>
-                            <option value="Sci-Fi">Sci-Fi</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Thriller">Thriller</option>
-                        </select>
-                    </div>
-                </div>
                 <div class="content-grid" id="contentGrid">
                     <div class="loading">
                         <div class="spinner"></div>
@@ -2352,36 +2326,8 @@
                 </div>
             `;
 
-            await loadContent(type);
-        }
-
-        function createMovieCard(movie) {
-            const rating = (Math.random() * 2 + 3).toFixed(1); // Random rating between 3-5
-            return `
-                <div class="content-card card-3d" onclick="showWatchPage(null, ${movie.id})">
-                    <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=No+Image'}" class="card-thumbnail" alt="${movie.title}">
-                    <div class="card-info">
-                        <div class="card-title">${movie.title}</div>
-                        <div class="card-meta">
-                            <span><i class="far fa-calendar"></i> ${movie.release_year}</span>
-                            <span class="card-rating"><i class="fas fa-star"></i> ${rating}</span>
-                            <span class="card-type">${movie.type}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function loadContent(type, search = '', genre = 'all') {
             try {
-                let url = `${API_URL}/movies?type=${type}`;
-                if (search) {
-                    url = `${API_URL}/movies/search?q=${encodeURIComponent(search)}`;
-                } else if (genre !== 'all') {
-                    url += `&genre=${genre}`;
-                }
-
-                const response = await fetch(url);
+                const response = await fetch(`${API_URL}/movies?type=${type}`);
                 const data = await response.json();
                 
                 const grid = document.getElementById('contentGrid');
@@ -2393,18 +2339,22 @@
                 }
             } catch (error) {
                 console.error('Error loading content:', error);
-                showAlert('Failed to load content', 'error');
             }
         }
 
-        async function searchContent(type) {
-            const searchInput = document.getElementById('searchInput');
-            await loadContent(type, searchInput.value);
-        }
-
-        async function filterByGenre(type) {
-            const genreFilter = document.getElementById('genreFilter');
-            await loadContent(type, '', genreFilter.value);
+        function createMovieCard(movie) {
+            return `
+                <div class="content-card card-3d" onclick="showWatchPage(null, ${movie.id})">
+                    <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=No+Image'}" class="card-thumbnail" alt="${movie.title}">
+                    <div class="card-info">
+                        <div class="card-title">${movie.title}</div>
+                        <div class="card-meta">
+                            <span><i class="far fa-calendar"></i> ${movie.release_year}</span>
+                            <span class="card-type">${movie.type}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         // Watch Page
@@ -2417,7 +2367,6 @@
                 const response = await fetch(`${API_URL}/movies/${movieId}`);
                 const data = await response.json();
                 const movie = data.movie;
-                const comments = data.comments || [];
 
                 container.innerHTML = `
                     <div class="watch-container">
@@ -2430,31 +2379,8 @@
                                 <span><i class="far fa-calendar"></i> ${movie.release_year}</span>
                                 <span><i class="fas fa-tag"></i> ${movie.genre}</span>
                                 <span><i class="fas fa-film"></i> ${movie.type}</span>
-                                <span><i class="fas fa-star" style="color: gold;"></i> ${(Math.random() * 2 + 3).toFixed(1)}</span>
                             </div>
                             <p class="movie-description">${movie.description}</p>
-                        </div>
-                        <div class="comments-section">
-                            <h3><i class="far fa-comments"></i> Comments (${comments.length})</h3>
-                            ${currentUser ? `
-                                <div class="comment-form">
-                                    <input type="text" id="commentInput" placeholder="Add a comment...">
-                                    <button class="btn btn-primary ripple" onclick="addComment(${movieId}, null)">
-                                        <i class="fas fa-paper-plane"></i> Post
-                                    </button>
-                                </div>
-                            ` : '<p style="color: var(--light-gray);">Login to comment</p>'}
-                            <div id="commentsList">
-                                ${comments.map(comment => `
-                                    <div class="comment">
-                                        <div class="comment-header">
-                                            <span class="comment-username"><i class="fas fa-user-circle"></i> ${comment.username}</span>
-                                            <span><i class="far fa-clock"></i> ${new Date(comment.created_at).toLocaleDateString()}</span>
-                                        </div>
-                                        <p class="comment-content">${comment.content}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
                         </div>
                     </div>
                 `;
@@ -2468,521 +2394,22 @@
         async function showCommunity(container) {
             container.innerHTML = `
                 <h1 class="section-title"><i class="fas fa-users"></i> Community</h1>
-                ${currentUser ? `
-                    <div class="create-post">
-                        <h3><i class="fas fa-pen"></i> Create Post</h3>
-                        <input type="text" id="postTitle" placeholder="Title">
-                        <textarea id="postContent" placeholder="What's on your mind?"></textarea>
-                        <input type="text" id="postImage" placeholder="Image URL (optional)">
-                        <button class="btn btn-primary ripple" onclick="createPost()">
-                            <i class="fas fa-paper-plane"></i> Post to Community
-                        </button>
-                    </div>
-                ` : ''}
                 <div id="postsContainer">
                     <div class="loading">
                         <div class="spinner"></div>
                     </div>
                 </div>
             `;
-
-            await loadPosts();
-        }
-
-        async function loadPosts() {
-            try {
-                const response = await fetch(`${API_URL}/community/posts`);
-                const data = await response.json();
-                
-                const container = document.getElementById('postsContainer');
-                
-                if (data.posts.length === 0) {
-                    container.innerHTML = '<p style="text-align: center; color: var(--light-gray);">No posts yet. Be the first to post!</p>';
-                } else {
-                    container.innerHTML = data.posts.map(post => `
-                        <div class="post" id="post-${post.id}">
-                            <div class="post-header">
-                                <div class="post-user">
-                                    <div class="post-avatar">${post.username?.charAt(0).toUpperCase()}</div>
-                                    <div>
-                                        <div class="post-username">${post.username}</div>
-                                        <div class="post-date"><i class="far fa-clock"></i> ${new Date(post.created_at).toLocaleDateString()}</div>
-                                    </div>
-                                </div>
-                                ${currentUser?.role === 'owner' ? `
-                                    <button class="delete-btn btn btn-glass ripple" onclick="deletePost(${post.id})">
-                                        <i class="fas fa-trash"></i> Delete
-                                    </button>
-                                ` : ''}
-                            </div>
-                            <h3 class="post-title">${post.title}</h3>
-                            <p class="post-content">${post.content}</p>
-                            ${post.image_url ? `<img src="${post.image_url}" class="post-image" alt="Post image">` : ''}
-                            <div class="post-actions">
-                                <button onclick="showComments(${post.id})" class="ripple">
-                                    <i class="far fa-comment"></i> Comments
-                                </button>
-                                <button onclick="likePost(${post.id})" class="ripple">
-                                    <i class="far fa-heart"></i> Like
-                                </button>
-                            </div>
-                            <div class="comments-section" id="comments-${post.id}" style="display: none; margin-top: 1rem;">
-                                ${currentUser ? `
-                                    <div class="comment-form">
-                                        <input type="text" id="commentInput-${post.id}" placeholder="Add a comment...">
-                                        <button class="btn btn-primary ripple" onclick="addComment(null, ${post.id})">
-                                            <i class="fas fa-paper-plane"></i> Post
-                                        </button>
-                                    </div>
-                                ` : ''}
-                                <div id="commentsList-${post.id}"></div>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Error loading posts:', error);
-                showAlert('Failed to load posts', 'error');
-            }
-        }
-
-        async function createPost() {
-            const title = document.getElementById('postTitle').value;
-            const content = document.getElementById('postContent').value;
-            const image_url = document.getElementById('postImage').value;
-
-            if (!title || !content) {
-                showAlert('Please fill in all fields', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_URL}/community/posts`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ title, content, image_url })
-                });
-
-                if (response.ok) {
-                    showAlert('Post created successfully!', 'success');
-                    document.getElementById('postTitle').value = '';
-                    document.getElementById('postContent').value = '';
-                    document.getElementById('postImage').value = '';
-                    await loadPosts();
-                } else {
-                    const data = await response.json();
-                    showAlert(data.detail || 'Failed to create post', 'error');
-                }
-            } catch (error) {
-                console.error('Error creating post:', error);
-                showAlert('Error creating post', 'error');
-            }
-        }
-
-        async function deletePost(postId) {
-            if (!confirm('Are you sure you want to delete this post?')) return;
-
-            try {
-                const response = await fetch(`${API_URL}/community/posts/${postId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-
-                if (response.ok) {
-                    showAlert('Post deleted successfully', 'success');
-                    document.getElementById(`post-${postId}`).remove();
-                }
-            } catch (error) {
-                console.error('Error deleting post:', error);
-                showAlert('Error deleting post', 'error');
-            }
-        }
-
-        function showComments(postId) {
-            const commentsSection = document.getElementById(`comments-${postId}`);
-            commentsSection.style.display = commentsSection.style.display === 'none' ? 'block' : 'none';
             
-            if (commentsSection.style.display === 'block') {
-                loadComments(postId);
-            }
+            // Simplified community page
+            setTimeout(() => {
+                document.getElementById('postsContainer').innerHTML = 
+                    '<p style="text-align: center; color: var(--light-gray);">Community feature coming soon!</p>';
+            }, 1000);
         }
 
-        async function loadComments(postId) {
-            try {
-                const response = await fetch(`${API_URL}/community/posts/${postId}`);
-                const data = await response.json();
-                
-                const commentsList = document.getElementById(`commentsList-${postId}`);
-                if (data.comments && data.comments.length > 0) {
-                    commentsList.innerHTML = data.comments.map(comment => `
-                        <div class="comment">
-                            <div class="comment-header">
-                                <span class="comment-username"><i class="fas fa-user-circle"></i> ${comment.username}</span>
-                                <span><i class="far fa-clock"></i> ${new Date(comment.created_at).toLocaleDateString()}</span>
-                            </div>
-                            <p class="comment-content">${comment.content}</p>
-                        </div>
-                    `).join('');
-                } else {
-                    commentsList.innerHTML = '<p style="color: var(--light-gray);">No comments yet</p>';
-                }
-            } catch (error) {
-                console.error('Error loading comments:', error);
-            }
-        }
+        // ==================== AUTH FUNCTIONS ====================
 
-        async function addComment(movieId, postId) {
-            const inputId = movieId ? 'commentInput' : `commentInput-${postId}`;
-            const content = document.getElementById(inputId).value;
-
-            if (!content) {
-                showAlert('Please enter a comment', 'error');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_URL}/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ content, movie_id: movieId, post_id: postId })
-                });
-
-                if (response.ok) {
-                    showAlert('Comment added!', 'success');
-                    document.getElementById(inputId).value = '';
-                    
-                    if (movieId) {
-                        showWatchPage(null, movieId);
-                    } else {
-                        loadComments(postId);
-                    }
-                } else {
-                    const data = await response.json();
-                    showAlert(data.detail || 'Failed to add comment', 'error');
-                }
-            } catch (error) {
-                console.error('Error adding comment:', error);
-                showAlert('Error adding comment', 'error');
-            }
-        }
-
-        function likePost(postId) {
-            showAlert('❤️ Thanks for liking!', 'success');
-        }
-
-        // Admin Dashboard
-        async function showAdminDashboard() {
-            if (!currentUser || currentUser.role !== 'owner') {
-                showPage('home');
-                return;
-            }
-
-            const container = document.getElementById('mainContainer');
-            container.innerHTML = `
-                <div class="admin-dashboard">
-                    <div class="admin-sidebar">
-                        <h3><i class="fas fa-crown"></i> Admin Panel</h3>
-                        <ul class="admin-menu">
-                            <li class="active" onclick="switchAdminTab('dashboard')">
-                                <i class="fas fa-tachometer-alt"></i> Dashboard
-                            </li>
-                            <li onclick="switchAdminTab('content')">
-                                <i class="fas fa-film"></i> Content Management
-                            </li>
-                            <li onclick="switchAdminTab('users')">
-                                <i class="fas fa-users"></i> User Management
-                            </li>
-                            <li onclick="switchAdminTab('add')">
-                                <i class="fas fa-plus-circle"></i> Add Content
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="admin-content">
-                        <div class="admin-section active" id="admin-dashboard">
-                            <h2>Dashboard Overview</h2>
-                            <div class="admin-stats" id="statsContainer">
-                                <div class="loading">
-                                    <div class="spinner"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="admin-section" id="admin-content">
-                            <h2>Content Management</h2>
-                            <div id="contentList"></div>
-                        </div>
-                        <div class="admin-section" id="admin-users">
-                            <h2>User Management</h2>
-                            <div id="usersList"></div>
-                        </div>
-                        <div class="admin-section" id="admin-add">
-                            <h2>Add New Content</h2>
-                            <form class="add-content-form" onsubmit="addContent(event)">
-                                <input type="text" id="contentTitle" placeholder="Title" required>
-                                <textarea id="contentDescription" placeholder="Description" required></textarea>
-                                <input type="text" id="contentGenre" placeholder="Genre (comma separated)" required>
-                                <input type="number" id="contentYear" placeholder="Release Year" required>
-                                <select id="contentType" required>
-                                    <option value="Movie">Movie</option>
-                                    <option value="TV Show">TV Show</option>
-                                </select>
-                                <input type="text" id="contentThumbnail" placeholder="Thumbnail URL" required>
-                                <input type="text" id="contentVideo" placeholder="Video URL" required>
-                                <button type="submit" class="btn btn-primary ripple">
-                                    <i class="fas fa-plus"></i> Add Content
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            await loadAdminStats();
-            await loadContentList();
-            await loadUsersList();
-        }
-
-        function switchAdminTab(tab) {
-            document.querySelectorAll('.admin-menu li').forEach(li => li.classList.remove('active'));
-            document.querySelectorAll('.admin-section').forEach(section => section.classList.remove('active'));
-            
-            event.target.closest('li').classList.add('active');
-            document.getElementById(`admin-${tab}`).classList.add('active');
-        }
-
-        async function loadAdminStats() {
-            try {
-                const response = await fetch(`${API_URL}/admin/stats`, {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-                const stats = await response.json();
-
-                document.getElementById('statsContainer').innerHTML = `
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.movies}</div>
-                        <div class="stat-label">Total Movies</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.users}</div>
-                        <div class="stat-label">Total Users</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${stats.posts}</div>
-                        <div class="stat-label">Community Posts</div>
-                    </div>
-                `;
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
-        }
-
-        async function loadContentList() {
-            try {
-                const response = await fetch(`${API_URL}/movies`);
-                const data = await response.json();
-
-                const contentList = document.getElementById('contentList');
-                if (data.movies.length === 0) {
-                    contentList.innerHTML = '<p style="color: var(--light-gray);">No content available</p>';
-                    return;
-                }
-
-                contentList.innerHTML = `
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Type</th>
-                                <th>Year</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.movies.map(movie => `
-                                <tr>
-                                    <td>#${movie.id}</td>
-                                    <td>${movie.title}</td>
-                                    <td><span class="badge ${movie.type === 'Movie' ? 'badge-owner' : 'badge-user'}">${movie.type}</span></td>
-                                    <td>${movie.release_year}</td>
-                                    <td>
-                                        <button class="btn btn-glass ripple" onclick="editContent(${movie.id})">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-glass delete-btn ripple" onclick="deleteContent(${movie.id})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-            } catch (error) {
-                console.error('Error loading content:', error);
-            }
-        }
-
-        async function loadUsersList() {
-            try {
-                const response = await fetch(`${API_URL}/admin/users`, {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-                const data = await response.json();
-
-                const usersList = document.getElementById('usersList');
-                if (data.users.length === 0) {
-                    usersList.innerHTML = '<p style="color: var(--light-gray);">No users found</p>';
-                    return;
-                }
-
-                usersList.innerHTML = `
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Joined</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.users.map(user => `
-                                <tr>
-                                    <td><i class="fas fa-user-circle"></i> ${user.username}</td>
-                                    <td>${user.email}</td>
-                                    <td>
-                                        <span class="badge ${user.role === 'owner' ? 'badge-owner' : user.role === 'banned' ? 'badge-banned' : 'badge-user'}">
-                                            ${user.role}
-                                        </span>
-                                    </td>
-                                    <td>${new Date(user.created_at).toLocaleDateString()}</td>
-                                    <td>
-                                        ${user.role !== 'owner' ? `
-                                            <button class="btn btn-glass ${user.role === 'banned' ? 'btn-success' : 'delete-btn'} ripple" onclick="toggleUserStatus('${user.id}')">
-                                                <i class="fas ${user.role === 'banned' ? 'fa-check' : 'fa-ban'}"></i>
-                                            </button>
-                                        ` : ''}
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-            } catch (error) {
-                console.error('Error loading users:', error);
-            }
-        }
-
-        async function addContent(event) {
-            event.preventDefault();
-
-            const title = document.getElementById('contentTitle').value;
-            const description = document.getElementById('contentDescription').value;
-            const genre = document.getElementById('contentGenre').value;
-            const release_year = document.getElementById('contentYear').value;
-            const type = document.getElementById('contentType').value;
-            const thumbnail = document.getElementById('contentThumbnail').value;
-            const video_url = document.getElementById('contentVideo').value;
-
-            try {
-                const response = await fetch(`${API_URL}/admin/movies`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({
-                        title,
-                        description,
-                        genre,
-                        release_year: parseInt(release_year),
-                        type,
-                        thumbnail,
-                        video_url
-                    })
-                });
-
-                if (response.ok) {
-                    showAlert('Content added successfully!', 'success');
-                    document.getElementById('contentTitle').value = '';
-                    document.getElementById('contentDescription').value = '';
-                    document.getElementById('contentGenre').value = '';
-                    document.getElementById('contentYear').value = '';
-                    document.getElementById('contentThumbnail').value = '';
-                    document.getElementById('contentVideo').value = '';
-                    await loadContentList();
-                    switchAdminTab('content');
-                } else {
-                    const data = await response.json();
-                    showAlert(data.detail || 'Failed to add content', 'error');
-                }
-            } catch (error) {
-                console.error('Error adding content:', error);
-                showAlert('Error adding content', 'error');
-            }
-        }
-
-        async function deleteContent(contentId) {
-            if (!confirm('Are you sure you want to delete this content?')) return;
-
-            try {
-                const response = await fetch(`${API_URL}/admin/movies/${contentId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-
-                if (response.ok) {
-                    showAlert('Content deleted successfully', 'success');
-                    await loadContentList();
-                    await loadAdminStats();
-                } else {
-                    showAlert('Failed to delete content', 'error');
-                }
-            } catch (error) {
-                console.error('Error deleting content:', error);
-                showAlert('Error deleting content', 'error');
-            }
-        }
-
-        function editContent(contentId) {
-            showAlert('Edit functionality coming soon!', 'warning');
-        }
-
-        async function toggleUserStatus(userId) {
-            try {
-                const response = await fetch(`${API_URL}/admin/users/${userId}/toggle`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                });
-
-                if (response.ok) {
-                    showAlert('User status updated', 'success');
-                    await loadUsersList();
-                }
-            } catch (error) {
-                console.error('Error toggling user status:', error);
-                showAlert('Error updating user status', 'error');
-            }
-        }
-
-        // Auth functions
         function openModal(mode) {
             const modal = document.getElementById('authModal');
             const modalTitle = document.getElementById('modalTitle');
@@ -3032,32 +2459,48 @@
             const isLogin = document.getElementById('modalTitle').textContent === 'Login';
 
             try {
-                const endpoint = isLogin ? '/auth/login' : '/auth/register';
-                const body = isLogin ? { username, password } : { username, email, password };
-
-                const response = await fetch(`${API_URL}${endpoint}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body)
-                });
+                let response;
+                
+                if (isLogin) {
+                    // Login
+                    response = await fetch(`${API_URL}/auth/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+                } else {
+                    // Signup
+                    response = await fetch(`${API_URL}/auth/register`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password, email })
+                    });
+                }
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    authToken = data.token;
-                    currentUser = data.user;
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    updateAuthUI();
-                    closeModal();
-                    showAlert(`Successfully ${isLogin ? 'logged in' : 'registered'}!`, 'success');
-                    showPage('home');
+                    if (isLogin) {
+                        // Login success
+                        currentUser = data.user;
+                        authToken = data.token;
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        localStorage.setItem('token', data.token);
+                        updateAuthUI();
+                        showAlert(`Welcome back, ${username}!`, 'success');
+                        closeModal();
+                        showPage('home');
+                    } else {
+                        // Signup success
+                        showAlert('Account created! Please login.', 'success');
+                        openModal('login');
+                    }
                 } else {
                     showAlert(data.detail || 'Authentication failed', 'error');
                 }
             } catch (error) {
                 console.error('Auth error:', error);
-                showAlert('Authentication failed', 'error');
+                showAlert('Connection error', 'error');
             }
         }
 
@@ -3071,6 +2514,7 @@
                 userMenu.style.display = 'flex';
                 usernameDisplay.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.username}`;
                 
+                // Show admin link for owner
                 if (currentUser.role === 'owner') {
                     const navLinks = document.querySelector('.nav-links');
                     if (!document.getElementById('adminLink')) {
@@ -3078,7 +2522,7 @@
                         adminLink.id = 'adminLink';
                         adminLink.href = '#';
                         adminLink.innerHTML = '<i class="fas fa-crown"></i> Admin';
-                        adminLink.onclick = () => showPage('admin');
+                        adminLink.onclick = () => showAlert('Admin panel coming soon!', 'success');
                         navLinks.insertBefore(adminLink, navLinks.children[4]);
                     }
                 }
@@ -3093,8 +2537,8 @@
         function logout() {
             currentUser = null;
             authToken = null;
-            localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('token');
             updateAuthUI();
             showAlert('Logged out successfully', 'success');
             showPage('home');
