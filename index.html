@@ -99,6 +99,7 @@
             display: flex;
             gap: 2rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-links a {
@@ -132,6 +133,11 @@
             align-items: center;
             gap: 0.5rem;
             font-size: 0.95rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
         }
 
         .btn-primary {
@@ -284,6 +290,9 @@
         .card-title {
             font-weight: 600;
             margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .card-meta {
@@ -303,6 +312,21 @@
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.8rem;
+        }
+
+        .watchlist-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary);
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
         }
 
         /* Video Player Page */
@@ -380,6 +404,45 @@
         .movie-description {
             color: var(--text-muted);
             line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Rating Stars */
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.3rem;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: var(--gray-light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .star.active,
+        .star:hover {
+            color: gold;
+            transform: scale(1.1);
+        }
+
+        .rating-value {
+            font-size: 1.2rem;
+            color: var(--text-muted);
         }
 
         /* Comments Section */
@@ -414,6 +477,7 @@
             border-radius: 15px;
             padding: 1.5rem;
             margin-bottom: 1rem;
+            position: relative;
         }
 
         .comment-header {
@@ -426,6 +490,165 @@
         .comment-username {
             color: var(--primary);
             font-weight: 600;
+        }
+
+        .comment-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        /* Profile Page */
+        .profile-container {
+            background: var(--gray-dark);
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-username {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-bio {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .profile-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--gray);
+            padding-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .profile-tab {
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .profile-tab.active {
+            background: var(--primary);
+        }
+
+        .profile-content {
+            min-height: 400px;
+        }
+
+        .history-item, .watchlist-item {
+            display: flex;
+            gap: 1rem;
+            background: var(--gray);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+
+        .history-thumb, .watchlist-thumb {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .history-info, .watchlist-info {
+            flex: 1;
+        }
+
+        .history-title, .watchlist-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .history-progress {
+            width: 100%;
+            height: 5px;
+            background: var(--gray-light);
+            border-radius: 5px;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+            width: 0%;
+        }
+
+        .history-meta, .watchlist-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .edit-profile-form {
+            max-width: 500px;
+        }
+
+        .edit-profile-form input,
+        .edit-profile-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 2px solid var(--gray);
+            border-radius: 10px;
+            background: var(--darker);
+            color: var(--text);
+        }
+
+        .edit-profile-form input:focus,
+        .edit-profile-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         /* Chat Room */
@@ -449,6 +672,7 @@
             border-radius: 10px;
             padding: 1rem;
             margin-bottom: 1rem;
+            position: relative;
         }
 
         .chat-message-header {
@@ -773,7 +997,6 @@
                 padding: 1rem;
             }
             .nav-links {
-                flex-wrap: wrap;
                 justify-content: center;
             }
             .hero h1 {
@@ -784,8 +1007,15 @@
                 align-items: center;
                 text-align: center;
             }
+            .movie-poster {
+                width: 150px;
+            }
             .admin-dashboard {
                 grid-template-columns: 1fr;
+            }
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
@@ -799,6 +1029,7 @@
             <a href="#" onclick="showPage('movies')"><i class="fas fa-film"></i> MOVIES</a>
             <a href="#" onclick="showPage('tvshows')"><i class="fas fa-tv"></i> TV SHOWS</a>
             <a href="#" onclick="showPage('chat')"><i class="fas fa-comments"></i> CHAT</a>
+            <a href="#" onclick="showPage('profile')" id="profileLink" style="display: none;"><i class="fas fa-user"></i> PROFILE</a>
             <div id="authButtons">
                 <button class="btn btn-glass" onclick="openModal('login')">
                     <i class="fas fa-sign-in-alt"></i> LOGIN
@@ -854,6 +1085,7 @@
         let currentPlayer = null;
         let chatInterval = null;
         let selectedTag = null;
+        let userRating = 0;
 
         // Check for saved auth
         const savedToken = localStorage.getItem('token');
@@ -888,11 +1120,12 @@
             else if (page === 'movies') showMovies(container, 'Movie');
             else if (page === 'tvshows') showMovies(container, 'TV Show');
             else if (page === 'chat') showChat(container);
+            else if (page === 'profile') showProfile(container);
             else if (page === 'admin') showAdminDashboard();
             else if (page === 'watch') {
                 const params = new URLSearchParams(window.location.search);
                 const id = params.get('id');
-                showWatchPage(container, id);
+                if (id) showWatchPage(container, id);
             }
         }
 
@@ -936,8 +1169,8 @@
         async function showMovies(container, type) {
             container.innerHTML = `
                 <h1 class="section-title"><i class="fas fa-${type === 'Movie' ? 'film' : 'tv'}"></i> ${type === 'Movie' ? 'MOVIES' : 'TV SHOWS'}</h1>
-                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                    <input type="text" id="searchInput" placeholder="Search..." style="flex: 1; padding: 1rem; border: 2px solid var(--primary); border-radius: 30px; background: var(--gray-dark); color: var(--text);">
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <input type="text" id="searchInput" placeholder="Search..." style="flex: 1; min-width: 200px; padding: 1rem; border: 2px solid var(--primary); border-radius: 30px; background: var(--gray-dark); color: var(--text);">
                     <select id="genreFilter" style="padding: 1rem; border: 2px solid var(--primary); border-radius: 30px; background: var(--gray-dark); color: var(--text);">
                         <option value="all">All Genres</option>
                     </select>
@@ -952,9 +1185,11 @@
                 const genresRes = await fetch(`${API_URL}/movies/genres`);
                 const genresData = await genresRes.json();
                 const select = document.getElementById('genreFilter');
-                genresData.genres?.forEach(genre => {
-                    select.innerHTML += `<option value="${genre}">${genre}</option>`;
-                });
+                if (genresData.genres) {
+                    genresData.genres.forEach(genre => {
+                        select.innerHTML += `<option value="${genre}">${genre}</option>`;
+                    });
+                }
             } catch (error) {
                 console.error('Error loading genres:', error);
             }
@@ -981,23 +1216,26 @@
                 const grid = document.getElementById('contentGrid');
                 const movies = data.movies || [];
                 
-                grid.innerHTML = movies.length 
-                    ? movies.map(movie => createMovieCard(movie)).join('')
-                    : '<p style="text-align: center;">No content found</p>';
+                if (movies.length === 0) {
+                    grid.innerHTML = '<p style="text-align: center;">No content found</p>';
+                } else {
+                    grid.innerHTML = movies.map(movie => createMovieCard(movie)).join('');
+                }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading content:', error);
+                document.getElementById('contentGrid').innerHTML = '<p style="text-align: center;">Error loading content</p>';
             }
         }
 
         function createMovieCard(movie) {
             return `
                 <div class="content-card" onclick="showWatchPage(null, ${movie.id})">
-                    <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=NO+IMAGE'}" class="card-thumbnail" alt="${movie.title}">
+                    <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=NO+IMAGE'}" class="card-thumbnail" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x450?text=ERROR'">
                     <div class="card-info">
                         <div class="card-title">${movie.title}</div>
                         <div class="card-meta">
                             <span>${movie.release_year || 'N/A'}</span>
-                            <span class="card-rating"><i class="fas fa-star"></i> ${movie.rating || '0'}</span>
+                            <span class="card-rating"><i class="fas fa-star"></i> ${movie.rating ? movie.rating.toFixed(1) : '0.0'}</span>
                             <span class="card-type">${movie.type || 'Movie'}</span>
                         </div>
                     </div>
@@ -1011,6 +1249,9 @@
 
             try {
                 const response = await fetch(`${API_URL}/movies/${movieId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 const movie = data.movie;
                 const comments = data.comments || [];
@@ -1025,21 +1266,32 @@
                         </div>
 
                         <div class="movie-header">
-                            <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450'}" class="movie-poster" alt="${movie.title}">
+                            <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450'}" class="movie-poster" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x450?text=ERROR'">
                             <div class="movie-info">
                                 <h1>${movie.title}</h1>
                                 <div class="movie-meta">
-                                    <span><i class="far fa-calendar"></i> ${movie.release_year}</span>
-                                    <span><i class="fas fa-tag"></i> ${movie.genre}</span>
-                                    <span><i class="fas fa-film"></i> ${movie.type}</span>
-                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating || '0'}</span>
+                                    <span><i class="far fa-calendar"></i> ${movie.release_year || 'N/A'}</span>
+                                    <span><i class="fas fa-tag"></i> ${movie.genre || 'N/A'}</span>
+                                    <span><i class="fas fa-film"></i> ${movie.type || 'Movie'}</span>
+                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating ? movie.rating.toFixed(1) : '0.0'}</span>
                                     <span><i class="fas fa-eye"></i> ${movie.views || 0}</span>
                                 </div>
-                                <p class="movie-description">${movie.description}</p>
+                                <p class="movie-description">${movie.description || 'No description available.'}</p>
+                                
                                 ${currentUser ? `
-                                    <button class="btn btn-outline" onclick="rateMovie(${movie.id})">
-                                        <i class="fas fa-star"></i> RATE
-                                    </button>
+                                    <div class="rating-container">
+                                        <div class="stars" id="ratingStars">
+                                            ${[1,2,3,4,5,6,7,8,9,10].map(i => `
+                                                <i class="fas fa-star star" data-rating="${i}" onclick="setRating(${movie.id}, ${i})"></i>
+                                            `).join('')}
+                                        </div>
+                                        <span class="rating-value" id="ratingValue">0/10</span>
+                                    </div>
+                                    <div class="movie-actions">
+                                        <button class="btn btn-outline" onclick="addToWatchlist(${movie.id})" id="watchlistBtn">
+                                            <i class="fas fa-plus"></i> ADD TO WATCHLIST
+                                        </button>
+                                    </div>
                                 ` : ''}
                             </div>
                         </div>
@@ -1060,6 +1312,11 @@
                                             <span>${new Date(comment.created_at).toLocaleDateString()}</span>
                                         </div>
                                         <p>${comment.content}</p>
+                                        ${currentUser?.role === 'owner' ? `
+                                            <div class="comment-actions">
+                                                <button class="btn btn-danger btn-small" onclick="deleteComment(${comment.id})">DELETE</button>
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 `).join('')}
                             </div>
@@ -1068,52 +1325,103 @@
                 `;
 
                 // Initialize Video.js player
-                currentPlayer = videojs('moviePlayer', {
-                    fluid: true,
-                    playbackRates: [0.5, 1, 1.5, 2],
-                    controlBar: {
-                        children: [
-                            'playToggle',
-                            'volumePanel',
-                            'currentTimeDisplay',
-                            'timeDivider',
-                            'durationDisplay',
-                            'progressControl',
-                            'playbackRateMenuButton',
-                            'fullscreenToggle'
-                        ]
-                    }
-                });
+                setTimeout(() => {
+                    if (document.getElementById('moviePlayer')) {
+                        currentPlayer = videojs('moviePlayer', {
+                            fluid: true,
+                            playbackRates: [0.5, 1, 1.5, 2],
+                            controlBar: {
+                                children: [
+                                    'playToggle',
+                                    'volumePanel',
+                                    'currentTimeDisplay',
+                                    'timeDivider',
+                                    'durationDisplay',
+                                    'progressControl',
+                                    'playbackRateMenuButton',
+                                    'fullscreenToggle'
+                                ]
+                            }
+                        });
 
-                // Track progress
-                currentPlayer.on('timeupdate', () => {
-                    const progress = Math.floor((currentPlayer.currentTime() / currentPlayer.duration()) * 100);
-                    if (currentUser && progress % 10 === 0) { // Update every 10%
-                        updateWatchProgress(movie.id, progress);
+                        // Track progress
+                        currentPlayer.on('timeupdate', () => {
+                            const progress = Math.floor((currentPlayer.currentTime() / currentPlayer.duration()) * 100);
+                            if (currentUser && !isNaN(progress) && progress > 0 && progress % 10 === 0) {
+                                updateWatchProgress(movie.id, progress);
+                            }
+                        });
                     }
-                });
+                }, 100);
+
+                // Check if movie is in watchlist
+                if (currentUser) {
+                    checkWatchlistStatus(movie.id);
+                }
 
             } catch (error) {
-                console.error('Error:', error);
-                showAlert('Failed to load movie', 'error');
+                console.error('Error loading movie:', error);
+                container.innerHTML = '<p style="text-align: center;">Failed to load movie. Please try again.</p>';
             }
         }
 
-        // Rate Movie
-        async function rateMovie(movieId) {
-            const rating = prompt('Enter rating (0-10):');
-            if (rating && !isNaN(rating) && rating >= 0 && rating <= 10) {
-                try {
-                    const response = await fetch(`${API_URL}/movies/${movieId}/rate?rating=${rating}`, {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${authToken}` }
-                    });
-                    if (response.ok) {
-                        showAlert('Rating added!', 'success');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
+        // Rating functions
+        function setRating(movieId, rating) {
+            userRating = rating;
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
                 }
+            });
+            document.getElementById('ratingValue').textContent = `${rating}/10`;
+            submitRating(movieId, rating);
+        }
+
+        async function submitRating(movieId, rating) {
+            try {
+                const response = await fetch(`${API_URL}/movies/${movieId}/rate?rating=${rating}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    showAlert('Rating submitted!', 'success');
+                }
+            } catch (error) {
+                console.error('Error submitting rating:', error);
+            }
+        }
+
+        // Watchlist functions
+        async function addToWatchlist(movieId) {
+            try {
+                const response = await fetch(`${API_URL}/user/watchlist/${movieId}`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    showAlert('Added to watchlist!', 'success');
+                    document.getElementById('watchlistBtn').innerHTML = '<i class="fas fa-check"></i> IN WATCHLIST';
+                }
+            } catch (error) {
+                console.error('Error adding to watchlist:', error);
+            }
+        }
+
+        async function checkWatchlistStatus(movieId) {
+            try {
+                const response = await fetch(`${API_URL}/user/watchlist`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                const inWatchlist = data.watchlist?.some(m => m.id == movieId);
+                if (inWatchlist) {
+                    document.getElementById('watchlistBtn').innerHTML = '<i class="fas fa-check"></i> IN WATCHLIST';
+                }
+            } catch (error) {
+                console.error('Error checking watchlist:', error);
             }
         }
 
@@ -1131,7 +1439,7 @@
 
         // Add comment
         async function addComment(movieId) {
-            const content = document.getElementById('commentInput').value;
+            const content = document.getElementById('commentInput').value.trim();
             if (!content) return;
             
             try {
@@ -1149,8 +1457,171 @@
                     showWatchPage(null, movieId);
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error adding comment:', error);
             }
+        }
+
+        // Delete comment
+        async function deleteComment(commentId) {
+            if (!confirm('Delete this comment?')) return;
+            
+            try {
+                const response = await fetch(`${API_URL}/comments/${commentId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) {
+                    showAlert('Comment deleted', 'success');
+                    location.reload();
+                }
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+            }
+        }
+
+        // Profile Page
+        async function showProfile(container) {
+            if (!currentUser) {
+                showPage('home');
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <img src="${currentUser.avatar_url || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=e50914&color=fff&size=128'}" class="profile-avatar" alt="Avatar">
+                        <div class="profile-info">
+                            <h2 class="profile-username">${currentUser.username}</h2>
+                            <p class="profile-bio">${currentUser.bio || 'No bio yet'}</p>
+                            <div class="profile-stats" id="profileStats">
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">WATCHLIST</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">HISTORY</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">0</div>
+                                    <div class="stat-label">COMMENTS</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" onclick="showEditProfile()">EDIT PROFILE</button>
+                    </div>
+
+                    <div class="profile-tabs">
+                        <div class="profile-tab active" onclick="switchProfileTab('watchlist')">WATCHLIST</div>
+                        <div class="profile-tab" onclick="switchProfileTab('history')">HISTORY</div>
+                        <div class="profile-tab" onclick="switchProfileTab('comments')">COMMENTS</div>
+                    </div>
+
+                    <div class="profile-content" id="profileContent">
+                        <div class="loading"><div class="spinner"></div></div>
+                    </div>
+                </div>
+            `;
+
+            await loadProfileStats();
+            await loadWatchlist();
+        }
+
+        async function loadProfileStats() {
+            try {
+                const response = await fetch(`${API_URL}/user/profile`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                if (data.profile?.stats) {
+                    document.querySelector('.profile-stats').innerHTML = `
+                        <div class="stat-item">
+                            <div class="stat-value">${data.profile.stats.watchlist || 0}</div>
+                            <div class="stat-label">WATCHLIST</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.profile.stats.history || 0}</div>
+                            <div class="stat-label">HISTORY</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${data.profile.stats.comments || 0}</div>
+                            <div class="stat-label">COMMENTS</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        async function loadWatchlist() {
+            try {
+                const response = await fetch(`${API_URL}/user/watchlist`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                const content = document.getElementById('profileContent');
+                
+                if (!data.watchlist?.length) {
+                    content.innerHTML = '<p style="text-align: center;">Your watchlist is empty</p>';
+                } else {
+                    content.innerHTML = data.watchlist.map(movie => `
+                        <div class="watchlist-item" onclick="showWatchPage(null, ${movie.id})">
+                            <img src="${movie.thumbnail || 'https://via.placeholder.com/80x120'}" class="watchlist-thumb" alt="${movie.title}">
+                            <div class="watchlist-info">
+                                <div class="watchlist-title">${movie.title}</div>
+                                <div class="watchlist-meta">
+                                    <span>${movie.release_year || 'N/A'}</span>
+                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating ? movie.rating.toFixed(1) : '0.0'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading watchlist:', error);
+            }
+        }
+
+        async function loadHistory() {
+            try {
+                const response = await fetch(`${API_URL}/user/history`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                const content = document.getElementById('profileContent');
+                
+                if (!data.history?.length) {
+                    content.innerHTML = '<p style="text-align: center;">No watch history</p>';
+                } else {
+                    content.innerHTML = data.history.map(item => `
+                        <div class="history-item" onclick="showWatchPage(null, ${item.movie.id})">
+                            <img src="${item.movie.thumbnail || 'https://via.placeholder.com/80x120'}" class="history-thumb" alt="${item.movie.title}">
+                            <div class="history-info">
+                                <div class="history-title">${item.movie.title}</div>
+                                <div class="history-meta">
+                                    <span>${new Date(item.last_watched).toLocaleDateString()}</span>
+                                    <span>${item.completed ? 'Completed' : 'In Progress'}</span>
+                                </div>
+                                <div class="history-progress">
+                                    <div class="progress-fill" style="width: ${item.progress || 0}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading history:', error);
+            }
+        }
+
+        function switchProfileTab(tab) {
+            document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'watchlist') loadWatchlist();
+            else if (tab === 'history') loadHistory();
+            else if (tab === 'comments') loadUserComments();
         }
 
         // Chat Page
@@ -1222,7 +1693,7 @@
                         <div class="chat-tags">
                             ${msg.tags.map(t => `<span class="chat-tag">#${t}</span>`).join('')}
                         </div>
-                        ${currentUser?.role === 'owner' ? `
+                        ${currentUser?.role === 'owner' || currentUser?.username === msg.username ? `
                             <button class="btn btn-danger btn-small" onclick="deleteChatMessage(${msg.id})">DELETE</button>
                         ` : ''}
                     </div>
@@ -1230,7 +1701,7 @@
                 
                 container.scrollTop = container.scrollHeight;
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading messages:', error);
             }
         }
 
@@ -1259,7 +1730,7 @@
                     await loadChatMessages();
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error sending message:', error);
             }
         }
 
@@ -1274,7 +1745,7 @@
                 showAlert('Message deleted', 'success');
                 await loadChatMessages();
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error deleting message:', error);
             }
         }
 
@@ -1363,9 +1834,10 @@
                     <div class="stat-card"><div class="stat-number">${stats.users || 0}</div><div>USERS</div></div>
                     <div class="stat-card"><div class="stat-number">${stats.messages || 0}</div><div>MESSAGES</div></div>
                     <div class="stat-card"><div class="stat-number">${stats.comments || 0}</div><div>COMMENTS</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.storage_used_gb || 0}GB</div><div>STORAGE</div></div>
                 `;
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading stats:', error);
             }
         }
 
@@ -1390,7 +1862,7 @@
                                 <tr>
                                     <td>${user.username}</td>
                                     <td><span style="color: ${user.role === 'owner' ? 'gold' : user.role === 'banned' ? 'red' : 'white'}">${user.role}</span></td>
-                                    <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                                    <td>${user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</td>
                                     <td>
                                         ${user.role !== 'owner' ? `
                                             <button class="btn btn-danger btn-small" onclick="toggleUserRole('${user.id}')">
@@ -1404,7 +1876,7 @@
                     </table>
                 `;
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading users:', error);
             }
         }
 
@@ -1440,7 +1912,7 @@
                     </table>
                 `;
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading movies:', error);
             }
         }
 
@@ -1475,7 +1947,7 @@
                     </table>
                 `;
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error loading chat:', error);
             }
         }
 
@@ -1508,7 +1980,7 @@
                     showAlert(error.detail || 'Upload failed', 'error');
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error uploading:', error);
                 showAlert('Upload failed', 'error');
             }
         }
@@ -1524,7 +1996,7 @@
                     await loadAdminUsers();
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error toggling role:', error);
             }
         }
 
@@ -1541,7 +2013,7 @@
                     await loadAdminMovies();
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error deleting movie:', error);
             }
         }
 
@@ -1556,7 +2028,7 @@
                 showAlert('Message deleted', 'success');
                 await loadAdminChat();
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error deleting message:', error);
             }
         }
 
@@ -1638,10 +2110,12 @@
             const authButtons = document.getElementById('authButtons');
             const userMenu = document.getElementById('userMenu');
             const usernameDisplay = document.getElementById('usernameDisplay');
+            const profileLink = document.getElementById('profileLink');
 
             if (currentUser) {
                 authButtons.style.display = 'none';
                 userMenu.style.display = 'flex';
+                profileLink.style.display = 'inline-block';
                 usernameDisplay.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.username}`;
                 
                 if (currentUser.role === 'owner' && !document.getElementById('adminLink')) {
@@ -1650,11 +2124,12 @@
                     adminLink.href = '#';
                     adminLink.innerHTML = '<i class="fas fa-crown"></i> ADMIN';
                     adminLink.onclick = () => showPage('admin');
-                    document.querySelector('.nav-links').insertBefore(adminLink, document.querySelector('.nav-links').children[4]);
+                    document.querySelector('.nav-links').insertBefore(adminLink, profileLink);
                 }
             } else {
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
+                profileLink.style.display = 'none';
                 document.getElementById('adminLink')?.remove();
             }
         }
