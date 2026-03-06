@@ -892,15 +892,14 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Watch Page */
+        /* Watch Page - Custom Player */
         .watch-container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .video-player {
+        .video-player-container {
             width: 100%;
-            aspect-ratio: 16/9;
             background: var(--darker);
             border-radius: 30px;
             margin-bottom: 2rem;
@@ -910,12 +909,95 @@
             box-shadow: var(--shadow-hover);
         }
 
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+        }
+
         .video-player video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background: #000;
         }
 
+        /* Custom Video Controls */
+        .custom-controls {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-top: 2px solid var(--primary);
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 5px;
+            background: var(--gray);
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .time-display {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 5px;
+            background: var(--gray);
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .volume-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        /* Movie Details */
         .movie-details {
             background: var(--dark);
             border: 2px solid var(--primary);
@@ -950,6 +1032,31 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        /* Movie Art/Thumbnail Display */
+        .movie-art {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .movie-poster {
+            width: 300px;
+            border-radius: 20px;
+            border: 3px solid var(--primary);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .movie-poster img {
+            width: 100%;
+            height: auto;
+            border-radius: 17px;
+        }
+
+        .movie-info {
+            flex: 1;
         }
 
         /* Comments Section */
@@ -1376,6 +1483,13 @@
             .admin-sidebar {
                 position: static;
             }
+            .movie-art {
+                flex-direction: column;
+                align-items: center;
+            }
+            .movie-poster {
+                width: 200px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1387,6 +1501,9 @@
             }
             .content-grid {
                 grid-template-columns: 1fr;
+            }
+            .custom-controls {
+                flex-wrap: wrap;
             }
         }
 
@@ -1524,6 +1641,7 @@
         let chatTags = [];
         let selectedTag = null;
         let chatInterval = null;
+        let player = null;
 
         // Create blood particles
         function createParticles() {
@@ -1710,6 +1828,110 @@
             `;
         }
 
+        // Custom Video Player
+        function initializePlayer(videoUrl, posterUrl) {
+            const playerContainer = document.getElementById('videoPlayer');
+            if (!playerContainer) return;
+            
+            playerContainer.innerHTML = `
+                <video id="videoElement" poster="${posterUrl}">
+                    <source src="${videoUrl}" type="video/mp4">
+                </video>
+                <div class="custom-controls">
+                    <button class="control-btn" id="playPauseBtn"><i class="fas fa-play"></i></button>
+                    <div class="progress-bar" id="progressBar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+                    <div class="volume-control">
+                        <button class="control-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
+                        <div class="volume-slider" id="volumeSlider">
+                            <div class="volume-fill" id="volumeFill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <button class="control-btn" id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+                </div>
+            `;
+            
+            const video = document.getElementById('videoElement');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const muteBtn = document.getElementById('muteBtn');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeFill = document.getElementById('volumeFill');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            
+            // Play/Pause
+            playPauseBtn.addEventListener('click', () => {
+                if (video.paused) {
+                    video.play();
+                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    video.pause();
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            });
+            
+            // Update progress
+            video.addEventListener('timeupdate', () => {
+                const progress = (video.currentTime / video.duration) * 100;
+                progressFill.style.width = `${progress}%`;
+                
+                const current = formatTime(video.currentTime);
+                const duration = formatTime(video.duration);
+                timeDisplay.textContent = `${current} / ${duration}`;
+            });
+            
+            // Seek
+            progressBar.addEventListener('click', (e) => {
+                const rect = progressBar.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                video.currentTime = pos * video.duration;
+            });
+            
+            // Volume
+            volumeSlider.addEventListener('click', (e) => {
+                const rect = volumeSlider.getBoundingClientRect();
+                const vol = (e.clientX - rect.left) / rect.width;
+                video.volume = Math.max(0, Math.min(1, vol));
+                volumeFill.style.width = `${video.volume * 100}%`;
+                updateMuteIcon();
+            });
+            
+            // Mute
+            muteBtn.addEventListener('click', () => {
+                video.muted = !video.muted;
+                updateMuteIcon();
+            });
+            
+            function updateMuteIcon() {
+                if (video.muted || video.volume === 0) {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                } else if (video.volume < 0.5) {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+                } else {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }
+            }
+            
+            // Fullscreen
+            fullscreenBtn.addEventListener('click', () => {
+                if (video.requestFullscreen) {
+                    video.requestFullscreen();
+                }
+            });
+            
+            // Format time helper
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return '0:00';
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+        }
+
         // Watch Page
         async function showWatchPage(container, movieId) {
             if (!container) container = document.getElementById('mainContainer');
@@ -1722,19 +1944,27 @@
 
                 container.innerHTML = `
                     <div class="watch-container">
-                        <div class="video-player">
-                            <video src="${movie.video_url}" controls autoplay></video>
+                        <div class="video-player-container">
+                            <div class="video-player" id="videoPlayer"></div>
                         </div>
-                        <div class="movie-details">
-                            <h1>${movie.title}</h1>
-                            <div class="movie-meta">
-                                <span><i class="far fa-calendar"></i> ${movie.release_year}</span>
-                                <span><i class="fas fa-tag"></i> ${movie.genre}</span>
-                                <span><i class="fas fa-film"></i> ${movie.type}</span>
-                                <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating || 'N/A'}</span>
+                        
+                        <div class="movie-art">
+                            <div class="movie-poster">
+                                <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=NO+IMAGE'}" alt="${movie.title}">
                             </div>
-                            <p>${movie.description}</p>
+                            <div class="movie-info">
+                                <h1>${movie.title}</h1>
+                                <div class="movie-meta">
+                                    <span><i class="far fa-calendar"></i> ${movie.release_year}</span>
+                                    <span><i class="fas fa-tag"></i> ${movie.genre}</span>
+                                    <span><i class="fas fa-film"></i> ${movie.type}</span>
+                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating || 'N/A'}</span>
+                                    <span><i class="fas fa-eye"></i> ${movie.views || 0} views</span>
+                                </div>
+                                <p>${movie.description}</p>
+                            </div>
                         </div>
+
                         <div class="comments-section">
                             <h3><i class="far fa-comments"></i> COMMENTS (${comments.length})</h3>
                             ${currentUser ? `
@@ -1759,6 +1989,12 @@
                         </div>
                     </div>
                 `;
+                
+                // Initialize player after DOM is ready
+                setTimeout(() => {
+                    initializePlayer(movie.video_url, movie.thumbnail);
+                }, 100);
+                
             } catch (error) {
                 console.error('Error:', error);
             }
