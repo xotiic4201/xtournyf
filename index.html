@@ -3,45 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XSTREAM</title>
+    <title>XSTREAM - PREMIUM STREAMING</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Video.js for professional player -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    
     <style>
-        /* Import fonts */
-        @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
-
-        /* RED & BLACK THEME VARIABLES */
-        :root {
-            --primary: #ff0000;
-            --primary-dark: #cc0000;
-            --primary-light: #ff3333;
-            --secondary: #000000;
-            --accent: #ff4444;
-            --danger: #ff0000;
-            --success: #00ff00;
-            --dark: #0a0a0a;
-            --darker: #000000;
-            --light: #ffffff;
-            --gray: #1a1a1a;
-            --gray-light: #2a2a2a;
-            --gray-dark: #0f0f0f;
-            --text: #ffffff;
-            --text-muted: #cccccc;
-            --gradient: linear-gradient(135deg, #ff0000, #cc0000, #990000);
-            --gradient-hover: linear-gradient(135deg, #ff3333, #ff0000, #cc0000);
-            --gradient-dark: linear-gradient(135deg, #000000, #1a0000, #330000);
-            --shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
-            --shadow-hover: 0 20px 40px rgba(255, 0, 0, 0.5);
-            --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.8);
-            --glass: rgba(255, 0, 0, 0.05);
-            --glass-border: rgba(255, 0, 0, 0.2);
-            --glass-heavy: rgba(255, 0, 0, 0.1);
-        }
-
-        /* Global Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #e50914;
+            --primary-dark: #b2070f;
+            --primary-light: #ff1f2b;
+            --secondary: #000000;
+            --accent: #ff4444;
+            --dark: #141414;
+            --darker: #0a0a0a;
+            --light: #ffffff;
+            --gray: #2a2a2a;
+            --gray-light: #3a3a3a;
+            --gray-dark: #1a1a1a;
+            --text: #ffffff;
+            --text-muted: #b3b3b3;
+            --shadow: 0 8px 30px rgba(229, 9, 20, 0.3);
+            --shadow-hover: 0 15px 40px rgba(229, 9, 20, 0.5);
         }
 
         body {
@@ -49,164 +43,32 @@
             background: var(--darker);
             color: var(--text);
             min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
+            line-height: 1.5;
         }
 
-        /* Epic Animated Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(255, 0, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
-                repeating-linear-gradient(45deg, rgba(255, 0, 0, 0.02) 0px, rgba(255, 0, 0, 0.02) 2px, transparent 2px, transparent 4px);
-            pointer-events: none;
-            z-index: -1;
-            animation: gradientPulse 8s ease-in-out infinite;
-        }
-
-        @keyframes gradientPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* Blood Particles */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 0, 0, 0.3);
-            border-radius: 50%;
-            filter: blur(1px);
-            animation: floatParticle linear infinite;
-        }
-
-        @keyframes floatParticle {
-            from {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            50% {
-                opacity: 0.5;
-            }
-            to {
-                transform: translateY(-100vh) translateX(100px);
-                opacity: 0;
-            }
-        }
-
-        /* Custom Scrollbar - RED */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
         }
 
         ::-webkit-scrollbar-track {
             background: var(--dark);
-            border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #ff0000, #cc0000);
-            border-radius: 6px;
-            border: 2px solid var(--dark);
-            transition: all 0.3s;
+            background: var(--primary);
+            border-radius: 5px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #ff3333, #ff0000);
-            transform: scale(1.1);
+            background: var(--primary-light);
         }
 
-        /* Loading Screen - EPIC */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--darker);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loading-logo {
-            font-size: 5rem;
-            font-weight: 900;
-            font-family: 'Anton', sans-serif;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: loadingPulse 1.5s ease-in-out infinite;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
-        }
-
-        @keyframes loadingPulse {
-            0%, 100% { 
-                transform: scale(1);
-                filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5));
-            }
-            50% { 
-                transform: scale(1.1);
-                filter: drop-shadow(0 0 50px rgba(255, 0, 0, 0.8));
-            }
-        }
-
-        .loading-bar {
-            position: absolute;
-            bottom: 100px;
-            width: 200px;
-            height: 4px;
-            background: var(--gray);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .loading-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            animation: loadingBar 2s ease-in-out infinite;
-        }
-
-        @keyframes loadingBar {
-            to { left: 100%; }
-        }
-
-        /* Navigation - DARK & AGGRESSIVE */
+        /* Navigation */
         .navbar {
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 2px solid var(--primary);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.8) 100%);
+            backdrop-filter: blur(10px);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -215,54 +77,22 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            animation: slideDown 0.5s ease-out;
-            box-shadow: 0 4px 30px rgba(255, 0, 0, 0.2);
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            border-bottom: 2px solid var(--primary);
         }
 
         .logo {
-            font-size: 2.5rem;
-            font-weight: 900;
-            font-family: 'Anton', sans-serif;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
             cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 2px;
             text-transform: uppercase;
-            position: relative;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: var(--gradient);
-            transition: width 0.3s;
-            border-radius: 3px;
-        }
-
-        .logo:hover::after {
-            width: 100%;
+            letter-spacing: 2px;
+            transition: all 0.3s;
         }
 
         .logo:hover {
             transform: scale(1.05);
-            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 20px var(--primary);
         }
 
         .nav-links {
@@ -274,112 +104,45 @@
         .nav-links a {
             color: var(--text);
             text-decoration: none;
-            font-weight: 600;
-            position: relative;
-            padding: 0.5rem 1rem;
+            font-weight: 500;
             transition: all 0.3s;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            padding: 0.5rem 1rem;
             border-radius: 30px;
+            font-size: 0.95rem;
         }
 
         .nav-links a i {
             margin-right: 5px;
-            font-size: 1rem;
-            transition: transform 0.3s;
         }
 
         .nav-links a:hover {
             color: var(--primary);
-            background: rgba(255, 0, 0, 0.1);
+            background: rgba(229, 9, 20, 0.1);
         }
 
-        .nav-links a:hover i {
-            transform: translateY(-2px) scale(1.2);
-        }
-
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0%;
-            height: 2px;
-            background: var(--gradient);
-            transform: translateX(-50%);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::before {
-            width: 80%;
-        }
-
-        /* Buttons - RED & DEADLY */
+        /* Buttons */
         .btn {
             padding: 0.75rem 2rem;
-            border-radius: 50px;
+            border-radius: 30px;
             border: none;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 1rem;
+            font-weight: 600;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 0.5rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: 2px solid transparent;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0%;
-            height: 0%;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-            z-index: -1;
-        }
-
-        .btn:hover::before {
-            width: 300%;
-            height: 300%;
-        }
-
-        .btn i {
-            font-size: 1rem;
-            transition: transform 0.3s;
-        }
-
-        .btn:hover i {
-            transform: translateX(3px) scale(1.2);
+            font-size: 0.95rem;
         }
 
         .btn-primary {
-            background: var(--gradient);
+            background: var(--primary);
             color: var(--text);
-            animation: gradientShift 5s ease infinite;
-            box-shadow: var(--shadow);
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--text);
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         .btn-outline {
@@ -390,46 +153,28 @@
 
         .btn-outline:hover {
             background: var(--primary);
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--shadow);
-            color: var(--text);
+            transform: translateY(-2px);
         }
 
         .btn-glass {
-            background: rgba(255, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text);
         }
 
         .btn-glass:hover {
-            background: rgba(255, 0, 0, 0.2);
-            transform: translateY(-3px) scale(1.05);
+            background: rgba(229, 9, 20, 0.3);
             border-color: var(--primary);
-            box-shadow: var(--shadow);
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: var(--primary);
             color: var(--text);
-            border-color: var(--danger);
         }
 
         .btn-danger:hover {
-            background: #ff3333;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
-        }
-
-        .btn-success {
-            background: #00cc00;
-            color: var(--text);
-        }
-
-        .btn-success:hover {
-            background: #00ff00;
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.3);
+            background: var(--primary-dark);
         }
 
         /* Main Container */
@@ -438,124 +183,52 @@
             margin: 0 auto;
             padding: 2rem;
             margin-top: 80px;
-            animation: fadeIn 0.8s ease-out;
-            position: relative;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Hero Section - BLOOD RED */
+        /* Hero Section */
         .hero {
             text-align: center;
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(0, 0, 0, 0.9));
-            border-radius: 40px;
-            margin-bottom: 4rem;
-            position: relative;
-            overflow: hidden;
-            animation: heroGlow 4s ease-in-out infinite;
-            border: 2px solid var(--primary);
-            box-shadow: var(--shadow-hover);
-        }
-
-        @keyframes heroGlow {
-            0%, 100% { 
-                box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
-                border-color: rgba(255, 0, 0, 0.5);
-            }
-            50% { 
-                box-shadow: 0 0 80px rgba(255, 0, 0, 0.6);
-                border-color: var(--primary);
-            }
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,0,0,0.1) 0%, transparent 70%);
-            animation: rotate 30s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(0,0,0,0.9) 100%);
+            border-radius: 30px;
+            margin-bottom: 3rem;
+            border: 1px solid var(--primary);
         }
 
         .hero h1 {
-            font-size: 5rem;
+            font-size: 4rem;
             margin-bottom: 1rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: titleFloat 3s ease-in-out infinite;
-            position: relative;
-            z-index: 1;
-            font-family: 'Anton', sans-serif;
-            font-weight: 900;
-            line-height: 1.2;
+            color: var(--primary);
             text-transform: uppercase;
-            text-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
-        }
-
-        @keyframes titleFloat {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.02); }
+            font-weight: 800;
+            letter-spacing: 3px;
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--text-muted);
             max-width: 700px;
             margin: 0 auto 2rem;
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 1s ease-out 0.3s both;
-            line-height: 1.6;
         }
 
         .hero-buttons {
             display: flex;
             gap: 1rem;
             justify-content: center;
-            z-index: 1;
-            position: relative;
         }
 
         /* Section Titles */
         .section-title {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 2rem;
             position: relative;
             display: inline-block;
-            font-family: 'Anton', sans-serif;
             font-weight: 700;
-            text-transform: uppercase;
-            color: var(--text);
-            letter-spacing: 2px;
         }
 
         .section-title i {
             margin-right: 10px;
             color: var(--primary);
-            animation: iconPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
         }
 
         .section-title::after {
@@ -563,111 +236,54 @@
             position: absolute;
             bottom: -10px;
             left: 0;
-            width: 80px;
-            height: 4px;
-            background: var(--gradient);
-            border-radius: 4px;
-            animation: titleLine 3s ease-in-out infinite;
-        }
-
-        @keyframes titleLine {
-            0%, 100% { width: 80px; }
-            50% { width: 150px; }
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
         }
 
         /* Content Grid */
         .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
 
-        /* Movie Cards - RED THEME */
+        /* Movie Cards */
         .content-card {
             background: var(--gray-dark);
-            border: 2px solid var(--primary);
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s;
             cursor: pointer;
             position: relative;
-            animation: cardAppear 0.6s ease-out;
-            animation-fill-mode: both;
-            box-shadow: var(--shadow-dark);
+            border: 1px solid transparent;
         }
-
-        @keyframes cardAppear {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .content-card:nth-child(1) { animation-delay: 0.1s; }
-        .content-card:nth-child(2) { animation-delay: 0.15s; }
-        .content-card:nth-child(3) { animation-delay: 0.2s; }
-        .content-card:nth-child(4) { animation-delay: 0.25s; }
-        .content-card:nth-child(5) { animation-delay: 0.3s; }
-        .content-card:nth-child(6) { animation-delay: 0.35s; }
 
         .content-card:hover {
-            transform: translateY(-15px) scale(1.03);
+            transform: translateY(-10px);
+            border-color: var(--primary);
             box-shadow: var(--shadow-hover);
-            border-color: var(--primary-light);
-        }
-
-        .content-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .content-card:hover::before {
-            opacity: 0.2;
         }
 
         .card-thumbnail {
             width: 100%;
-            height: 350px;
+            aspect-ratio: 2/3;
             object-fit: cover;
-            transition: transform 0.6s;
-            border-bottom: 2px solid var(--primary);
+            transition: transform 0.3s;
         }
 
         .content-card:hover .card-thumbnail {
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .card-info {
-            padding: 1.5rem;
-            position: relative;
-            z-index: 2;
-            background: linear-gradient(to top, var(--dark), transparent);
+            padding: 1rem;
         }
 
         .card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            transition: color 0.3s;
-            color: var(--text);
-        }
-
-        .content-card:hover .card-title {
-            color: var(--primary);
         }
 
         .card-meta {
@@ -679,402 +295,98 @@
         }
 
         .card-rating {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            color: #ff4444;
-        }
-
-        .card-rating i {
-            font-size: 0.8rem;
+            color: gold;
         }
 
         .card-type {
-            background: var(--gradient);
-            padding: 0.4rem 1rem;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text);
-            box-shadow: var(--shadow);
-        }
-
-        /* Auth Modal - DARK & RED */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(15px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            animation: modalFadeIn 0.4s;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                backdrop-filter: blur(0);
-            }
-            to {
-                opacity: 1;
-                backdrop-filter: blur(15px);
-            }
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--dark);
-            padding: 3rem;
-            border-radius: 40px;
-            width: 100%;
-            max-width: 450px;
-            position: relative;
-            border: 2px solid var(--primary);
-            box-shadow: var(--shadow-hover);
-            transform: scale(0.9);
-            animation: modalContent 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes modalContent {
-            to {
-                transform: scale(1);
-            }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-close:hover {
             background: var(--primary);
-            color: var(--text);
-            transform: rotate(180deg) scale(1.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
         }
 
-        .modal h2 {
-            margin-bottom: 2rem;
-            text-align: center;
-            font-size: 2.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: 'Anton', sans-serif;
-            letter-spacing: 2px;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 1rem 1.5rem;
-            border: 2px solid var(--gray);
-            border-radius: 15px;
-            background: var(--gray-dark);
-            color: var(--text);
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
-            background: var(--dark);
-        }
-
-        .modal-footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: var(--text-muted);
-        }
-
-        .modal-footer span {
-            color: var(--primary);
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-            padding: 0.5rem;
-        }
-
-        .modal-footer span:hover {
-            color: var(--text);
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
-        /* Alert Messages */
-        .alert {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 1rem 2rem;
-            border-radius: 15px;
-            background: var(--dark);
-            border-left: 5px solid;
-            border-right: 2px solid var(--primary);
-            border-top: 2px solid var(--primary);
-            border-bottom: 2px solid var(--primary);
-            color: var(--text);
-            z-index: 3000;
-            animation: slideInRight 0.3s, pulse 2s infinite;
-            box-shadow: var(--shadow);
-            font-weight: 600;
-        }
-
-        .alert-success {
-            border-left-color: #00ff00;
-        }
-
-        .alert-error {
-            border-left-color: var(--primary);
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Loading Spinner */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 300px;
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid var(--gray);
-            border-top-color: var(--primary);
-            border-right-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Watch Page - Custom Player */
+        /* Video Player Page */
         .watch-container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .video-player-container {
+        .video-wrapper {
+            position: relative;
             width: 100%;
-            background: var(--darker);
-            border-radius: 30px;
-            margin-bottom: 2rem;
+            background: #000;
+            border-radius: 15px;
             overflow: hidden;
-            position: relative;
-            border: 3px solid var(--primary);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .video-player {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #000;
-        }
-
-        .video-player video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            background: #000;
-        }
-
-        /* Custom Video Controls */
-        .custom-controls {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            border-top: 2px solid var(--primary);
-        }
-
-        .control-btn {
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .control-btn:hover {
-            background: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 5px;
-            background: var(--gray);
-            border-radius: 5px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--gradient);
-            border-radius: 5px;
-            width: 0%;
-            transition: width 0.1s;
-        }
-
-        .time-display {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            min-width: 100px;
-            text-align: center;
-        }
-
-        .volume-control {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .volume-slider {
-            width: 80px;
-            height: 5px;
-            background: var(--gray);
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .volume-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 5px;
-            width: 100%;
-        }
-
-        /* Movie Details */
-        .movie-details {
-            background: var(--dark);
+            margin-bottom: 2rem;
             border: 2px solid var(--primary);
-            border-radius: 30px;
+        }
+
+        .video-js {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+        }
+
+        .vjs-theme-forest {
+            --vjs-theme-forest--primary: var(--primary);
+        }
+
+        .movie-details-section {
+            background: var(--gray-dark);
+            border-radius: 15px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: var(--shadow);
         }
 
-        .movie-details h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: 'Anton', sans-serif;
-        }
-
-        .movie-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .movie-meta span {
-            background: var(--gray-dark);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            border: 1px solid var(--primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Movie Art/Thumbnail Display */
-        .movie-art {
+        .movie-header {
             display: flex;
             gap: 2rem;
             margin-bottom: 2rem;
-            align-items: flex-start;
         }
 
         .movie-poster {
-            width: 300px;
-            border-radius: 20px;
-            border: 3px solid var(--primary);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .movie-poster img {
-            width: 100%;
-            height: auto;
-            border-radius: 17px;
+            width: 200px;
+            border-radius: 10px;
+            border: 2px solid var(--primary);
         }
 
         .movie-info {
             flex: 1;
         }
 
-        /* Comments Section */
-        .comments-section {
-            background: var(--dark);
-            border: 2px solid var(--primary);
-            border-radius: 30px;
-            padding: 2rem;
-            margin-top: 2rem;
+        .movie-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
 
-        .comments-section h3 {
+        .movie-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
             margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            color: var(--text);
+        }
+
+        .movie-meta span {
+            background: var(--gray);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .movie-description {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            background: var(--gray-dark);
+            border-radius: 15px;
+            padding: 2rem;
         }
 
         .comment-form {
@@ -1085,38 +397,23 @@
 
         .comment-form input {
             flex: 1;
-            padding: 1rem 1.5rem;
+            padding: 1rem;
             border: 2px solid var(--gray);
-            border-radius: 50px;
-            background: var(--gray-dark);
+            border-radius: 30px;
+            background: var(--darker);
             color: var(--text);
-            font-size: 1rem;
         }
 
         .comment-form input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
         }
 
         .comment {
-            background: var(--gray-dark);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
+            background: var(--gray);
+            border-radius: 15px;
             padding: 1.5rem;
             margin-bottom: 1rem;
-            animation: commentSlide 0.3s ease-out;
-        }
-
-        @keyframes commentSlide {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
 
         .comment-header {
@@ -1129,47 +426,29 @@
         .comment-username {
             color: var(--primary);
             font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        /* Chat Room Styles */
+        /* Chat Room */
         .chat-container {
-            background: var(--dark);
-            border: 2px solid var(--primary);
-            border-radius: 30px;
+            background: var(--gray-dark);
+            border-radius: 15px;
             padding: 2rem;
-            margin-top: 2rem;
         }
 
         .chat-messages {
             height: 500px;
             overflow-y: auto;
             padding: 1rem;
-            background: var(--gray-dark);
-            border-radius: 20px;
+            background: var(--darker);
+            border-radius: 10px;
             margin-bottom: 1rem;
         }
 
         .chat-message {
             background: var(--gray);
-            border: 1px solid var(--primary);
-            border-radius: 15px;
+            border-radius: 10px;
             padding: 1rem;
             margin-bottom: 1rem;
-            animation: messageSlide 0.3s ease-out;
-        }
-
-        @keyframes messageSlide {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .chat-message-header {
@@ -1177,7 +456,6 @@
             justify-content: space-between;
             margin-bottom: 0.5rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
         }
 
         .chat-message-username {
@@ -1185,20 +463,15 @@
             font-weight: 600;
         }
 
-        .chat-message-content {
-            color: var(--text);
-            margin-bottom: 0.5rem;
-        }
-
-        .chat-message-tags {
+        .chat-tags {
             display: flex;
             gap: 0.5rem;
+            margin-top: 0.5rem;
             flex-wrap: wrap;
         }
 
         .chat-tag {
             background: var(--primary-dark);
-            color: var(--text);
             padding: 0.2rem 0.8rem;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -1207,15 +480,14 @@
         .chat-input {
             display: flex;
             gap: 1rem;
-            margin-bottom: 1rem;
         }
 
         .chat-input input {
             flex: 1;
             padding: 1rem;
             border: 2px solid var(--gray);
-            border-radius: 15px;
-            background: var(--gray-dark);
+            border-radius: 30px;
+            background: var(--darker);
             color: var(--text);
         }
 
@@ -1241,20 +513,8 @@
             transition: all 0.3s;
         }
 
-        .tag-btn:hover,
         .tag-btn.active {
             background: var(--primary);
-            color: var(--text);
-        }
-
-        .popular-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background: var(--gray-dark);
-            border-radius: 15px;
         }
 
         /* Admin Dashboard */
@@ -1262,36 +522,15 @@
             display: grid;
             grid-template-columns: 280px 1fr;
             gap: 2rem;
-            min-height: calc(100vh - 100px);
         }
 
         .admin-sidebar {
-            background: var(--dark);
-            border: 2px solid var(--primary);
-            border-radius: 30px;
+            background: var(--gray-dark);
+            border-radius: 15px;
             padding: 2rem;
             position: sticky;
             top: 100px;
             height: fit-content;
-        }
-
-        .admin-sidebar h3 {
-            margin-bottom: 1.5rem;
-            color: var(--text);
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .admin-sidebar h3 i {
-            color: var(--primary);
-            animation: crownWink 2s infinite;
-        }
-
-        @keyframes crownWink {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.2); }
         }
 
         .admin-menu {
@@ -1301,38 +540,22 @@
         .admin-menu li {
             padding: 1rem 1.5rem;
             margin-bottom: 0.5rem;
-            border-radius: 15px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 1rem;
-            font-weight: 500;
-            border: 1px solid transparent;
-        }
-
-        .admin-menu li i {
-            width: 20px;
-            color: var(--text-muted);
         }
 
         .admin-menu li:hover,
         .admin-menu li.active {
-            background: var(--gray-dark);
-            border-color: var(--primary);
-            color: var(--primary);
-            transform: translateX(10px);
-        }
-
-        .admin-menu li:hover i,
-        .admin-menu li.active i {
-            color: var(--primary);
+            background: var(--primary);
         }
 
         .admin-content {
-            background: var(--dark);
-            border: 2px solid var(--primary);
-            border-radius: 30px;
+            background: var(--gray-dark);
+            border-radius: 15px;
             padding: 2rem;
         }
 
@@ -1342,7 +565,6 @@
 
         .admin-section.active {
             display: block;
-            animation: fadeIn 0.3s;
         }
 
         .admin-stats {
@@ -1353,32 +575,16 @@
         }
 
         .stat-card {
-            background: var(--gray-dark);
-            border: 1px solid var(--primary);
+            background: var(--gray);
             padding: 1.5rem;
-            border-radius: 20px;
+            border-radius: 10px;
             text-align: center;
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-            border-color: var(--primary-light);
         }
 
         .stat-number {
             font-size: 2.5rem;
             font-weight: 800;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 1rem;
+            color: var(--primary);
         }
 
         .admin-table {
@@ -1390,7 +596,6 @@
             text-align: left;
             padding: 1rem;
             color: var(--text-muted);
-            font-weight: 600;
             border-bottom: 2px solid var(--primary);
         }
 
@@ -1399,45 +604,13 @@
             border-bottom: 1px solid var(--gray);
         }
 
-        .admin-table tr {
-            transition: all 0.3s;
-        }
-
         .admin-table tr:hover {
-            background: var(--gray-dark);
-        }
-
-        .badge {
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-
-        .badge-owner {
-            background: var(--gradient);
-            color: var(--text);
-        }
-
-        .badge-user {
             background: var(--gray);
-            color: var(--text);
-        }
-
-        .badge-banned {
-            background: rgba(255, 0, 0, 0.2);
-            border: 1px solid var(--primary);
-            color: var(--primary);
         }
 
         /* Upload Form */
         .upload-form {
-            background: var(--gray-dark);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
+            max-width: 600px;
         }
 
         .upload-form input,
@@ -1448,7 +621,7 @@
             margin-bottom: 1rem;
             border: 2px solid var(--gray);
             border-radius: 10px;
-            background: var(--dark);
+            background: var(--darker);
             color: var(--text);
         }
 
@@ -1464,115 +637,160 @@
             border: 2px dashed var(--primary);
         }
 
+        /* Auth Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--gray-dark);
+            padding: 3rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            border: 2px solid var(--primary);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal h2 {
+            margin-bottom: 2rem;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--gray);
+            border-radius: 10px;
+            background: var(--darker);
+            color: var(--text);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-muted);
+        }
+
+        .modal-footer span {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Alert */
+        .alert {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            background: var(--gray-dark);
+            border-left: 5px solid var(--primary);
+            color: var(--text);
+            z-index: 3000;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-success {
+            border-left-color: #00ff00;
+        }
+
+        .alert-error {
+            border-left-color: var(--primary);
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--gray);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
-                gap: 1rem;
+                padding: 1rem;
             }
             .nav-links {
                 flex-wrap: wrap;
                 justify-content: center;
             }
             .hero h1 {
-                font-size: 3rem;
+                font-size: 2.5rem;
+            }
+            .movie-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
             }
             .admin-dashboard {
                 grid-template-columns: 1fr;
-            }
-            .admin-sidebar {
-                position: static;
-            }
-            .movie-art {
-                flex-direction: column;
-                align-items: center;
-            }
-            .movie-poster {
-                width: 200px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            .btn {
-                padding: 0.6rem 1.2rem;
-            }
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-            .custom-controls {
-                flex-wrap: wrap;
-            }
-        }
-
-        /* Floating Animation */
-        .float {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* Pulse Animation */
-        .pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Ripple Effect */
-        .ripple {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ripple:after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-
-        .ripple:hover:after {
-            animation: ripple 1s ease-out;
-        }
-
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-logo">XSTREAM</div>
-        <div class="loading-bar"></div>
-    </div>
-
-    <!-- Blood Particles -->
-    <div class="particles" id="particles"></div>
-
     <!-- Navigation -->
     <nav class="navbar">
         <div class="logo" onclick="showPage('home')">XSTREAM</div>
@@ -1581,17 +799,17 @@
             <a href="#" onclick="showPage('movies')"><i class="fas fa-film"></i> MOVIES</a>
             <a href="#" onclick="showPage('tvshows')"><i class="fas fa-tv"></i> TV SHOWS</a>
             <a href="#" onclick="showPage('chat')"><i class="fas fa-comments"></i> CHAT</a>
-            <div class="auth-buttons" id="authButtons">
-                <button class="btn btn-glass ripple" onclick="openModal('login')">
+            <div id="authButtons">
+                <button class="btn btn-glass" onclick="openModal('login')">
                     <i class="fas fa-sign-in-alt"></i> LOGIN
                 </button>
-                <button class="btn btn-primary ripple" onclick="openModal('signup')">
+                <button class="btn btn-primary" onclick="openModal('signup')">
                     <i class="fas fa-user-plus"></i> SIGN UP
                 </button>
             </div>
-            <div class="auth-buttons" id="userMenu" style="display: none;">
+            <div id="userMenu" style="display: none;">
                 <span class="btn btn-glass" id="usernameDisplay"></span>
-                <button class="btn btn-outline ripple" onclick="logout()">
+                <button class="btn btn-outline" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i> LOGOUT
                 </button>
             </div>
@@ -1600,30 +818,25 @@
 
     <!-- Main Container -->
     <div class="container" id="mainContainer">
-        <!-- Content loads here -->
+        <!-- Content loaded here -->
     </div>
 
     <!-- Auth Modal -->
     <div class="modal" id="authModal">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
             <h2 id="modalTitle">LOGIN</h2>
             <form id="authForm" onsubmit="handleAuth(event)">
                 <div class="form-group">
-                    <label><i class="fas fa-user"></i> USERNAME</label>
-                    <input type="text" id="username" placeholder="Enter username" required>
+                    <input type="text" id="username" placeholder="Username" required>
                 </div>
                 <div class="form-group" id="emailField" style="display: none;">
-                    <label><i class="fas fa-envelope"></i> EMAIL</label>
-                    <input type="email" id="email" placeholder="Enter email">
+                    <input type="email" id="email" placeholder="Email">
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-lock"></i> PASSWORD</label>
-                    <input type="password" id="password" placeholder="Enter password" required>
+                    <input type="password" id="password" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fas fa-paper-plane"></i> SUBMIT
-                </button>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">SUBMIT</button>
             </form>
             <div class="modal-footer">
                 <span id="modalToggle" onclick="toggleAuthMode()">Don't have an account? SIGN UP</span>
@@ -1638,32 +851,9 @@
         let currentUser = null;
         let authToken = null;
         let currentPage = 'home';
-        let chatTags = [];
-        let selectedTag = null;
+        let currentPlayer = null;
         let chatInterval = null;
-        let player = null;
-
-        // Create blood particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = Math.random() * 15 + 15 + 's';
-                particle.style.animationDelay = Math.random() * 10 + 's';
-                particle.style.width = Math.random() * 8 + 2 + 'px';
-                particle.style.height = particle.style.width;
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // Hide loading screen
-        setTimeout(() => {
-            document.getElementById('loadingScreen').classList.add('hidden');
-        }, 2000);
-
-        createParticles();
+        let selectedTag = null;
 
         // Check for saved auth
         const savedToken = localStorage.getItem('token');
@@ -1678,10 +868,7 @@
         function showAlert(message, type) {
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type}`;
-            alertDiv.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                ${message}
-            `;
+            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
             document.body.appendChild(alertDiv);
             setTimeout(() => alertDiv.remove(), 3000);
         }
@@ -1691,9 +878,11 @@
             currentPage = page;
             const container = document.getElementById('mainContainer');
             
-            container.style.animation = 'none';
-            container.offsetHeight;
-            container.style.animation = 'fadeIn 0.8s ease-out';
+            // Destroy old player if exists
+            if (currentPlayer) {
+                currentPlayer.dispose();
+                currentPlayer = null;
+            }
             
             if (page === 'home') showHome(container);
             else if (page === 'movies') showMovies(container, 'Movie');
@@ -1711,22 +900,20 @@
         async function showHome(container) {
             container.innerHTML = `
                 <div class="hero">
-                    <h1 class="float">WELCOME TO XSTREAM</h1>
-                    <p>Experience the future of streaming with our premium collection of movies and TV shows. Join our deadly community today!</p>
+                    <h1>WELCOME TO XSTREAM</h1>
+                    <p>Stream the latest movies and TV shows in stunning quality. Join our community today!</p>
                     <div class="hero-buttons">
-                        <button class="btn btn-primary pulse" onclick="showPage('movies')">
+                        <button class="btn btn-primary" onclick="showPage('movies')">
                             <i class="fas fa-play"></i> START WATCHING
                         </button>
-                        <button class="btn btn-glass ripple" onclick="showPage('chat')">
+                        <button class="btn btn-glass" onclick="showPage('chat')">
                             <i class="fas fa-comments"></i> JOIN CHAT
                         </button>
                     </div>
                 </div>
                 <h2 class="section-title"><i class="fas fa-fire"></i> TRENDING NOW</h2>
                 <div class="content-grid" id="trendingGrid">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                    </div>
+                    <div class="loading"><div class="spinner"></div></div>
                 </div>
             `;
 
@@ -1735,9 +922,8 @@
                 const data = await response.json();
                 
                 const grid = document.getElementById('trendingGrid');
-                
-                if (!data.movies || data.movies.length === 0) {
-                    grid.innerHTML = '<p style="text-align: center;">No content available</p>';
+                if (!data.movies?.length) {
+                    grid.innerHTML = '<p style="text-align: center;">No movies available</p>';
                 } else {
                     grid.innerHTML = data.movies.map(movie => createMovieCard(movie)).join('');
                 }
@@ -1750,16 +936,14 @@
         async function showMovies(container, type) {
             container.innerHTML = `
                 <h1 class="section-title"><i class="fas fa-${type === 'Movie' ? 'film' : 'tv'}"></i> ${type === 'Movie' ? 'MOVIES' : 'TV SHOWS'}</h1>
-                <div class="search-section" style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                    <input type="text" id="searchInput" placeholder="Search..." style="flex: 1; padding: 1rem; border: 2px solid var(--primary); border-radius: 50px; background: var(--gray-dark); color: var(--text);">
-                    <select id="genreFilter" style="padding: 1rem; border: 2px solid var(--primary); border-radius: 50px; background: var(--gray-dark); color: var(--text);">
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <input type="text" id="searchInput" placeholder="Search..." style="flex: 1; padding: 1rem; border: 2px solid var(--primary); border-radius: 30px; background: var(--gray-dark); color: var(--text);">
+                    <select id="genreFilter" style="padding: 1rem; border: 2px solid var(--primary); border-radius: 30px; background: var(--gray-dark); color: var(--text);">
                         <option value="all">All Genres</option>
                     </select>
                 </div>
                 <div class="content-grid" id="contentGrid">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                    </div>
+                    <div class="loading"><div class="spinner"></div></div>
                 </div>
             `;
 
@@ -1768,14 +952,14 @@
                 const genresRes = await fetch(`${API_URL}/movies/genres`);
                 const genresData = await genresRes.json();
                 const select = document.getElementById('genreFilter');
-                genresData.genres.forEach(genre => {
+                genresData.genres?.forEach(genre => {
                     select.innerHTML += `<option value="${genre}">${genre}</option>`;
                 });
             } catch (error) {
                 console.error('Error loading genres:', error);
             }
 
-            // Add event listeners
+            // Event listeners
             document.getElementById('searchInput').addEventListener('input', () => loadContent(type));
             document.getElementById('genreFilter').addEventListener('change', () => loadContent(type));
 
@@ -1787,13 +971,9 @@
             const genre = document.getElementById('genreFilter')?.value || 'all';
             
             try {
-                let url = `${API_URL}/movies`;
-                if (search) {
-                    url = `${API_URL}/movies/search?q=${encodeURIComponent(search)}`;
-                } else {
-                    url = `${API_URL}/movies?type=${type}`;
-                    if (genre !== 'all') url += `&genre=${genre}`;
-                }
+                let url = search 
+                    ? `${API_URL}/movies/search?q=${encodeURIComponent(search)}`
+                    : `${API_URL}/movies?type=${type}${genre !== 'all' ? `&genre=${genre}` : ''}`;
                 
                 const response = await fetch(url);
                 const data = await response.json();
@@ -1801,18 +981,15 @@
                 const grid = document.getElementById('contentGrid');
                 const movies = data.movies || [];
                 
-                if (movies.length === 0) {
-                    grid.innerHTML = '<p style="text-align: center;">No content found</p>';
-                } else {
-                    grid.innerHTML = movies.map(movie => createMovieCard(movie)).join('');
-                }
+                grid.innerHTML = movies.length 
+                    ? movies.map(movie => createMovieCard(movie)).join('')
+                    : '<p style="text-align: center;">No content found</p>';
             } catch (error) {
                 console.error('Error:', error);
             }
         }
 
         function createMovieCard(movie) {
-            const rating = movie.rating || (Math.random() * 2 + 3).toFixed(1);
             return `
                 <div class="content-card" onclick="showWatchPage(null, ${movie.id})">
                     <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=NO+IMAGE'}" class="card-thumbnail" alt="${movie.title}">
@@ -1820,7 +997,7 @@
                         <div class="card-title">${movie.title}</div>
                         <div class="card-meta">
                             <span>${movie.release_year || 'N/A'}</span>
-                            <span class="card-rating"><i class="fas fa-star"></i> ${rating}</span>
+                            <span class="card-rating"><i class="fas fa-star"></i> ${movie.rating || '0'}</span>
                             <span class="card-type">${movie.type || 'Movie'}</span>
                         </div>
                     </div>
@@ -1828,111 +1005,7 @@
             `;
         }
 
-        // Custom Video Player
-        function initializePlayer(videoUrl, posterUrl) {
-            const playerContainer = document.getElementById('videoPlayer');
-            if (!playerContainer) return;
-            
-            playerContainer.innerHTML = `
-                <video id="videoElement" poster="${posterUrl}">
-                    <source src="${videoUrl}" type="video/mp4">
-                </video>
-                <div class="custom-controls">
-                    <button class="control-btn" id="playPauseBtn"><i class="fas fa-play"></i></button>
-                    <div class="progress-bar" id="progressBar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
-                    <div class="volume-control">
-                        <button class="control-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
-                        <div class="volume-slider" id="volumeSlider">
-                            <div class="volume-fill" id="volumeFill" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <button class="control-btn" id="fullscreenBtn"><i class="fas fa-expand"></i></button>
-                </div>
-            `;
-            
-            const video = document.getElementById('videoElement');
-            const playPauseBtn = document.getElementById('playPauseBtn');
-            const progressBar = document.getElementById('progressBar');
-            const progressFill = document.getElementById('progressFill');
-            const timeDisplay = document.getElementById('timeDisplay');
-            const muteBtn = document.getElementById('muteBtn');
-            const volumeSlider = document.getElementById('volumeSlider');
-            const volumeFill = document.getElementById('volumeFill');
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
-            
-            // Play/Pause
-            playPauseBtn.addEventListener('click', () => {
-                if (video.paused) {
-                    video.play();
-                    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                } else {
-                    video.pause();
-                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                }
-            });
-            
-            // Update progress
-            video.addEventListener('timeupdate', () => {
-                const progress = (video.currentTime / video.duration) * 100;
-                progressFill.style.width = `${progress}%`;
-                
-                const current = formatTime(video.currentTime);
-                const duration = formatTime(video.duration);
-                timeDisplay.textContent = `${current} / ${duration}`;
-            });
-            
-            // Seek
-            progressBar.addEventListener('click', (e) => {
-                const rect = progressBar.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                video.currentTime = pos * video.duration;
-            });
-            
-            // Volume
-            volumeSlider.addEventListener('click', (e) => {
-                const rect = volumeSlider.getBoundingClientRect();
-                const vol = (e.clientX - rect.left) / rect.width;
-                video.volume = Math.max(0, Math.min(1, vol));
-                volumeFill.style.width = `${video.volume * 100}%`;
-                updateMuteIcon();
-            });
-            
-            // Mute
-            muteBtn.addEventListener('click', () => {
-                video.muted = !video.muted;
-                updateMuteIcon();
-            });
-            
-            function updateMuteIcon() {
-                if (video.muted || video.volume === 0) {
-                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                } else if (video.volume < 0.5) {
-                    muteBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
-                } else {
-                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                }
-            }
-            
-            // Fullscreen
-            fullscreenBtn.addEventListener('click', () => {
-                if (video.requestFullscreen) {
-                    video.requestFullscreen();
-                }
-            });
-            
-            // Format time helper
-            function formatTime(seconds) {
-                if (isNaN(seconds)) return '0:00';
-                const mins = Math.floor(seconds / 60);
-                const secs = Math.floor(seconds % 60);
-                return `${mins}:${secs.toString().padStart(2, '0')}`;
-            }
-        }
-
-        // Watch Page
+        // Watch Page with Video.js Player
         async function showWatchPage(container, movieId) {
             if (!container) container = document.getElementById('mainContainer');
 
@@ -1944,24 +1017,30 @@
 
                 container.innerHTML = `
                     <div class="watch-container">
-                        <div class="video-player-container">
-                            <div class="video-player" id="videoPlayer"></div>
+                        <div class="video-wrapper">
+                            <video-js id="moviePlayer" class="video-js vjs-theme-forest vjs-big-play-centered" controls preload="auto">
+                                <source src="${movie.video_url}" type="video/mp4">
+                                <p class="vjs-no-js">Please enable JavaScript</p>
+                            </video-js>
                         </div>
-                        
-                        <div class="movie-art">
-                            <div class="movie-poster">
-                                <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=NO+IMAGE'}" alt="${movie.title}">
-                            </div>
+
+                        <div class="movie-header">
+                            <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450'}" class="movie-poster" alt="${movie.title}">
                             <div class="movie-info">
                                 <h1>${movie.title}</h1>
                                 <div class="movie-meta">
                                     <span><i class="far fa-calendar"></i> ${movie.release_year}</span>
                                     <span><i class="fas fa-tag"></i> ${movie.genre}</span>
                                     <span><i class="fas fa-film"></i> ${movie.type}</span>
-                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating || 'N/A'}</span>
-                                    <span><i class="fas fa-eye"></i> ${movie.views || 0} views</span>
+                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating || '0'}</span>
+                                    <span><i class="fas fa-eye"></i> ${movie.views || 0}</span>
                                 </div>
-                                <p>${movie.description}</p>
+                                <p class="movie-description">${movie.description}</p>
+                                ${currentUser ? `
+                                    <button class="btn btn-outline" onclick="rateMovie(${movie.id})">
+                                        <i class="fas fa-star"></i> RATE
+                                    </button>
+                                ` : ''}
                             </div>
                         </div>
 
@@ -1970,11 +1049,9 @@
                             ${currentUser ? `
                                 <div class="comment-form">
                                     <input type="text" id="commentInput" placeholder="Add a comment...">
-                                    <button class="btn btn-primary" onclick="addComment(${movieId})">
-                                        <i class="fas fa-paper-plane"></i> POST
-                                    </button>
+                                    <button class="btn btn-primary" onclick="addComment(${movie.id})">POST</button>
                                 </div>
-                            ` : '<p style="color: var(--text-muted);">Login to comment</p>'}
+                            ` : '<p>Login to comment</p>'}
                             <div id="commentsList">
                                 ${comments.map(comment => `
                                     <div class="comment">
@@ -1989,186 +1066,70 @@
                         </div>
                     </div>
                 `;
-                
-                // Initialize player after DOM is ready
-                setTimeout(() => {
-                    initializePlayer(movie.video_url, movie.thumbnail);
-                }, 100);
-                
+
+                // Initialize Video.js player
+                currentPlayer = videojs('moviePlayer', {
+                    fluid: true,
+                    playbackRates: [0.5, 1, 1.5, 2],
+                    controlBar: {
+                        children: [
+                            'playToggle',
+                            'volumePanel',
+                            'currentTimeDisplay',
+                            'timeDivider',
+                            'durationDisplay',
+                            'progressControl',
+                            'playbackRateMenuButton',
+                            'fullscreenToggle'
+                        ]
+                    }
+                });
+
+                // Track progress
+                currentPlayer.on('timeupdate', () => {
+                    const progress = Math.floor((currentPlayer.currentTime() / currentPlayer.duration()) * 100);
+                    if (currentUser && progress % 10 === 0) { // Update every 10%
+                        updateWatchProgress(movie.id, progress);
+                    }
+                });
+
             } catch (error) {
                 console.error('Error:', error);
+                showAlert('Failed to load movie', 'error');
             }
         }
 
-        // Chat Page
-        async function showChat(container) {
-            container.innerHTML = `
-                <h1 class="section-title"><i class="fas fa-comments"></i> GLOBAL CHAT</h1>
-                <div class="chat-container">
-                    <div class="popular-tags" id="popularTags">
-                        <span style="color: var(--primary);">POPULAR TAGS:</span>
-                    </div>
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="loading">
-                            <div class="spinner"></div>
-                        </div>
-                    </div>
-                    ${currentUser ? `
-                        <div class="tags-container" id="tagSelector">
-                            <button class="tag-btn" data-tag="general">#general</button>
-                            <button class="tag-btn" data-tag="movies">#movies</button>
-                            <button class="tag-btn" data-tag="tv">#tv</button>
-                            <button class="tag-btn" data-tag="help">#help</button>
-                            <button class="tag-btn" data-tag="spoilers">#spoilers</button>
-                            <button class="tag-btn" data-tag="random">#random</button>
-                        </div>
-                        <div class="chat-input">
-                            <input type="text" id="chatInput" placeholder="Type your message..." maxlength="500">
-                            <button class="btn btn-primary" onclick="sendChatMessage()">
-                                <i class="fas fa-paper-plane"></i> SEND
-                            </button>
-                        </div>
-                    ` : '<p style="text-align: center; color: var(--text-muted);">Login to join the chat</p>'}
-                </div>
-            `;
-
-            // Load popular tags
-            await loadPopularTags();
-            
-            // Load messages
-            await loadChatMessages();
-            
-            // Start auto-refresh
-            if (chatInterval) clearInterval(chatInterval);
-            chatInterval = setInterval(loadChatMessages, 5000);
-            
-            // Add tag click handlers
-            document.querySelectorAll('.tag-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    selectedTag = btn.dataset.tag;
-                    loadChatMessages();
-                });
-            });
-        }
-
-        async function loadPopularTags() {
-            try {
-                const response = await fetch(`${API_URL}/chat/tags`);
-                const data = await response.json();
-                const container = document.getElementById('popularTags');
-                
-                if (data.tags && data.tags.length > 0) {
-                    container.innerHTML = '<span style="color: var(--primary);">POPULAR TAGS:</span> ';
-                    data.tags.forEach(tag => {
-                        container.innerHTML += `<span class="chat-tag" style="cursor: pointer;" onclick="selectTag('${tag.name}')">#${tag.name} (${tag.count})</span> `;
+        // Rate Movie
+        async function rateMovie(movieId) {
+            const rating = prompt('Enter rating (0-10):');
+            if (rating && !isNaN(rating) && rating >= 0 && rating <= 10) {
+                try {
+                    const response = await fetch(`${API_URL}/movies/${movieId}/rate?rating=${rating}`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
                     });
+                    if (response.ok) {
+                        showAlert('Rating added!', 'success');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
                 }
-            } catch (error) {
-                console.error('Error loading tags:', error);
             }
         }
 
-        function selectTag(tag) {
-            selectedTag = tag;
-            document.querySelectorAll('.tag-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.tag === tag);
-            });
-            loadChatMessages();
-        }
-
-        async function loadChatMessages() {
+        // Update watch progress
+        async function updateWatchProgress(movieId, progress) {
             try {
-                let url = `${API_URL}/chat/messages?limit=50`;
-                if (selectedTag) url += `&tag=${selectedTag}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                const container = document.getElementById('chatMessages');
-                
-                if (!data.messages || data.messages.length === 0) {
-                    container.innerHTML = '<p style="text-align: center;">No messages yet</p>';
-                    return;
-                }
-                
-                container.innerHTML = data.messages.map(msg => `
-                    <div class="chat-message">
-                        <div class="chat-message-header">
-                            <span class="chat-message-username">
-                                <i class="fas fa-user-circle"></i> ${msg.username}
-                            </span>
-                            <span>${new Date(msg.created_at).toLocaleTimeString()}</span>
-                        </div>
-                        <div class="chat-message-content">${msg.content}</div>
-                        <div class="chat-message-tags">
-                            ${msg.tags.map(tag => `<span class="chat-tag">#${tag}</span>`).join('')}
-                        </div>
-                        ${currentUser?.role === 'owner' ? `
-                            <button class="btn btn-danger btn-small" onclick="deleteChatMessage(${msg.id})">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        ` : ''}
-                    </div>
-                `).join('');
-                
-                container.scrollTop = container.scrollHeight;
-            } catch (error) {
-                console.error('Error loading messages:', error);
-            }
-        }
-
-        async function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const content = input.value.trim();
-            
-            if (!content) return;
-            
-            // Get selected tags
-            const tags = [];
-            document.querySelectorAll('.tag-btn.active').forEach(btn => {
-                tags.push(btn.dataset.tag);
-            });
-            
-            try {
-                const response = await fetch(`${API_URL}/chat/messages`, {
+                await fetch(`${API_URL}/user/history/${movieId}?progress=${progress}`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ content, tags })
-                });
-                
-                if (response.ok) {
-                    input.value = '';
-                    await loadChatMessages();
-                    await loadPopularTags();
-                } else {
-                    showAlert('Failed to send message', 'error');
-                }
-            } catch (error) {
-                console.error('Error sending message:', error);
-                showAlert('Error sending message', 'error');
-            }
-        }
-
-        async function deleteChatMessage(messageId) {
-            if (!confirm('Delete this message?')) return;
-            
-            try {
-                await fetch(`${API_URL}/chat/messages/${messageId}`, {
-                    method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                showAlert('Message deleted', 'success');
-                await loadChatMessages();
             } catch (error) {
-                console.error('Error deleting message:', error);
+                console.error('Error updating progress:', error);
             }
         }
 
-        // Comment functions
+        // Add comment
         async function addComment(movieId) {
             const content = document.getElementById('commentInput').value;
             if (!content) return;
@@ -2188,7 +1149,132 @@
                     showWatchPage(null, movieId);
                 }
             } catch (error) {
-                console.error('Error adding comment:', error);
+                console.error('Error:', error);
+            }
+        }
+
+        // Chat Page
+        async function showChat(container) {
+            container.innerHTML = `
+                <h1 class="section-title"><i class="fas fa-comments"></i> GLOBAL CHAT</h1>
+                <div class="chat-container">
+                    <div class="tags-container" id="tagSelector">
+                        <button class="tag-btn" data-tag="general">#general</button>
+                        <button class="tag-btn" data-tag="movies">#movies</button>
+                        <button class="tag-btn" data-tag="tv">#tv</button>
+                        <button class="tag-btn" data-tag="help">#help</button>
+                        <button class="tag-btn" data-tag="spoilers">#spoilers</button>
+                        <button class="tag-btn" data-tag="random">#random</button>
+                    </div>
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="loading"><div class="spinner"></div></div>
+                    </div>
+                    ${currentUser ? `
+                        <div class="chat-input">
+                            <input type="text" id="chatInput" placeholder="Type your message..." maxlength="500">
+                            <button class="btn btn-primary" onclick="sendChatMessage()">SEND</button>
+                        </div>
+                    ` : '<p style="text-align: center;">Login to chat</p>'}
+                </div>
+            `;
+
+            // Load messages
+            await loadChatMessages();
+            
+            // Auto refresh
+            if (chatInterval) clearInterval(chatInterval);
+            chatInterval = setInterval(loadChatMessages, 3000);
+            
+            // Tag click handlers
+            document.querySelectorAll('.tag-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectedTag = btn.dataset.tag;
+                    loadChatMessages();
+                });
+            });
+        }
+
+        async function loadChatMessages() {
+            try {
+                let url = `${API_URL}/chat/messages?limit=50`;
+                if (selectedTag) url += `&tag=${selectedTag}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                const container = document.getElementById('chatMessages');
+                if (!data.messages?.length) {
+                    container.innerHTML = '<p style="text-align: center;">No messages</p>';
+                    return;
+                }
+                
+                container.innerHTML = data.messages.map(msg => `
+                    <div class="chat-message">
+                        <div class="chat-message-header">
+                            <span class="chat-message-username">
+                                <i class="fas fa-user-circle"></i> ${msg.username}
+                            </span>
+                            <span>${new Date(msg.created_at).toLocaleTimeString()}</span>
+                        </div>
+                        <div>${msg.content}</div>
+                        <div class="chat-tags">
+                            ${msg.tags.map(t => `<span class="chat-tag">#${t}</span>`).join('')}
+                        </div>
+                        ${currentUser?.role === 'owner' ? `
+                            <button class="btn btn-danger btn-small" onclick="deleteChatMessage(${msg.id})">DELETE</button>
+                        ` : ''}
+                    </div>
+                `).join('');
+                
+                container.scrollTop = container.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const content = input.value.trim();
+            if (!content) return;
+            
+            const tags = [];
+            document.querySelectorAll('.tag-btn.active').forEach(btn => {
+                tags.push(btn.dataset.tag);
+            });
+            
+            try {
+                const response = await fetch(`${API_URL}/chat/messages`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ content, tags })
+                });
+                
+                if (response.ok) {
+                    input.value = '';
+                    await loadChatMessages();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deleteChatMessage(messageId) {
+            if (!confirm('Delete this message?')) return;
+            
+            try {
+                await fetch(`${API_URL}/chat/messages/${messageId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                showAlert('Message deleted', 'success');
+                await loadChatMessages();
+            } catch (error) {
+                console.error('Error:', error);
             }
         }
 
@@ -2203,23 +1289,13 @@
             container.innerHTML = `
                 <div class="admin-dashboard">
                     <div class="admin-sidebar">
-                        <h3><i class="fas fa-crown"></i> ADMIN PANEL</h3>
+                        <h3><i class="fas fa-crown" style="color: gold;"></i> ADMIN</h3>
                         <ul class="admin-menu">
-                            <li class="active" onclick="switchAdminTab('dashboard')">
-                                <i class="fas fa-tachometer-alt"></i> DASHBOARD
-                            </li>
-                            <li onclick="switchAdminTab('users')">
-                                <i class="fas fa-users"></i> USERS
-                            </li>
-                            <li onclick="switchAdminTab('movies')">
-                                <i class="fas fa-film"></i> MOVIES
-                            </li>
-                            <li onclick="switchAdminTab('chat')">
-                                <i class="fas fa-comments"></i> CHAT
-                            </li>
-                            <li onclick="switchAdminTab('upload')">
-                                <i class="fas fa-upload"></i> UPLOAD
-                            </li>
+                            <li class="active" onclick="switchAdminTab('dashboard')">📊 DASHBOARD</li>
+                            <li onclick="switchAdminTab('users')">👥 USERS</li>
+                            <li onclick="switchAdminTab('movies')">🎬 MOVIES</li>
+                            <li onclick="switchAdminTab('chat')">💬 CHAT</li>
+                            <li onclick="switchAdminTab('upload')">📤 UPLOAD</li>
                         </ul>
                     </div>
                     <div class="admin-content">
@@ -2255,9 +1331,7 @@
                                     </select>
                                     <input type="file" id="movieThumbnail" accept="image/*" required>
                                     <input type="file" id="movieVideo" accept="video/*" required>
-                                    <button type="submit" class="btn btn-primary" style="width: 100%;">
-                                        <i class="fas fa-upload"></i> UPLOAD
-                                    </button>
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;">UPLOAD</button>
                                 </form>
                             </div>
                         </div>
@@ -2274,7 +1348,7 @@
         function switchAdminTab(tab) {
             document.querySelectorAll('.admin-menu li').forEach(li => li.classList.remove('active'));
             document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-            event.target.closest('li').classList.add('active');
+            event.target.classList.add('active');
             document.getElementById(`admin-${tab}`).classList.add('active');
         }
 
@@ -2285,14 +1359,13 @@
                 });
                 const stats = await response.json();
                 document.getElementById('statsContainer').innerHTML = `
-                    <div class="stat-card"><div class="stat-number">${stats.movies || 0}</div><div class="stat-label">MOVIES</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.users || 0}</div><div class="stat-label">USERS</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.messages || 0}</div><div class="stat-label">MESSAGES</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.comments || 0}</div><div class="stat-label">COMMENTS</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.storage_used_gb || 0}GB</div><div class="stat-label">STORAGE</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.movies || 0}</div><div>MOVIES</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.users || 0}</div><div>USERS</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.messages || 0}</div><div>MESSAGES</div></div>
+                    <div class="stat-card"><div class="stat-number">${stats.comments || 0}</div><div>COMMENTS</div></div>
                 `;
             } catch (error) {
-                console.error('Error loading stats:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -2304,33 +1377,24 @@
                 const data = await response.json();
                 const list = document.getElementById('usersList');
                 
-                if (!data.users || data.users.length === 0) {
+                if (!data.users?.length) {
                     list.innerHTML = '<p>No users</p>';
                     return;
                 }
                 
                 list.innerHTML = `
                     <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>USER</th>
-                                <th>EMAIL</th>
-                                <th>ROLE</th>
-                                <th>JOINED</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>USER</th><th>ROLE</th><th>JOINED</th><th>ACTIONS</th></tr></thead>
                         <tbody>
                             ${data.users.map(user => `
                                 <tr>
-                                    <td><i class="fas fa-user-circle"></i> ${user.username}</td>
-                                    <td>${user.email || 'N/A'}</td>
-                                    <td><span class="badge badge-${user.role}">${user.role}</span></td>
-                                    <td>${user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</td>
+                                    <td>${user.username}</td>
+                                    <td><span style="color: ${user.role === 'owner' ? 'gold' : user.role === 'banned' ? 'red' : 'white'}">${user.role}</span></td>
+                                    <td>${new Date(user.created_at).toLocaleDateString()}</td>
                                     <td>
                                         ${user.role !== 'owner' ? `
                                             <button class="btn btn-danger btn-small" onclick="toggleUserRole('${user.id}')">
-                                                <i class="fas fa-ban"></i> ${user.role === 'banned' ? 'UNBAN' : 'BAN'}
+                                                ${user.role === 'banned' ? 'UNBAN' : 'BAN'}
                                             </button>
                                         ` : ''}
                                     </td>
@@ -2340,7 +1404,7 @@
                     </table>
                 `;
             } catch (error) {
-                console.error('Error loading users:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -2352,23 +1416,14 @@
                 const data = await response.json();
                 const list = document.getElementById('moviesList');
                 
-                if (!data.movies || data.movies.length === 0) {
+                if (!data.movies?.length) {
                     list.innerHTML = '<p>No movies</p>';
                     return;
                 }
                 
                 list.innerHTML = `
                     <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>TITLE</th>
-                                <th>TYPE</th>
-                                <th>YEAR</th>
-                                <th>VIEWS</th>
-                                <th>RATING</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>TITLE</th><th>TYPE</th><th>YEAR</th><th>VIEWS</th><th>ACTIONS</th></tr></thead>
                         <tbody>
                             ${data.movies.map(movie => `
                                 <tr>
@@ -2376,11 +1431,8 @@
                                     <td>${movie.type}</td>
                                     <td>${movie.release_year}</td>
                                     <td>${movie.views || 0}</td>
-                                    <td>${movie.rating || 0}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-small" onclick="adminDeleteMovie(${movie.id})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <button class="btn btn-danger btn-small" onclick="adminDeleteMovie(${movie.id})">DELETE</button>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -2388,7 +1440,7 @@
                     </table>
                 `;
             } catch (error) {
-                console.error('Error loading movies:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -2400,33 +1452,22 @@
                 const data = await response.json();
                 const list = document.getElementById('chatList');
                 
-                if (!data.messages || data.messages.length === 0) {
+                if (!data.messages?.length) {
                     list.innerHTML = '<p>No messages</p>';
                     return;
                 }
                 
                 list.innerHTML = `
                     <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>USER</th>
-                                <th>MESSAGE</th>
-                                <th>TAGS</th>
-                                <th>TIME</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>USER</th><th>MESSAGE</th><th>TIME</th><th>ACTIONS</th></tr></thead>
                         <tbody>
                             ${data.messages.map(msg => `
                                 <tr>
                                     <td>${msg.username}</td>
                                     <td>${msg.content}</td>
-                                    <td>${msg.tags.map(t => `#${t}`).join(' ') || '-'}</td>
                                     <td>${new Date(msg.created_at).toLocaleString()}</td>
                                     <td>
-                                        <button class="btn btn-danger btn-small" onclick="adminDeleteChatMessage(${msg.id})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <button class="btn btn-danger btn-small" onclick="adminDeleteChatMessage(${msg.id})">DELETE</button>
                                     </td>
                                 </tr>
                             `).join('')}
@@ -2434,7 +1475,7 @@
                     </table>
                 `;
             } catch (error) {
-                console.error('Error loading chat:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -2453,14 +1494,12 @@
             try {
                 const response = await fetch(`${API_URL}/admin/movies/upload`, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    },
+                    headers: { 'Authorization': `Bearer ${authToken}` },
                     body: formData
                 });
                 
                 if (response.ok) {
-                    showAlert('Movie uploaded successfully!', 'success');
+                    showAlert('Movie uploaded!', 'success');
                     document.getElementById('uploadForm').reset();
                     switchAdminTab('movies');
                     await loadAdminMovies();
@@ -2469,7 +1508,7 @@
                     showAlert(error.detail || 'Upload failed', 'error');
                 }
             } catch (error) {
-                console.error('Error uploading:', error);
+                console.error('Error:', error);
                 showAlert('Upload failed', 'error');
             }
         }
@@ -2480,13 +1519,12 @@
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                
                 if (response.ok) {
                     showAlert('User role updated', 'success');
                     await loadAdminUsers();
                 }
             } catch (error) {
-                console.error('Error toggling role:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -2498,13 +1536,12 @@
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                
                 if (response.ok) {
                     showAlert('Movie deleted', 'success');
                     await loadAdminMovies();
                 }
             } catch (error) {
-                console.error('Error deleting movie:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -2512,17 +1549,14 @@
             if (!confirm('Delete this message?')) return;
             
             try {
-                const response = await fetch(`${API_URL}/admin/chat/${messageId}`, {
+                await fetch(`${API_URL}/admin/chat/${messageId}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                
-                if (response.ok) {
-                    showAlert('Message deleted', 'success');
-                    await loadAdminChat();
-                }
+                showAlert('Message deleted', 'success');
+                await loadAdminChat();
             } catch (error) {
-                console.error('Error deleting message:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -2584,19 +1618,19 @@
                         localStorage.setItem('user', JSON.stringify(data.user));
                         localStorage.setItem('token', data.token);
                         updateAuthUI();
-                        showAlert(`WELCOME BACK, ${username}!`, 'success');
+                        showAlert(`Welcome, ${username}!`, 'success');
                         closeModal();
                         showPage('home');
                     } else {
-                        showAlert('ACCOUNT CREATED! PLEASE LOGIN.', 'success');
+                        showAlert('Account created! Please login.', 'success');
                         openModal('login');
                     }
                 } else {
-                    showAlert(data.detail || 'AUTHENTICATION FAILED', 'error');
+                    showAlert(data.detail || 'Authentication failed', 'error');
                 }
             } catch (error) {
                 console.error('Auth error:', error);
-                showAlert('CONNECTION ERROR', 'error');
+                showAlert('Connection error', 'error');
             }
         }
 
@@ -2610,22 +1644,18 @@
                 userMenu.style.display = 'flex';
                 usernameDisplay.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.username}`;
                 
-                if (currentUser.role === 'owner') {
-                    const navLinks = document.querySelector('.nav-links');
-                    if (!document.getElementById('adminLink')) {
-                        const adminLink = document.createElement('a');
-                        adminLink.id = 'adminLink';
-                        adminLink.href = '#';
-                        adminLink.innerHTML = '<i class="fas fa-crown"></i> ADMIN';
-                        adminLink.onclick = () => showPage('admin');
-                        navLinks.insertBefore(adminLink, navLinks.children[4]);
-                    }
+                if (currentUser.role === 'owner' && !document.getElementById('adminLink')) {
+                    const adminLink = document.createElement('a');
+                    adminLink.id = 'adminLink';
+                    adminLink.href = '#';
+                    adminLink.innerHTML = '<i class="fas fa-crown"></i> ADMIN';
+                    adminLink.onclick = () => showPage('admin');
+                    document.querySelector('.nav-links').insertBefore(adminLink, document.querySelector('.nav-links').children[4]);
                 }
             } else {
                 authButtons.style.display = 'flex';
                 userMenu.style.display = 'none';
-                const adminLink = document.getElementById('adminLink');
-                if (adminLink) adminLink.remove();
+                document.getElementById('adminLink')?.remove();
             }
         }
 
@@ -2635,7 +1665,7 @@
             localStorage.removeItem('user');
             localStorage.removeItem('token');
             updateAuthUI();
-            showAlert('LOGGED OUT', 'success');
+            showAlert('Logged out', 'success');
             showPage('home');
             
             if (chatInterval) {
@@ -2645,9 +1675,7 @@
         }
 
         // Initialize
-        window.onload = () => {
-            showPage('home');
-        };
+        window.onload = () => showPage('home');
     </script>
 </body>
 </html>
