@@ -1,2156 +1,2561 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XSTREAM - PREMIUM STREAMING</title>
-    
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Video.js for professional player -->
-    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #e50914;
-            --primary-dark: #b2070f;
-            --primary-light: #ff1f2b;
-            --secondary: #000000;
-            --accent: #ff4444;
-            --dark: #141414;
-            --darker: #0a0a0a;
-            --light: #ffffff;
-            --gray: #2a2a2a;
-            --gray-light: #3a3a3a;
-            --gray-dark: #1a1a1a;
-            --text: #ffffff;
-            --text-muted: #b3b3b3;
-            --shadow: 0 8px 30px rgba(229, 9, 20, 0.3);
-            --shadow-hover: 0 15px 40px rgba(229, 9, 20, 0.5);
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--darker);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.5;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--dark);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 5px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-light);
-        }
-
-        /* Navigation */
-        .navbar {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.8) 100%);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary);
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-            text-shadow: 0 0 20px var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            font-size: 0.95rem;
-        }
-
-        .nav-links a i {
-            margin-right: 5px;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-            background: rgba(229, 9, 20, 0.1);
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.75rem 2rem;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .btn-small {
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--text);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--text);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .btn-glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text);
-        }
-
-        .btn-glass:hover {
-            background: rgba(229, 9, 20, 0.3);
-            border-color: var(--primary);
-        }
-
-        .btn-danger {
-            background: var(--primary);
-            color: var(--text);
-        }
-
-        .btn-danger:hover {
-            background: var(--primary-dark);
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            margin-top: 80px;
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 5rem 2rem;
-            background: linear-gradient(135deg, rgba(229,9,20,0.2) 0%, rgba(0,0,0,0.9) 100%);
-            border-radius: 30px;
-            margin-bottom: 3rem;
-            border: 1px solid var(--primary);
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-weight: 800;
-            letter-spacing: 3px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        /* Section Titles */
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-            font-weight: 700;
-        }
-
-        .section-title i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--primary);
-        }
-
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        /* Movie Cards */
-        .content-card {
-            background: var(--gray-dark);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            border: 1px solid transparent;
-        }
-
-        .content-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .card-thumbnail {
-            width: 100%;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .content-card:hover .card-thumbnail {
-            transform: scale(1.05);
-        }
-
-        .card-info {
-            padding: 1rem;
-        }
-
-        .card-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .card-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .card-rating {
-            color: gold;
-        }
-
-        .card-type {
-            background: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .watchlist-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--primary);
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-
-        /* Video Player Page */
-        .watch-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            background: #000;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            border: 2px solid var(--primary);
-        }
-
-        .video-js {
-            width: 100%;
-            height: auto;
-            aspect-ratio: 16/9;
-        }
-
-        .vjs-theme-forest {
-            --vjs-theme-forest--primary: var(--primary);
-        }
-
-        .movie-details-section {
-            background: var(--gray-dark);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .movie-header {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .movie-poster {
-            width: 200px;
-            border-radius: 10px;
-            border: 2px solid var(--primary);
-        }
-
-        .movie-info {
-            flex: 1;
-        }
-
-        .movie-info h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .movie-meta {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-        }
-
-        .movie-meta span {
-            background: var(--gray);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .movie-description {
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .movie-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        /* Rating Stars */
-        .rating-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-        }
-
-        .stars {
-            display: flex;
-            gap: 0.3rem;
-        }
-
-        .star {
-            font-size: 2rem;
-            color: var(--gray-light);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .star.active,
-        .star:hover {
-            color: gold;
-            transform: scale(1.1);
-        }
-
-        .rating-value {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-        }
-
-        /* Comments Section */
-        .comments-section {
-            background: var(--gray-dark);
-            border-radius: 15px;
-            padding: 2rem;
-        }
-
-        .comment-form {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .comment-form input {
-            flex: 1;
-            padding: 1rem;
-            border: 2px solid var(--gray);
-            border-radius: 30px;
-            background: var(--darker);
-            color: var(--text);
-        }
-
-        .comment-form input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .comment {
-            background: var(--gray);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .comment-username {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .comment-actions {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-
-        /* Profile Page */
-        .profile-container {
-            background: var(--gray-dark);
-            border-radius: 15px;
-            padding: 2rem;
-        }
-
-        .profile-header {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 3px solid var(--primary);
-            object-fit: cover;
-        }
-
-        .profile-info {
-            flex: 1;
-        }
-
-        .profile-username {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-bio {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .profile-stats {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .profile-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--gray);
-            padding-bottom: 1rem;
-            overflow-x: auto;
-        }
-
-        .profile-tab {
-            padding: 0.5rem 1.5rem;
-            cursor: pointer;
-            border-radius: 30px;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-
-        .profile-tab.active {
-            background: var(--primary);
-        }
-
-        .profile-content {
-            min-height: 400px;
-        }
-
-        .history-item, .watchlist-item {
-            display: flex;
-            gap: 1rem;
-            background: var(--gray);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            align-items: center;
-        }
-
-        .history-thumb, .watchlist-thumb {
-            width: 80px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .history-info, .watchlist-info {
-            flex: 1;
-        }
-
-        .history-title, .watchlist-title {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .history-progress {
-            width: 100%;
-            height: 5px;
-            background: var(--gray-light);
-            border-radius: 5px;
-            margin-top: 0.5rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            border-radius: 5px;
-            width: 0%;
-        }
-
-        .history-meta, .watchlist-meta {
-            display: flex;
-            gap: 1rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .edit-profile-form {
-            max-width: 500px;
-        }
-
-        .edit-profile-form input,
-        .edit-profile-form textarea {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            background: var(--darker);
-            color: var(--text);
-        }
-
-        .edit-profile-form input:focus,
-        .edit-profile-form textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        /* Chat Room */
-        .chat-container {
-            background: var(--gray-dark);
-            border-radius: 15px;
-            padding: 2rem;
-        }
-
-        .chat-messages {
-            height: 500px;
-            overflow-y: auto;
-            padding: 1rem;
-            background: var(--darker);
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .chat-message {
-            background: var(--gray);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .chat-message-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-        }
-
-        .chat-message-username {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .chat-tags {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .chat-tag {
-            background: var(--primary-dark);
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .chat-input {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 1rem;
-            border: 2px solid var(--gray);
-            border-radius: 30px;
-            background: var(--darker);
-            color: var(--text);
-        }
-
-        .chat-input input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .tags-container {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .tag-btn {
-            background: var(--gray);
-            color: var(--text);
-            border: 1px solid var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .tag-btn.active {
-            background: var(--primary);
-        }
-
-        /* Admin Dashboard */
-        .admin-dashboard {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 2rem;
-        }
-
-        .admin-sidebar {
-            background: var(--gray-dark);
-            border-radius: 15px;
-            padding: 2rem;
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-        }
-
-        .admin-menu {
-            list-style: none;
-        }
-
-        .admin-menu li {
-            padding: 1rem 1.5rem;
-            margin-bottom: 0.5rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .admin-menu li:hover,
-        .admin-menu li.active {
-            background: var(--primary);
-        }
-
-        .admin-content {
-            background: var(--gray-dark);
-            border-radius: 15px;
-            padding: 2rem;
-        }
-
-        .admin-section {
-            display: none;
-        }
-
-        .admin-section.active {
-            display: block;
-        }
-
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--gray);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .admin-table th {
-            text-align: left;
-            padding: 1rem;
-            color: var(--text-muted);
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .admin-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--gray);
-        }
-
-        .admin-table tr:hover {
-            background: var(--gray);
-        }
-
-        /* Upload Form */
-        .upload-form {
-            max-width: 600px;
-        }
-
-        .upload-form input,
-        .upload-form select,
-        .upload-form textarea {
-            width: 100%;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            background: var(--darker);
-            color: var(--text);
-        }
-
-        .upload-form input:focus,
-        .upload-form select:focus,
-        .upload-form textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .upload-form input[type="file"] {
-            padding: 0.5rem;
-            border: 2px dashed var(--primary);
-        }
-
-        /* Auth Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--gray-dark);
-            padding: 3rem;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 450px;
-            position: relative;
-            border: 2px solid var(--primary);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .modal h2 {
-            margin-bottom: 2rem;
-            color: var(--primary);
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            background: var(--darker);
-            color: var(--text);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .modal-footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: var(--text-muted);
-        }
-
-        .modal-footer span {
-            color: var(--primary);
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Alert */
-        .alert {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            background: var(--gray-dark);
-            border-left: 5px solid var(--primary);
-            color: var(--text);
-            z-index: 3000;
-            animation: slideIn 0.3s;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .alert-success {
-            border-left-color: #00ff00;
-        }
-
-        .alert-error {
-            border-left-color: var(--primary);
-        }
-
-        /* Loading */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 300px;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--gray);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar {
-                flex-direction: column;
-                padding: 1rem;
-            }
-            .nav-links {
-                justify-content: center;
-            }
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .movie-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            .movie-poster {
-                width: 150px;
-            }
-            .admin-dashboard {
-                grid-template-columns: 1fr;
-            }
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>xStream — Watch Free Movies, TV & Sports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* ═══════════════════════════════════════════════
+   XSTREAM DESIGN SYSTEM
+═══════════════════════════════════════════════ */
+:root {
+  --neon: #00ff88;
+  --neon2: #00d4ff;
+  --neon-dim: rgba(0,255,136,0.15);
+  --dark: #080c10;
+  --dark2: #0d1117;
+  --dark3: #111820;
+  --card: #131b24;
+  --border: rgba(0,255,136,0.12);
+  --text: #e8eef4;
+  --muted: #6b7f8f;
+  --danger: #ff3b5c;
+  --warn: #ffb800;
+  --font-display: 'Orbitron', monospace;
+  --font-body: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--dark2); }
+::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 3px; }
+
+/* ── Noise overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ── Typography ── */
+.font-display { font-family: var(--font-display); }
+
+/* ── Navbar ── */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(8,12,16,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+#navbar.scrolled {
+  background: rgba(8,12,16,0.97);
+  box-shadow: 0 4px 30px rgba(0,255,136,0.05);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--neon), var(--neon2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  position: relative;
+}
+
+.logo::after {
+  content: '◈';
+  font-size: 0.5rem;
+  position: absolute;
+  top: 2px;
+  right: -14px;
+  -webkit-text-fill-color: var(--neon);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.8); } }
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.nav-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: var(--neon-dim);
+  color: var(--neon);
+}
+
+/* ── Search Bar ── */
+.search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 320px;
+  margin: 0 1.5rem;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 0.45rem 1rem 0.45rem 2.5rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  color: var(--text);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-wrap input:focus {
+  border-color: var(--neon);
+  background: rgba(0,255,136,0.04);
+  box-shadow: 0 0 0 3px rgba(0,255,136,0.08);
+}
+
+.search-wrap .icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+/* ── Search Dropdown ── */
+#search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  background: var(--dark3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 2000;
+  display: none;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+#search-dropdown.show { display: block; }
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.search-result-item:hover { background: var(--neon-dim); }
+
+.search-result-item img {
+  width: 40px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: var(--dark2);
+}
+
+/* ── Main content ── */
+main {
+  padding-top: 64px;
+  min-height: 100vh;
+}
+
+/* ── Pages ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── Hero Banner ── */
+#hero {
+  position: relative;
+  height: 88vh;
+  min-height: 500px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+  transition: all 1s ease;
+}
+
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--dark) 0%,
+    rgba(8,12,16,0.6) 40%,
+    rgba(8,12,16,0.2) 100%
+  );
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(8,12,16,0.9) 0%,
+    transparent 60%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem 3rem 4rem;
+  max-width: 600px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(0,255,136,0.1);
+  border: 1px solid rgba(0,255,136,0.3);
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-family: var(--font-display);
+  color: var(--neon);
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.hero-rating {
+  color: var(--warn);
+  font-weight: 600;
+}
+
+.hero-overview {
+  color: rgba(232,238,244,0.8);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, var(--neon), var(--neon2));
+  color: #000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 20px rgba(0,255,136,0.3);
+}
+
+.btn-play:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(0,255,136,0.5);
+}
+
+.btn-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-info:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* Hero indicators */
+.hero-indicators {
+  position: absolute;
+  bottom: 2rem;
+  right: 3rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 3;
+}
+
+.hero-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.hero-dot.active {
+  background: var(--neon);
+  width: 24px;
+  border-radius: 3px;
+}
+
+/* ── Section ── */
+.section {
+  padding: 2.5rem 2rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-title::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 1.1em;
+  background: linear-gradient(to bottom, var(--neon), var(--neon2));
+  border-radius: 2px;
+}
+
+.view-all {
+  font-size: 0.8rem;
+  color: var(--neon);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.view-all:hover { opacity: 1; }
+
+/* ── Card Grid (horizontal scroll) ── */
+.card-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neon) transparent;
+}
+
+/* ── Movie Card ── */
+.card {
+  flex-shrink: 0;
+  width: 160px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+}
+
+.card:hover { transform: translateY(-6px) scale(1.02); }
+
+.card:hover .card-overlay { opacity: 1; }
+
+.card-poster {
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: var(--card);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
+}
+
+.card-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-poster-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 2rem;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,255,136,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: 10px;
+}
+
+.card-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--neon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-size: 1.1rem;
+  box-shadow: 0 0 20px rgba(0,255,136,0.5);
+}
+
+.card-rating {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--warn);
+}
+
+.card-type-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(0,212,255,0.2);
+  border: 1px solid rgba(0,212,255,0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.6rem;
+  font-family: var(--font-display);
+  color: var(--neon2);
+  letter-spacing: 0.05em;
+}
+
+.card-live-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(255,59,92,0.9);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  color: #fff;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: liveblink 1s ease-in-out infinite;
+}
+
+@keyframes liveblink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+.card-info {
+  padding: 0.6rem 0.25rem 0;
+}
+
+.card-title {
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-year {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── Sports Card (wider) ── */
+.sports-card {
+  flex-shrink: 0;
+  width: 260px;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.sports-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0,255,136,0.3);
+  box-shadow: 0 8px 30px rgba(0,255,136,0.1);
+}
+
+.sports-thumb {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  background: var(--dark2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+.sports-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sports-card-body {
+  padding: 0.875rem;
+}
+
+.sports-league {
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  color: var(--neon);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.25rem;
+}
+
+.sports-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.sports-teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* ── Filter Tabs ── */
+.filter-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1.5rem 2rem 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-tabs::-webkit-scrollbar { display: none; }
+
+.filter-tab {
+  flex-shrink: 0;
+  padding: 0.4rem 1.25rem;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+
+.filter-tab:hover, .filter-tab.active {
+  background: var(--neon-dim);
+  border-color: rgba(0,255,136,0.4);
+  color: var(--neon);
+}
+
+/* ── Content Grid ── */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 1.25rem;
+  padding: 1.5rem 2rem;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.modal-container {
+  background: var(--dark3);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid var(--border);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+}
+
+.modal-close:hover { background: rgba(255,59,92,0.2); border-color: var(--danger); color: var(--danger); }
+
+.modal-backdrop {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+  background: var(--dark2);
+}
+
+.modal-backdrop-placeholder {
+  width: 100%;
+  height: 300px;
+  background: var(--dark2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-body {
+  padding: 1.5rem 2rem 2rem;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.modal-poster {
+  width: 130px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: -60px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  aspect-ratio: 2/3;
+}
+
+.modal-poster img { width: 100%; height: 100%; object-fit: cover; }
+
+.modal-info { flex: 1; }
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.modal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 0.825rem;
+  color: var(--muted);
+}
+
+.meta-badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+}
+
+.modal-overview {
+  color: rgba(232,238,244,0.75);
+  line-height: 1.7;
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Watch Panel ── */
+#watch-panel {
+  padding: 0 2rem 2rem;
+}
+
+.watch-player {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.watch-player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.source-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.source-tab {
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.775rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.15s;
+  font-family: var(--font-body);
+}
+
+.source-tab.active, .source-tab:hover {
+  background: var(--neon-dim);
+  border-color: rgba(0,255,136,0.4);
+  color: var(--neon);
+}
+
+.episode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.episode-btn {
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.15s;
+  text-align: left;
+  font-family: var(--font-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.episode-btn.active, .episode-btn:hover {
+  background: var(--neon-dim);
+  border-color: rgba(0,255,136,0.4);
+  color: var(--neon);
+}
+
+/* ── Season selector ── */
+.season-select {
+  padding: 0.4rem 0.75rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.825rem;
+  cursor: pointer;
+  outline: none;
+}
+
+/* ── Sports Categories ── */
+.sports-league-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.75rem;
+  padding: 1.5rem 2rem;
+}
+
+.league-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.league-card:hover {
+  border-color: rgba(0,255,136,0.4);
+  background: var(--neon-dim);
+  transform: translateY(-3px);
+}
+
+.league-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+.league-name {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--neon);
+}
+
+/* ── Admin Panel ── */
+#admin-page {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--neon);
+  letter-spacing: 0.1em;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--neon);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+/* Forms */
+.admin-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-title {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--neon);
+  margin-bottom: 1.25rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+  font-weight: 500;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  background: var(--dark2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: var(--neon);
+  box-shadow: 0 0 0 3px rgba(0,255,136,0.08);
+}
+
+textarea.form-control { resize: vertical; min-height: 80px; }
+
+.btn-primary {
+  padding: 0.55rem 1.5rem;
+  background: linear-gradient(135deg, var(--neon), var(--neon2));
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0,255,136,0.3);
+}
+
+.btn-danger {
+  padding: 0.35rem 0.75rem;
+  background: rgba(255,59,92,0.1);
+  color: var(--danger);
+  font-size: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255,59,92,0.2);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--font-body);
+}
+
+.btn-danger:hover { background: rgba(255,59,92,0.2); }
+
+/* Admin Table */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-size: 0.7rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.825rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.category-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+}
+
+.badge-movie { background: rgba(0,255,136,0.1); color: var(--neon); border: 1px solid rgba(0,255,136,0.2); }
+.badge-tv { background: rgba(0,212,255,0.1); color: var(--neon2); border: 1px solid rgba(0,212,255,0.2); }
+.badge-sports { background: rgba(255,184,0,0.1); color: var(--warn); border: 1px solid rgba(255,184,0,0.2); }
+
+/* ── Login Screen ── */
+#login-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--dark);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: var(--dark3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 80px rgba(0,255,136,0.08);
+}
+
+.login-logo {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--neon), var(--neon2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 2rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+}
+
+/* ── Toast ── */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.875rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  z-index: 9999;
+  animation: slideInRight 0.3s ease, fadeOut 0.4s ease 2.6s forwards;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.toast-success { background: rgba(0,255,136,0.15); border: 1px solid rgba(0,255,136,0.3); color: var(--neon); }
+.toast-error { background: rgba(255,59,92,0.15); border: 1px solid rgba(255,59,92,0.3); color: var(--danger); }
+
+@keyframes slideInRight { from{transform:translateX(100px);opacity:0} to{transform:translateX(0);opacity:1} }
+@keyframes fadeOut { from{opacity:1} to{opacity:0;transform:translateX(20px)} }
+
+/* ── Spinner ── */
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid rgba(0,255,136,0.1);
+  border-top-color: var(--neon);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Skeleton ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--card) 25%, var(--dark3) 50%, var(--card) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease infinite;
+  border-radius: 10px;
+}
+
+@keyframes shimmer { from{background-position:200% 0} to{background-position:-200% 0} }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+footer .footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  background: linear-gradient(135deg, var(--neon), var(--neon2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero-content { padding: 2rem 1.5rem 3rem; }
+  .hero-title { font-size: 1.75rem; }
+  .section { padding: 2rem 1rem; }
+  .filter-tabs { padding: 1rem 1rem 0; }
+  .content-grid { padding: 1rem; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  #navbar { padding: 0 1rem; }
+  .search-wrap { max-width: 180px; margin: 0 0.75rem; }
+  .modal-body { flex-direction: column; }
+  .modal-poster { margin-top: -40px; width: 90px; }
+  #admin-page { padding: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .nav-links .nav-btn span { display: none; }
+  .card { width: 130px; }
+  .sports-card { width: 220px; }
+}
+
+/* ── Glow effect on headings ── */
+.glow-text {
+  text-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+
+/* ── Admin tabs ── */
+.admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+.admin-tab {
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.825rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+.admin-tab.active {
+  background: var(--neon-dim);
+  border-color: rgba(0,255,136,0.4);
+  color: var(--neon);
+}
+
+.admin-tab-panel { display: none; }
+.admin-tab-panel.active { display: block; }
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="logo" onclick="showPage('home')">XSTREAM</div>
-        <div class="nav-links">
-            <a href="#" onclick="showPage('home')"><i class="fas fa-home"></i> HOME</a>
-            <a href="#" onclick="showPage('movies')"><i class="fas fa-film"></i> MOVIES</a>
-            <a href="#" onclick="showPage('tvshows')"><i class="fas fa-tv"></i> TV SHOWS</a>
-            <a href="#" onclick="showPage('chat')"><i class="fas fa-comments"></i> CHAT</a>
-            <a href="#" onclick="showPage('profile')" id="profileLink" style="display: none;"><i class="fas fa-user"></i> PROFILE</a>
-            <div id="authButtons">
-                <button class="btn btn-glass" onclick="openModal('login')">
-                    <i class="fas fa-sign-in-alt"></i> LOGIN
-                </button>
-                <button class="btn btn-primary" onclick="openModal('signup')">
-                    <i class="fas fa-user-plus"></i> SIGN UP
-                </button>
-            </div>
-            <div id="userMenu" style="display: none;">
-                <span class="btn btn-glass" id="usernameDisplay"></span>
-                <button class="btn btn-outline" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> LOGOUT
-                </button>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Main Container -->
-    <div class="container" id="mainContainer">
-        <!-- Content loaded here -->
+<!-- ═══════════════════════════════════════
+  NAVBAR
+═══════════════════════════════════════ -->
+<nav id="navbar">
+  <a class="logo" onclick="showPage('home')">xStream</a>
+
+  <div class="search-wrap" id="search-wrap">
+    <span class="icon">🔍</span>
+    <input type="text" id="search-input" placeholder="Search movies, shows..." autocomplete="off" />
+    <div id="search-dropdown"></div>
+  </div>
+
+  <div class="nav-links">
+    <button class="nav-btn active" id="nav-home" onclick="showPage('home')">
+      <span>Home</span>
+    </button>
+    <button class="nav-btn" id="nav-movies" onclick="showPage('movies')">
+      🎬 <span>Movies</span>
+    </button>
+    <button class="nav-btn" id="nav-tv" onclick="showPage('tv')">
+      📺 <span>TV Shows</span>
+    </button>
+    <button class="nav-btn" id="nav-sports" onclick="showPage('sports')">
+      🏆 <span>Sports</span>
+    </button>
+    <button class="nav-btn" id="admin-btn" onclick="goAdmin()" style="display:none">
+      ⚙️
+    </button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+  MAIN
+═══════════════════════════════════════ -->
+<main>
+
+<!-- ── HOME PAGE ── -->
+<div class="page active" id="page-home">
+  <!-- Hero -->
+  <div id="hero">
+    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-content" id="hero-content">
+      <div class="hero-badge">⚡ TRENDING NOW</div>
+      <div class="hero-title" id="hero-title">Loading...</div>
+      <div class="hero-meta" id="hero-meta"></div>
+      <div class="hero-overview" id="hero-overview"></div>
+      <div class="hero-actions">
+        <button class="btn-play" id="hero-play-btn">▶ Watch Now</button>
+        <button class="btn-info" id="hero-info-btn">ℹ More Info</button>
+      </div>
+    </div>
+    <div class="hero-indicators" id="hero-dots"></div>
+  </div>
+
+  <!-- Trending Movies -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Trending Movies</div>
+      <div class="view-all" onclick="showPage('movies')">View All →</div>
+    </div>
+    <div class="card-row" id="home-movies-row"></div>
+  </div>
+
+  <!-- Trending TV -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Trending TV Shows</div>
+      <div class="view-all" onclick="showPage('tv')">View All →</div>
+    </div>
+    <div class="card-row" id="home-tv-row"></div>
+  </div>
+
+  <!-- Sports -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Live Sports</div>
+      <div class="view-all" onclick="showPage('sports')">View All →</div>
+    </div>
+    <div class="card-row" id="home-sports-row"></div>
+  </div>
+</div>
+
+<!-- ── MOVIES PAGE ── -->
+<div class="page" id="page-movies">
+  <div style="padding: 2rem 2rem 0;">
+    <h1 class="font-display glow-text" style="font-size:1.6rem;letter-spacing:0.08em;margin-bottom:0.25rem;">🎬 MOVIES</h1>
+    <p style="color:var(--muted);font-size:0.875rem;">Thousands of movies at your fingertips</p>
+  </div>
+  <div class="filter-tabs" id="movies-filters">
+    <button class="filter-tab active" onclick="loadMovies('trending', this)">🔥 Trending</button>
+    <button class="filter-tab" onclick="loadMovies('popular', this)">⭐ Popular</button>
+    <button class="filter-tab" onclick="loadMovies('top_rated', this)">🏆 Top Rated</button>
+    <button class="filter-tab" onclick="loadMovies('custom', this)">📁 Custom</button>
+  </div>
+  <div class="content-grid" id="movies-grid"></div>
+  <div style="text-align:center;padding:1.5rem">
+    <button class="btn-info" id="movies-load-more" onclick="loadMoreMovies()" style="display:none">Load More</button>
+  </div>
+</div>
+
+<!-- ── TV PAGE ── -->
+<div class="page" id="page-tv">
+  <div style="padding: 2rem 2rem 0;">
+    <h1 class="font-display glow-text" style="font-size:1.6rem;letter-spacing:0.08em;margin-bottom:0.25rem;">📺 TV SHOWS</h1>
+    <p style="color:var(--muted);font-size:0.875rem;">Binge-worthy series from around the world</p>
+  </div>
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="loadTV('trending', this)">🔥 Trending</button>
+    <button class="filter-tab" onclick="loadTV('popular', this)">⭐ Popular</button>
+    <button class="filter-tab" onclick="loadTV('custom', this)">📁 Custom</button>
+  </div>
+  <div class="content-grid" id="tv-grid"></div>
+  <div style="text-align:center;padding:1.5rem">
+    <button class="btn-info" id="tv-load-more" onclick="loadMoreTV()" style="display:none">Load More</button>
+  </div>
+</div>
+
+<!-- ── SPORTS PAGE ── -->
+<div class="page" id="page-sports">
+  <div style="padding: 2rem 2rem 0;">
+    <h1 class="font-display glow-text" style="font-size:1.6rem;letter-spacing:0.08em;margin-bottom:0.25rem;">🏆 SPORTS</h1>
+    <p style="color:var(--muted);font-size:0.875rem;">Live streams, scores & schedules</p>
+  </div>
+
+  <!-- League Filter -->
+  <div class="sports-league-grid">
+    <div class="league-card" onclick="filterSportsLeague('all')">
+      <div class="league-icon">🌐</div>
+      <div class="league-name">ALL</div>
+    </div>
+    <div class="league-card" onclick="filterSportsLeague('nba')">
+      <div class="league-icon">🏀</div>
+      <div class="league-name">NBA</div>
+    </div>
+    <div class="league-card" onclick="filterSportsLeague('nfl')">
+      <div class="league-icon">🏈</div>
+      <div class="league-name">NFL</div>
+    </div>
+    <div class="league-card" onclick="filterSportsLeague('soccer')">
+      <div class="league-icon">⚽</div>
+      <div class="league-name">SOCCER</div>
+    </div>
+    <div class="league-card" onclick="filterSportsLeague('f1')">
+      <div class="league-icon">🏎️</div>
+      <div class="league-name">F1</div>
+    </div>
+    <div class="league-card" onclick="filterSportsLeague('ufc')">
+      <div class="league-icon">🥊</div>
+      <div class="league-name">UFC/MMA</div>
+    </div>
+    <div class="league-card" onclick="filterSportsLeague('nhl')">
+      <div class="league-icon">🏒</div>
+      <div class="league-name">NHL</div>
+    </div>
+    <div class="league-card" onclick="filterSportsLeague('mlb')">
+      <div class="league-icon">⚾</div>
+      <div class="league-name">MLB</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">🔴 Live Now</div>
+    </div>
+    <div class="card-row" id="sports-live-row">
+      <div style="color:var(--muted);font-size:0.875rem;padding:1rem">Loading live streams...</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">📅 Upcoming</div>
+    </div>
+    <div id="sports-schedule" style="padding:0 0 1rem">
+      <div style="color:var(--muted);font-size:0.875rem;padding:1rem">Loading schedule...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADMIN PAGE ── -->
+<div class="page" id="page-admin">
+  <div id="admin-page">
+    <div class="admin-header">
+      <div>
+        <div class="admin-title">⚙ ADMIN PANEL</div>
+        <div style="color:var(--muted);font-size:0.8rem;margin-top:0.25rem">xStream Content Management</div>
+      </div>
+      <button class="btn-danger" onclick="adminLogout()">Logout</button>
     </div>
 
-    <!-- Auth Modal -->
-    <div class="modal" id="authModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2 id="modalTitle">LOGIN</h2>
-            <form id="authForm" onsubmit="handleAuth(event)">
-                <div class="form-group">
-                    <input type="text" id="username" placeholder="Username" required>
-                </div>
-                <div class="form-group" id="emailField" style="display: none;">
-                    <input type="email" id="email" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <input type="password" id="password" placeholder="Password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">SUBMIT</button>
-            </form>
-            <div class="modal-footer">
-                <span id="modalToggle" onclick="toggleAuthMode()">Don't have an account? SIGN UP</span>
-            </div>
-        </div>
+    <!-- Stats -->
+    <div class="stat-cards" id="admin-stats">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total">–</div>
+        <div class="stat-label">Total Content</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-movies">–</div>
+        <div class="stat-label">Movies</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-tv">–</div>
+        <div class="stat-label">TV Shows</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-sports">–</div>
+        <div class="stat-label">Sports</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-streams">–</div>
+        <div class="stat-label">Live Streams</div>
+      </div>
+      <div class="stat-card">
+        <div id="stat-tmdb" style="font-size:1.5rem">–</div>
+        <div class="stat-label">TMDB API</div>
+      </div>
     </div>
 
-    <script>
-        // API Configuration
-        const API_URL = 'https://xtournyb.onrender.com';
-        
-        let currentUser = null;
-        let authToken = null;
-        let currentPage = 'home';
-        let currentPlayer = null;
-        let chatInterval = null;
-        let selectedTag = null;
-        let userRating = 0;
+    <!-- Admin Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTab('content', this)">📁 Custom Content</button>
+      <button class="admin-tab" onclick="switchAdminTab('sports', this)">🏆 Sports Streams</button>
+      <button class="admin-tab" onclick="switchAdminTab('settings', this)">⚙ Settings</button>
+    </div>
 
-        // Check for saved auth
-        const savedToken = localStorage.getItem('token');
-        const savedUser = localStorage.getItem('user');
-        if (savedToken && savedUser) {
-            authToken = savedToken;
-            currentUser = JSON.parse(savedUser);
-            updateAuthUI();
-        }
+    <!-- Content Tab -->
+    <div class="admin-tab-panel active" id="tab-content">
+      <div class="admin-form">
+        <div class="form-title">➕ ADD CUSTOM CONTENT (MP4 / EMBED URL)</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Title *</label>
+            <input class="form-control" id="add-title" placeholder="Movie or show title" />
+          </div>
+          <div class="form-group">
+            <label>Video URL (MP4 or embed) *</label>
+            <input class="form-control" id="add-video-url" placeholder="https://... .mp4 or embed URL" />
+          </div>
+          <div class="form-group">
+            <label>Poster URL</label>
+            <input class="form-control" id="add-poster" placeholder="https://...jpg" />
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select class="form-control" id="add-category">
+              <option value="movie">Movie</option>
+              <option value="tv">TV Show</option>
+              <option value="sports">Sports</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Genre</label>
+            <input class="form-control" id="add-genre" placeholder="Action, Drama, etc." />
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input class="form-control" id="add-year" type="number" placeholder="2024" />
+          </div>
+          <div class="form-group">
+            <label>Rating (0-10)</label>
+            <input class="form-control" id="add-rating" type="number" step="0.1" min="0" max="10" placeholder="7.5" />
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label>Description</label>
+          <textarea class="form-control" id="add-description" placeholder="Brief description..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="adminAddContent()">Add Content</button>
+      </div>
 
-        // Show alert
-        function showAlert(message, type) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
-            document.body.appendChild(alertDiv);
-            setTimeout(() => alertDiv.remove(), 3000);
-        }
+      <!-- Content List -->
+      <div class="admin-form">
+        <div class="form-title">📋 CONTENT LIBRARY</div>
+        <div style="overflow-x:auto">
+          <table class="admin-table" id="content-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Year</th>
+                <th>Rating</th>
+                <th>Added</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="content-tbody">
+              <tr><td colspan="7" style="color:var(--muted);text-align:center;padding:2rem">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-        // Navigation
-        function showPage(page) {
-            currentPage = page;
-            const container = document.getElementById('mainContainer');
-            
-            // Destroy old player if exists
-            if (currentPlayer) {
-                currentPlayer.dispose();
-                currentPlayer = null;
-            }
-            
-            if (page === 'home') showHome(container);
-            else if (page === 'movies') showMovies(container, 'Movie');
-            else if (page === 'tvshows') showMovies(container, 'TV Show');
-            else if (page === 'chat') showChat(container);
-            else if (page === 'profile') showProfile(container);
-            else if (page === 'admin') showAdminDashboard();
-            else if (page === 'watch') {
-                const params = new URLSearchParams(window.location.search);
-                const id = params.get('id');
-                if (id) showWatchPage(container, id);
-            }
-        }
+    <!-- Sports Tab -->
+    <div class="admin-tab-panel" id="tab-sports">
+      <div class="admin-form">
+        <div class="form-title">➕ ADD SPORTS STREAM</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Title *</label>
+            <input class="form-control" id="sp-title" placeholder="e.g. Lakers vs Celtics" />
+          </div>
+          <div class="form-group">
+            <label>League *</label>
+            <select class="form-control" id="sp-league">
+              <option value="nba">NBA</option>
+              <option value="nfl">NFL</option>
+              <option value="soccer">Soccer</option>
+              <option value="f1">F1</option>
+              <option value="ufc">UFC/MMA</option>
+              <option value="nhl">NHL</option>
+              <option value="mlb">MLB</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Embed URL *</label>
+            <input class="form-control" id="sp-url" placeholder="https://..." />
+          </div>
+          <div class="form-group">
+            <label>Thumbnail URL</label>
+            <input class="form-control" id="sp-thumb" placeholder="https://...jpg" />
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" id="sp-status">
+              <option value="live">Live Now</option>
+              <option value="upcoming">Upcoming</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Start Time</label>
+            <input class="form-control" id="sp-time" type="datetime-local" />
+          </div>
+          <div class="form-group">
+            <label>Home Team</label>
+            <input class="form-control" id="sp-home" placeholder="Team A" />
+          </div>
+          <div class="form-group">
+            <label>Away Team</label>
+            <input class="form-control" id="sp-away" placeholder="Team B" />
+          </div>
+        </div>
+        <button class="btn-primary" onclick="adminAddSports()">Add Stream</button>
+      </div>
 
-        // Home Page
-        async function showHome(container) {
-            container.innerHTML = `
-                <div class="hero">
-                    <h1>WELCOME TO XSTREAM</h1>
-                    <p>Stream the latest movies and TV shows in stunning quality. Join our community today!</p>
-                    <div class="hero-buttons">
-                        <button class="btn btn-primary" onclick="showPage('movies')">
-                            <i class="fas fa-play"></i> START WATCHING
-                        </button>
-                        <button class="btn btn-glass" onclick="showPage('chat')">
-                            <i class="fas fa-comments"></i> JOIN CHAT
-                        </button>
-                    </div>
+      <div class="admin-form">
+        <div class="form-title">📋 SPORTS STREAMS</div>
+        <div style="overflow-x:auto">
+          <table class="admin-table">
+            <thead><tr><th>ID</th><th>Title</th><th>League</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="sports-tbody">
+              <tr><td colspan="5" style="color:var(--muted);text-align:center;padding:2rem">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div class="admin-tab-panel" id="tab-settings">
+      <div class="admin-form">
+        <div class="form-title">⚙ BACKEND CONFIGURATION</div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label>Backend API URL</label>
+          <input class="form-control" id="settings-api-url" placeholder="https://your-app.onrender.com" />
+        </div>
+        <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+        <p style="color:var(--muted);font-size:0.75rem;margin-top:0.75rem">
+          Set your Render backend URL. This is stored in localStorage.
+        </p>
+      </div>
+
+      <div class="admin-form">
+        <div class="form-title">📖 DEPLOYMENT GUIDE</div>
+        <div style="font-size:0.825rem;line-height:2;color:var(--muted)">
+          <strong style="color:var(--neon)">Backend (Render.com):</strong><br>
+          1. Push main.py to GitHub<br>
+          2. Create new Web Service on Render<br>
+          3. Build command: <code style="background:var(--dark2);padding:2px 6px;border-radius:4px">pip install fastapi uvicorn aiohttp pyjwt</code><br>
+          4. Start command: <code style="background:var(--dark2);padding:2px 6px;border-radius:4px">python main.py</code><br>
+          5. Add env vars: TMDB_API_KEY, OWNER_USERNAME, OWNER_PASSWORD, SECRET_KEY<br><br>
+          <strong style="color:var(--neon)">Frontend (Vercel.com):</strong><br>
+          1. Upload index.html to GitHub<br>
+          2. Import project on Vercel<br>
+          3. Deploy as static site<br>
+          4. Update API_BASE in this file to your Render URL
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- ═══════════════════════════════════════
+  FOOTER
+═══════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">xStream</div>
+  <div>© 2024 xStream · Free Streaming · Movies · TV · Sports</div>
+  <div style="margin-top:0.5rem;font-size:0.7rem;color:rgba(107,127,143,0.5)">
+    Content provided by TMDB & embed sources for educational purposes
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════
+  DETAIL MODAL
+═══════════════════════════════════════ -->
+<div class="modal-overlay" id="detail-modal" style="display:none" onclick="closeModalOutside(event)">
+  <div class="modal-container" id="detail-modal-inner">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  ADMIN LOGIN
+═══════════════════════════════════════ -->
+<div id="login-screen" style="display:none">
+  <div class="login-card">
+    <div class="login-logo">xStream</div>
+    <div class="login-subtitle">ADMIN ACCESS</div>
+    <div class="form-group" style="margin-bottom:1rem">
+      <label>Username</label>
+      <input class="form-control" id="login-username" type="text" placeholder="Enter username" autocomplete="username" />
+    </div>
+    <div class="form-group" style="margin-bottom:1.5rem">
+      <label>Password</label>
+      <input class="form-control" id="login-password" type="password" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <button class="btn-primary" style="width:100%" onclick="doLogin()">Sign In</button>
+    <div style="text-align:center;margin-top:1rem">
+      <button onclick="hideLogin()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem">← Back to xStream</button>
+    </div>
+    <div id="login-error" style="color:var(--danger);font-size:0.8rem;margin-top:0.75rem;text-align:center;display:none"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+  JAVASCRIPT
+═══════════════════════════════════════ -->
+<script>
+// ════════════════════════════════════════════════
+//  CONFIG — change API_BASE to your Render URL
+// ════════════════════════════════════════════════
+let API_BASE = localStorage.getItem('xstream_api_base') || 'https://xstream-ucw0.onrender.com';
+
+// ════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════
+let heroItems = [];
+let heroIndex = 0;
+let heroTimer = null;
+let moviesPage = 1;
+let moviesMode = 'trending';
+let tvPage = 1;
+let tvMode = 'trending';
+let allSports = [];
+let authToken = localStorage.getItem('xstream_token');
+let searchTimeout = null;
+let currentModal = null;
+let currentSeason = 1;
+let currentEpisode = 1;
+let currentSources = [];
+let activeSourceIdx = 0;
+
+// ════════════════════════════════════════════════
+//  API HELPER
+// ════════════════════════════════════════════════
+async function api(path, opts = {}) {
+  const url = API_BASE + path;
+  const headers = { 'Content-Type': 'application/json' };
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+  const res = await fetch(url, { headers, ...opts });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+// ════════════════════════════════════════════════
+//  NAVIGATION
+// ════════════════════════════════════════════════
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  const nb = document.getElementById(`nav-${name}`);
+  if (nb) nb.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (name === 'home') initHome();
+  if (name === 'movies') { moviesPage = 1; loadMovies(moviesMode); }
+  if (name === 'tv') { tvPage = 1; loadTV(tvMode); }
+  if (name === 'sports') initSports();
+  if (name === 'admin') initAdmin();
+}
+
+function goAdmin() {
+  if (authToken) {
+    showPage('admin');
+  } else {
+    showLoginScreen();
+  }
+}
+
+// ════════════════════════════════════════════════
+//  NAVBAR SCROLL
+// ════════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ════════════════════════════════════════════════
+//  HOME
+// ════════════════════════════════════════════════
+async function initHome() {
+  loadHero();
+  loadHomeMovies();
+  loadHomeTV();
+  loadHomeSports();
+}
+
+async function loadHero() {
+  try {
+    const data = await api('/api/trending/movies');
+    heroItems = data.results.slice(0, 6);
+    renderHero(0);
+    renderHeroDots();
+    startHeroRotation();
+  } catch(e) {
+    document.getElementById('hero-title').textContent = 'xStream';
+    document.getElementById('hero-overview').textContent = 'Free movies, TV shows, and live sports.';
+  }
+}
+
+function renderHero(idx) {
+  const item = heroItems[idx];
+  if (!item) return;
+  heroIndex = idx;
+  const bg = document.getElementById('hero-bg');
+  bg.style.backgroundImage = `url('${item.backdrop || item.poster}')`;
+  document.getElementById('hero-title').textContent = item.title;
+  document.getElementById('hero-overview').textContent = item.overview;
+  document.getElementById('hero-meta').innerHTML = `
+    <span class="hero-rating">★ ${item.rating}</span>
+    <span>${item.year}</span>
+    <span>${item.type === 'movie' ? 'Movie' : 'TV Show'}</span>
+  `;
+  document.getElementById('hero-play-btn').onclick = () => openDetail(item.id, item.type);
+  document.getElementById('hero-info-btn').onclick = () => openDetail(item.id, item.type);
+  document.querySelectorAll('.hero-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+function renderHeroDots() {
+  const el = document.getElementById('hero-dots');
+  el.innerHTML = heroItems.map((_, i) => `<div class="hero-dot${i===0?' active':''}" onclick="renderHero(${i})"></div>`).join('');
+}
+
+function startHeroRotation() {
+  clearInterval(heroTimer);
+  heroTimer = setInterval(() => {
+    const next = (heroIndex + 1) % heroItems.length;
+    renderHero(next);
+  }, 7000);
+}
+
+async function loadHomeMovies() {
+  const row = document.getElementById('home-movies-row');
+  row.innerHTML = skeletonCards(10);
+  try {
+    const data = await api('/api/trending/movies');
+    row.innerHTML = data.results.slice(0, 10).map(m => movieCard(m)).join('');
+  } catch(e) { row.innerHTML = errorMsg('Could not load movies'); }
+}
+
+async function loadHomeTV() {
+  const row = document.getElementById('home-tv-row');
+  row.innerHTML = skeletonCards(10);
+  try {
+    const data = await api('/api/trending/tv');
+    row.innerHTML = data.results.slice(0, 10).map(m => movieCard(m)).join('');
+  } catch(e) { row.innerHTML = errorMsg('Could not load TV shows'); }
+}
+
+async function loadHomeSports() {
+  const row = document.getElementById('home-sports-row');
+  row.innerHTML = '<div style="color:var(--muted);font-size:0.875rem;padding:0.5rem">Loading...</div>';
+  try {
+    const data = await api('/api/sports/live');
+    allSports = data.results;
+    row.innerHTML = data.results.slice(0, 8).map(s => sportsCard(s)).join('');
+  } catch(e) { row.innerHTML = errorMsg('Could not load sports'); }
+}
+
+// ════════════════════════════════════════════════
+//  MOVIES
+// ════════════════════════════════════════════════
+async function loadMovies(mode, btn) {
+  moviesMode = mode;
+  moviesPage = 1;
+  if (btn) {
+    document.querySelectorAll('#movies-filters .filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const grid = document.getElementById('movies-grid');
+  grid.innerHTML = skeletonGrid(20);
+  try {
+    let data;
+    if (mode === 'custom') {
+      data = await api('/api/custom/content?category=movie');
+      grid.innerHTML = data.results.length ? data.results.map(m => movieCard(m, true)).join('') : emptyMsg('No custom movies yet');
+      document.getElementById('movies-load-more').style.display = 'none';
+      return;
+    }
+    const endpoint = mode === 'trending' ? '/api/trending/movies' : mode === 'top_rated' ? '/api/movies/top-rated' : '/api/movies/popular';
+    data = await api(endpoint);
+    grid.innerHTML = data.results.map(m => movieCard(m)).join('');
+    document.getElementById('movies-load-more').style.display = data.total_pages > 1 ? 'inline-flex' : 'none';
+  } catch(e) { grid.innerHTML = errorMsg(e.message); }
+}
+
+async function loadMoreMovies() {
+  moviesPage++;
+  const endpoint = moviesMode === 'trending' ? '/api/trending/movies' : moviesMode === 'top_rated' ? '/api/movies/top-rated' : '/api/movies/popular';
+  try {
+    const data = await api(`${endpoint}?page=${moviesPage}`);
+    document.getElementById('movies-grid').insertAdjacentHTML('beforeend', data.results.map(m => movieCard(m)).join(''));
+    if (moviesPage >= data.total_pages) document.getElementById('movies-load-more').style.display = 'none';
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+// ════════════════════════════════════════════════
+//  TV
+// ════════════════════════════════════════════════
+async function loadTV(mode, btn) {
+  tvMode = mode;
+  tvPage = 1;
+  if (btn) {
+    document.querySelectorAll('#page-tv .filter-tabs .filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const grid = document.getElementById('tv-grid');
+  grid.innerHTML = skeletonGrid(20);
+  try {
+    let data;
+    if (mode === 'custom') {
+      data = await api('/api/custom/content?category=tv');
+      grid.innerHTML = data.results.length ? data.results.map(m => movieCard(m, true)).join('') : emptyMsg('No custom shows yet');
+      document.getElementById('tv-load-more').style.display = 'none';
+      return;
+    }
+    const endpoint = mode === 'trending' ? '/api/trending/tv' : '/api/tv/popular';
+    data = await api(endpoint);
+    grid.innerHTML = data.results.map(m => movieCard(m)).join('');
+    document.getElementById('tv-load-more').style.display = data.total_pages > 1 ? 'inline-flex' : 'none';
+  } catch(e) { grid.innerHTML = errorMsg(e.message); }
+}
+
+async function loadMoreTV() {
+  tvPage++;
+  const endpoint = tvMode === 'trending' ? '/api/trending/tv' : '/api/tv/popular';
+  try {
+    const data = await api(`${endpoint}?page=${tvPage}`);
+    document.getElementById('tv-grid').insertAdjacentHTML('beforeend', data.results.map(m => movieCard(m)).join(''));
+    if (tvPage >= data.total_pages) document.getElementById('tv-load-more').style.display = 'none';
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+// ════════════════════════════════════════════════
+//  SPORTS
+// ════════════════════════════════════════════════
+async function initSports() {
+  loadSportsLive();
+  loadSportsSchedule();
+}
+
+async function loadSportsLive() {
+  const row = document.getElementById('sports-live-row');
+  try {
+    const data = await api('/api/sports/live');
+    allSports = data.results;
+    row.innerHTML = data.results.length ? data.results.map(s => sportsCard(s)).join('') : emptyMsg('No live streams right now');
+  } catch(e) { row.innerHTML = errorMsg(e.message); }
+}
+
+async function loadSportsSchedule() {
+  const el = document.getElementById('sports-schedule');
+  try {
+    const data = await api('/api/sports/schedule');
+    if (!data.results.length) {
+      el.innerHTML = `<div style="color:var(--muted);font-size:0.875rem;padding:1rem">No upcoming games scheduled. Add them via the admin panel.</div>`;
+      return;
+    }
+    el.innerHTML = `<div style="display:grid;gap:0.75rem;padding:0 0 1rem">
+      ${data.results.map(s => `
+        <div class="sports-card" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem" onclick="openSportsStream('${s.embed_url}','${s.title}')">
+          <div style="font-size:1.75rem">${leagueIcon(s.league)}</div>
+          <div style="flex:1">
+            <div class="sports-league">${s.league.toUpperCase()}</div>
+            <div class="sports-title">${s.title}</div>
+            <div class="sports-teams">${s.home_team||''} ${s.home_team && s.away_team ? 'vs' : ''} ${s.away_team||''}</div>
+          </div>
+          ${s.start_time ? `<div style="font-size:0.75rem;color:var(--muted)">${new Date(s.start_time).toLocaleString()}</div>` : ''}
+        </div>
+      `).join('')}
+    </div>`;
+  } catch(e) { el.innerHTML = errorMsg(e.message); }
+}
+
+function filterSportsLeague(league) {
+  const row = document.getElementById('sports-live-row');
+  const filtered = league === 'all' ? allSports : allSports.filter(s => s.league && s.league.toLowerCase() === league);
+  row.innerHTML = filtered.length ? filtered.map(s => sportsCard(s)).join('') : emptyMsg(`No live ${league.toUpperCase()} streams`);
+}
+
+function openSportsStream(url, title) {
+  document.getElementById('detail-modal').style.display = 'flex';
+  document.getElementById('modal-content').innerHTML = `
+    <div style="padding:1.5rem">
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;letter-spacing:0.08em;margin-bottom:1rem;color:var(--neon)">${title}</h2>
+      <div class="watch-player">
+        <iframe src="${url}" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+      </div>
+      <p style="color:var(--muted);font-size:0.75rem;margin-top:0.75rem">
+        ⚠ If the stream doesn't load, try opening it in a new tab.
+        <a href="${url}" target="_blank" style="color:var(--neon)">Open in new tab →</a>
+      </p>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════
+//  DETAIL MODAL
+// ════════════════════════════════════════════════
+async function openDetail(id, type, isCustom) {
+  document.getElementById('detail-modal').style.display = 'flex';
+  document.getElementById('modal-content').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;height:300px">
+      <div class="spinner"></div>
+    </div>
+  `;
+
+  try {
+    let item;
+    if (isCustom) {
+      // Custom content - just show the video directly
+      const data = await api('/api/custom/content');
+      item = data.results.find(r => r.id == id);
+      if (!item) throw new Error('Not found');
+      showCustomModal(item);
+      return;
+    }
+
+    item = await api(`/api/${type}/${id}`);
+    currentModal = item;
+    currentModal.type = type;
+    currentSources = item.embed_sources || [];
+    activeSourceIdx = 0;
+
+    const backdropHtml = item.backdrop
+      ? `<img class="modal-backdrop" src="${item.backdrop}" onerror="this.style.display='none'" />`
+      : `<div class="modal-backdrop-placeholder">🎬</div>`;
+
+    document.getElementById('modal-content').innerHTML = `
+      ${backdropHtml}
+      <div class="modal-body">
+        <div class="modal-poster">
+          ${item.poster ? `<img src="${item.poster}" alt="${item.title}" />` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;">🎬</div>`}
+        </div>
+        <div class="modal-info">
+          <div class="modal-title">${item.title}</div>
+          <div class="modal-meta">
+            ${item.year ? `<span class="meta-badge">${item.year}</span>` : ''}
+            ${item.rating ? `<span class="meta-badge" style="color:var(--warn)">★ ${item.rating}</span>` : ''}
+            ${item.runtime ? `<span class="meta-badge">${item.runtime} min</span>` : ''}
+            ${item.seasons ? `<span class="meta-badge">${item.seasons} Seasons</span>` : ''}
+            ${(item.genres||[]).slice(0,3).map(g => `<span class="meta-badge">${g}</span>`).join('')}
+          </div>
+          ${item.tagline ? `<div style="color:var(--neon);font-style:italic;font-size:0.875rem;margin-bottom:0.75rem">"${item.tagline}"</div>` : ''}
+          <div class="modal-overview">${item.overview}</div>
+          <div class="modal-actions">
+            <button class="btn-play" onclick="showWatchPanel()">▶ Watch Now</button>
+            ${item.trailer ? `<button class="btn-info" onclick="playTrailer('${item.trailer}')">🎞 Trailer</button>` : ''}
+          </div>
+          ${item.cast && item.cast.length ? `
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem">CAST</div>
+            <div style="display:flex;gap:0.5rem;overflow-x:auto;padding-bottom:0.5rem">
+              ${item.cast.slice(0,8).map(c => `
+                <div style="flex-shrink:0;text-align:center;width:60px">
+                  <div style="width:50px;height:50px;border-radius:50%;overflow:hidden;background:var(--card);margin:0 auto 0.3rem">
+                    ${c.photo ? `<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover" />` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:1.25rem">👤</div>`}
+                  </div>
+                  <div style="font-size:0.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.name}</div>
                 </div>
-                <h2 class="section-title"><i class="fas fa-fire"></i> TRENDING NOW</h2>
-                <div class="content-grid" id="trendingGrid">
-                    <div class="loading"><div class="spinner"></div></div>
-                </div>
-            `;
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      </div>
+      <div id="watch-panel" style="display:none" class="section" style="padding-top:0">
+        <div style="padding:0 2rem 2rem">
+          ${type === 'tv' ? `
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap">
+              <select class="season-select" id="season-select" onchange="changeSeason(this.value)">
+                ${Array.from({length: item.seasons||1}, (_,i) => `<option value="${i+1}">Season ${i+1}</option>`).join('')}
+              </select>
+              <span style="color:var(--muted);font-size:0.8rem">Select episode below</span>
+            </div>
+            <div class="episode-grid" id="episode-grid">Loading episodes...</div>
+          ` : ''}
+          <div class="watch-player" style="margin-top:${type==='tv'?'1rem':'0'}">
+            <iframe id="main-player" src="${currentSources[0]?.url||''}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" sandbox="allow-scripts allow-same-origin allow-presentation allow-forms"></iframe>
+          </div>
+          <div style="margin-top:0.75rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
+            <span style="font-size:0.75rem;color:var(--muted)">Sources:</span>
+            <div class="source-tabs" id="source-tabs">
+              ${currentSources.map((s,i) => `<button class="source-tab${i===0?' active':''}" onclick="switchSource(${i}, this)">${s.name}</button>`).join('')}
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:0.75rem;margin-top:0.5rem">
+            If a source doesn't work, try the next one. 
+            <a href="${currentSources[0]?.url}" target="_blank" style="color:var(--neon)">Open externally →</a>
+          </p>
+        </div>
+      </div>
+    `;
 
-            try {
-                const response = await fetch(`${API_URL}/movies/trending`);
-                const data = await response.json();
-                
-                const grid = document.getElementById('trendingGrid');
-                if (!data.movies?.length) {
-                    grid.innerHTML = '<p style="text-align: center;">No movies available</p>';
-                } else {
-                    grid.innerHTML = data.movies.map(movie => createMovieCard(movie)).join('');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
+    if (type === 'tv') loadEpisodes(id, 1);
+  } catch(e) {
+    document.getElementById('modal-content').innerHTML = `<div style="padding:3rem;text-align:center;color:var(--danger)">Error: ${e.message}</div>`;
+  }
+}
+
+function showCustomModal(item) {
+  document.getElementById('modal-content').innerHTML = `
+    <div style="padding:2rem">
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+        ${item.poster_url ? `<img src="${item.poster_url}" style="width:130px;border-radius:10px;object-fit:cover;flex-shrink:0" />` : ''}
+        <div style="flex:1">
+          <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:0.5rem">${item.title}</h2>
+          <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap">
+            ${item.year ? `<span class="meta-badge">${item.year}</span>` : ''}
+            ${item.rating ? `<span class="meta-badge" style="color:var(--warn)">★ ${item.rating}</span>` : ''}
+            ${item.genre ? `<span class="meta-badge">${item.genre}</span>` : ''}
+          </div>
+          <p style="color:rgba(232,238,244,0.75);line-height:1.7;margin-bottom:1.5rem">${item.description||''}</p>
+        </div>
+      </div>
+      <div class="watch-player" style="margin-top:1.5rem">
+        ${item.video_url.endsWith('.mp4') || item.video_url.includes('.m3u8')
+          ? `<video controls style="width:100%;height:100%;" src="${item.video_url}">Your browser does not support video.</video>`
+          : `<iframe src="${item.video_url}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`
         }
+      </div>
+    </div>
+  `;
+}
 
-        // Movies Page
-        async function showMovies(container, type) {
-            container.innerHTML = `
-                <h1 class="section-title"><i class="fas fa-${type === 'Movie' ? 'film' : 'tv'}"></i> ${type === 'Movie' ? 'MOVIES' : 'TV SHOWS'}</h1>
-                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
-                    <input type="text" id="searchInput" placeholder="Search..." style="flex: 1; min-width: 200px; padding: 1rem; border: 2px solid var(--primary); border-radius: 30px; background: var(--gray-dark); color: var(--text);">
-                    <select id="genreFilter" style="padding: 1rem; border: 2px solid var(--primary); border-radius: 30px; background: var(--gray-dark); color: var(--text);">
-                        <option value="all">All Genres</option>
-                    </select>
-                </div>
-                <div class="content-grid" id="contentGrid">
-                    <div class="loading"><div class="spinner"></div></div>
-                </div>
-            `;
+function showWatchPanel() {
+  document.getElementById('watch-panel').style.display = 'block';
+  document.getElementById('watch-panel').scrollIntoView({ behavior: 'smooth' });
+}
 
-            // Load genres
-            try {
-                const genresRes = await fetch(`${API_URL}/movies/genres`);
-                const genresData = await genresRes.json();
-                const select = document.getElementById('genreFilter');
-                if (genresData.genres) {
-                    genresData.genres.forEach(genre => {
-                        select.innerHTML += `<option value="${genre}">${genre}</option>`;
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading genres:', error);
-            }
+function playTrailer(url) {
+  document.getElementById('detail-modal').style.display = 'flex';
+  document.getElementById('modal-content').innerHTML = `
+    <div style="padding:1.5rem">
+      <h3 style="margin-bottom:1rem;font-family:var(--font-display)">TRAILER</h3>
+      <div class="watch-player">
+        <iframe src="${url}?autoplay=1" allowfullscreen allow="autoplay"></iframe>
+      </div>
+    </div>
+  `;
+}
 
-            // Event listeners
-            document.getElementById('searchInput').addEventListener('input', () => loadContent(type));
-            document.getElementById('genreFilter').addEventListener('change', () => loadContent(type));
+function switchSource(idx, btn) {
+  activeSourceIdx = idx;
+  document.querySelectorAll('.source-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const src = currentSources[idx]?.url;
+  if (src) {
+    document.getElementById('main-player').src = src;
+    document.querySelector('a[href*="open"]') && (document.querySelector('a').href = src);
+  }
+}
 
-            await loadContent(type);
+async function loadEpisodes(tmdbId, season) {
+  const grid = document.getElementById('episode-grid');
+  if (!grid) return;
+  grid.innerHTML = 'Loading...';
+  try {
+    const data = await api(`/api/tv/${tmdbId}/season/${season}`);
+    grid.innerHTML = data.episodes.map(ep => `
+      <button class="episode-btn${ep.episode_number===1?' active':''}" onclick="watchEpisode(${tmdbId}, ${season}, ${ep.episode_number}, this)">
+        E${ep.episode_number}: ${ep.name}
+      </button>
+    `).join('');
+  } catch(e) {
+    grid.innerHTML = `<div style="color:var(--muted)">Could not load episodes</div>`;
+  }
+}
+
+async function changeSeason(season) {
+  currentSeason = parseInt(season);
+  if (currentModal) loadEpisodes(currentModal.id, currentSeason);
+}
+
+function watchEpisode(tmdbId, season, episode, btn) {
+  currentEpisode = episode;
+  document.querySelectorAll('.episode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const sources = currentSources; // rebuild if needed
+  // Update sources for this season/episode
+  fetch(`${API_BASE}/api/tv/${tmdbId}/season/${season}`)
+    .then(r => r.json())
+    .then(data => {
+      const ep = data.episodes.find(e => e.episode_number === episode);
+      if (ep && ep.embed_sources) {
+        currentSources = ep.embed_sources;
+        document.getElementById('main-player').src = currentSources[0]?.url || '';
+        document.getElementById('source-tabs').innerHTML = currentSources.map((s,i) =>
+          `<button class="source-tab${i===0?' active':''}" onclick="switchSource(${i}, this)">${s.name}</button>`
+        ).join('');
+      }
+    });
+}
+
+function closeModal() {
+  document.getElementById('detail-modal').style.display = 'none';
+  const player = document.getElementById('main-player');
+  if (player) player.src = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('detail-modal')) closeModal();
+}
+
+// ════════════════════════════════════════════════
+//  SEARCH
+// ════════════════════════════════════════════════
+const searchInput = document.getElementById('search-input');
+const searchDropdown = document.getElementById('search-dropdown');
+
+searchInput.addEventListener('input', () => {
+  clearTimeout(searchTimeout);
+  const q = searchInput.value.trim();
+  if (!q) { searchDropdown.classList.remove('show'); return; }
+  searchTimeout = setTimeout(() => doSearch(q), 350);
+});
+
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { searchDropdown.classList.remove('show'); searchInput.blur(); }
+});
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('search-wrap').contains(e.target)) {
+    searchDropdown.classList.remove('show');
+  }
+});
+
+async function doSearch(q) {
+  try {
+    const data = await api(`/api/search?q=${encodeURIComponent(q)}`);
+    if (!data.results.length) {
+      searchDropdown.innerHTML = `<div style="padding:1rem;color:var(--muted);font-size:0.875rem;text-align:center">No results for "${q}"</div>`;
+      searchDropdown.classList.add('show');
+      return;
+    }
+    searchDropdown.innerHTML = data.results.slice(0, 8).map(item => `
+      <div class="search-result-item" onclick="openDetail(${item.id||item.tmdb_id}, '${item.type||'movie'}', ${!item.tmdb_id})">
+        <img src="${item.poster||item.poster_url||''}" onerror="this.style.background='var(--dark2)';this.src=''" />
+        <div>
+          <div style="font-size:0.875rem;font-weight:500">${item.title}</div>
+          <div style="font-size:0.75rem;color:var(--muted)">${item.year||''} · ${item.type||item.category||'movie'}</div>
+        </div>
+        ${item.rating ? `<span style="margin-left:auto;font-size:0.75rem;color:var(--warn)">★ ${item.rating}</span>` : ''}
+      </div>
+    `).join('');
+    searchDropdown.classList.add('show');
+  } catch(e) {
+    searchDropdown.innerHTML = `<div style="padding:1rem;color:var(--danger);font-size:0.8rem">Search error: ${e.message}</div>`;
+    searchDropdown.classList.add('show');
+  }
+}
+
+// ════════════════════════════════════════════════
+//  ADMIN
+// ════════════════════════════════════════════════
+async function initAdmin() {
+  loadAdminDashboard();
+  loadAdminContent();
+  loadAdminSports();
+  const urlInput = document.getElementById('settings-api-url');
+  if (urlInput) urlInput.value = API_BASE;
+}
+
+async function loadAdminDashboard() {
+  try {
+    const data = await api('/api/admin/dashboard');
+    document.getElementById('stat-total').textContent = data.total_content;
+    document.getElementById('stat-movies').textContent = data.movies;
+    document.getElementById('stat-tv').textContent = data.tv_shows;
+    document.getElementById('stat-sports').textContent = data.sports;
+    document.getElementById('stat-streams').textContent = data.sports_streams;
+    document.getElementById('stat-tmdb').textContent = data.tmdb_configured ? '✅' : '❌';
+  } catch(e) { console.warn('Dashboard error:', e); }
+}
+
+async function loadAdminContent() {
+  const tbody = document.getElementById('content-tbody');
+  try {
+    const data = await api('/api/admin/content');
+    if (!data.results.length) {
+      tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:2rem">No custom content yet</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.results.map(item => `
+      <tr>
+        <td style="color:var(--muted)">#${item.id}</td>
+        <td>${item.title}</td>
+        <td><span class="category-badge badge-${item.category}">${item.category}</span></td>
+        <td>${item.year||'–'}</td>
+        <td>${item.rating||'–'}</td>
+        <td style="color:var(--muted);font-size:0.75rem">${(item.created_at||'').split('T')[0]}</td>
+        <td>
+          <button class="btn-danger" onclick="deleteContent(${item.id})">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--danger)">Error: ${e.message}</td></tr>`;
+  }
+}
+
+async function loadAdminSports() {
+  const tbody = document.getElementById('sports-tbody');
+  try {
+    const live = await api('/api/sports/live');
+    const schedule = await api('/api/sports/schedule');
+    const all = [...live.results.filter(s => typeof s.id === 'number'), ...schedule.results];
+    if (!all.length) {
+      tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:2rem">No sports streams added</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = all.map(s => `
+      <tr>
+        <td style="color:var(--muted)">#${s.id}</td>
+        <td>${s.title}</td>
+        <td>${s.league}</td>
+        <td><span style="color:${s.status==='live'?'var(--danger)':'var(--muted)'};font-size:0.75rem">${s.status==='live'?'🔴 LIVE':'📅 Upcoming'}</span></td>
+        <td><button class="btn-danger" onclick="deleteSports(${s.id})">Delete</button></td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--danger)">Error: ${e.message}</td></tr>`;
+  }
+}
+
+async function adminAddContent() {
+  const title = document.getElementById('add-title').value.trim();
+  const video_url = document.getElementById('add-video-url').value.trim();
+  if (!title || !video_url) { showToast('Title and Video URL are required', 'error'); return; }
+  try {
+    await api('/api/admin/add', {
+      method: 'POST',
+      body: JSON.stringify({
+        title,
+        video_url,
+        poster_url: document.getElementById('add-poster').value.trim(),
+        description: document.getElementById('add-description').value.trim(),
+        category: document.getElementById('add-category').value,
+        genre: document.getElementById('add-genre').value.trim(),
+        year: parseInt(document.getElementById('add-year').value) || null,
+        rating: parseFloat(document.getElementById('add-rating').value) || 0,
+      })
+    });
+    showToast('Content added!', 'success');
+    ['add-title','add-video-url','add-poster','add-description','add-genre','add-year','add-rating'].forEach(id => document.getElementById(id).value = '');
+    loadAdminContent();
+    loadAdminDashboard();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function deleteContent(id) {
+  if (!confirm('Delete this content?')) return;
+  try {
+    await api(`/api/admin/content/${id}`, { method: 'DELETE' });
+    showToast('Deleted', 'success');
+    loadAdminContent();
+    loadAdminDashboard();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function adminAddSports() {
+  const title = document.getElementById('sp-title').value.trim();
+  const embed_url = document.getElementById('sp-url').value.trim();
+  if (!title || !embed_url) { showToast('Title and URL required', 'error'); return; }
+  try {
+    await api('/api/admin/sports/add', {
+      method: 'POST',
+      body: JSON.stringify({
+        title,
+        league: document.getElementById('sp-league').value,
+        embed_url,
+        thumbnail: document.getElementById('sp-thumb').value.trim(),
+        status: document.getElementById('sp-status').value,
+        start_time: document.getElementById('sp-time').value,
+        home_team: document.getElementById('sp-home').value.trim(),
+        away_team: document.getElementById('sp-away').value.trim(),
+      })
+    });
+    showToast('Stream added!', 'success');
+    ['sp-title','sp-url','sp-thumb','sp-time','sp-home','sp-away'].forEach(id => document.getElementById(id).value = '');
+    loadAdminSports();
+    loadAdminDashboard();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function deleteSports(id) {
+  if (!confirm('Delete this stream?')) return;
+  try {
+    await api(`/api/admin/sports/${id}`, { method: 'DELETE' });
+    showToast('Deleted', 'success');
+    loadAdminSports();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function switchAdminTab(tab, btn) {
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(`tab-${tab}`).classList.add('active');
+}
+
+function saveSettings() {
+  const url = document.getElementById('settings-api-url').value.trim();
+  if (!url) { showToast('Enter a valid URL', 'error'); return; }
+  API_BASE = url;
+  localStorage.setItem('xstream_api_base', url);
+  showToast('Settings saved! Reload to apply.', 'success');
+}
+
+// ════════════════════════════════════════════════
+//  AUTH
+// ════════════════════════════════════════════════
+function showLoginScreen() {
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+function hideLogin() {
+  document.getElementById('login-screen').style.display = 'none';
+}
+
+async function doLogin() {
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  try {
+    const data = await api('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password })
+    });
+    authToken = data.token;
+    localStorage.setItem('xstream_token', authToken);
+    hideLogin();
+    showPage('admin');
+    document.getElementById('admin-btn').style.display = 'flex';
+    showToast('Welcome back, admin!', 'success');
+  } catch(e) {
+    errEl.textContent = 'Invalid credentials. Check username/password.';
+    errEl.style.display = 'block';
+  }
+}
+
+function adminLogout() {
+  authToken = null;
+  localStorage.removeItem('xstream_token');
+  document.getElementById('admin-btn').style.display = 'none';
+  showPage('home');
+  showToast('Logged out', 'success');
+}
+
+async function checkAuth() {
+  if (!authToken) return;
+  try {
+    await api('/api/auth/check');
+    document.getElementById('admin-btn').style.display = 'flex';
+  } catch(e) {
+    authToken = null;
+    localStorage.removeItem('xstream_token');
+  }
+}
+
+// ════════════════════════════════════════════════
+//  CARD TEMPLATES
+// ════════════════════════════════════════════════
+function movieCard(item, isCustom = false) {
+  const id = item.id || item.tmdb_id;
+  const type = item.type || item.category || 'movie';
+  const isCustomContent = isCustom || item.source !== 'tmdb';
+  return `
+    <div class="card" onclick="openDetail(${id}, '${isCustomContent ? 'custom' : type}', ${isCustomContent})">
+      <div class="card-poster">
+        ${item.poster || item.poster_url
+          ? `<img src="${item.poster || item.poster_url}" alt="${item.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-poster-fallback><span>🎬</span></div>'" />`
+          : `<div class="card-poster-fallback"><span>🎬</span></div>`
         }
+        <div class="card-overlay"><div class="card-play-btn">▶</div></div>
+        ${item.rating ? `<div class="card-rating">★ ${item.rating}</div>` : ''}
+        <div class="card-type-badge">${type.toUpperCase()}</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">${item.title}</div>
+        <div class="card-year">${item.year || ''}</div>
+      </div>
+    </div>
+  `;
+}
 
-        async function loadContent(type) {
-            const search = document.getElementById('searchInput')?.value || '';
-            const genre = document.getElementById('genreFilter')?.value || 'all';
-            
-            try {
-                let url = search 
-                    ? `${API_URL}/movies/search?q=${encodeURIComponent(search)}`
-                    : `${API_URL}/movies?type=${type}${genre !== 'all' ? `&genre=${genre}` : ''}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                const grid = document.getElementById('contentGrid');
-                const movies = data.movies || [];
-                
-                if (movies.length === 0) {
-                    grid.innerHTML = '<p style="text-align: center;">No content found</p>';
-                } else {
-                    grid.innerHTML = movies.map(movie => createMovieCard(movie)).join('');
-                }
-            } catch (error) {
-                console.error('Error loading content:', error);
-                document.getElementById('contentGrid').innerHTML = '<p style="text-align: center;">Error loading content</p>';
-            }
+function sportsCard(s) {
+  const isLive = s.status === 'live';
+  return `
+    <div class="sports-card" onclick="openSportsStream('${s.embed_url}','${s.title.replace(/'/g,"\\'")}')">
+      <div class="sports-thumb">
+        ${s.thumbnail
+          ? `<img src="${s.thumbnail}" onerror="this.parentElement.innerHTML='<span style=font-size:3rem>${leagueIcon(s.league)}</span>'" />`
+          : `<span style="font-size:3rem">${leagueIcon(s.league)}</span>`
         }
+      </div>
+      <div class="card-live-badge" style="position:absolute;top:8px;left:8px;${isLive?'':'background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2)'}">
+        ${isLive ? `<span class="live-dot"></span>LIVE` : '📅'}
+      </div>
+      <div class="sports-card-body">
+        <div class="sports-league">${(s.league||'').toUpperCase()}</div>
+        <div class="sports-title">${s.title}</div>
+        <div class="sports-teams">
+          <span>${s.home_team||''}</span>
+          ${s.home_team && s.away_team ? '<span style="color:var(--neon)">vs</span>' : ''}
+          <span>${s.away_team||''}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
 
-        function createMovieCard(movie) {
-            return `
-                <div class="content-card" onclick="showWatchPage(null, ${movie.id})">
-                    <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450?text=NO+IMAGE'}" class="card-thumbnail" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x450?text=ERROR'">
-                    <div class="card-info">
-                        <div class="card-title">${movie.title}</div>
-                        <div class="card-meta">
-                            <span>${movie.release_year || 'N/A'}</span>
-                            <span class="card-rating"><i class="fas fa-star"></i> ${movie.rating ? movie.rating.toFixed(1) : '0.0'}</span>
-                            <span class="card-type">${movie.type || 'Movie'}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+function leagueIcon(league) {
+  const icons = { nba:'🏀', nfl:'🏈', soccer:'⚽', f1:'🏎️', ufc:'🥊', nhl:'🏒', mlb:'⚾', other:'🏆' };
+  return icons[(league||'').toLowerCase()] || '🏆';
+}
 
-        // Watch Page with Video.js Player
-        async function showWatchPage(container, movieId) {
-            if (!container) container = document.getElementById('mainContainer');
+// ════════════════════════════════════════════════
+//  UI HELPERS
+// ════════════════════════════════════════════════
+function skeletonCards(n) {
+  return Array(n).fill(0).map(() => `
+    <div style="flex-shrink:0;width:160px">
+      <div class="skeleton" style="width:100%;aspect-ratio:2/3;border-radius:10px"></div>
+      <div class="skeleton" style="height:12px;margin-top:8px;width:80%"></div>
+      <div class="skeleton" style="height:10px;margin-top:4px;width:40%"></div>
+    </div>
+  `).join('');
+}
 
-            try {
-                const response = await fetch(`${API_URL}/movies/${movieId}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                const movie = data.movie;
-                const comments = data.comments || [];
+function skeletonGrid(n) {
+  return Array(n).fill(0).map(() => `
+    <div>
+      <div class="skeleton" style="width:100%;aspect-ratio:2/3;border-radius:10px"></div>
+      <div class="skeleton" style="height:12px;margin-top:8px;width:80%"></div>
+    </div>
+  `).join('');
+}
 
-                container.innerHTML = `
-                    <div class="watch-container">
-                        <div class="video-wrapper">
-                            <video-js id="moviePlayer" class="video-js vjs-theme-forest vjs-big-play-centered" controls preload="auto">
-                                <source src="${movie.video_url}" type="video/mp4">
-                                <p class="vjs-no-js">Please enable JavaScript</p>
-                            </video-js>
-                        </div>
+function errorMsg(msg) {
+  return `<div style="padding:2rem;color:var(--muted);font-size:0.875rem">⚠ ${msg}</div>`;
+}
 
-                        <div class="movie-header">
-                            <img src="${movie.thumbnail || 'https://via.placeholder.com/300x450'}" class="movie-poster" alt="${movie.title}" onerror="this.src='https://via.placeholder.com/300x450?text=ERROR'">
-                            <div class="movie-info">
-                                <h1>${movie.title}</h1>
-                                <div class="movie-meta">
-                                    <span><i class="far fa-calendar"></i> ${movie.release_year || 'N/A'}</span>
-                                    <span><i class="fas fa-tag"></i> ${movie.genre || 'N/A'}</span>
-                                    <span><i class="fas fa-film"></i> ${movie.type || 'Movie'}</span>
-                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating ? movie.rating.toFixed(1) : '0.0'}</span>
-                                    <span><i class="fas fa-eye"></i> ${movie.views || 0}</span>
-                                </div>
-                                <p class="movie-description">${movie.description || 'No description available.'}</p>
-                                
-                                ${currentUser ? `
-                                    <div class="rating-container">
-                                        <div class="stars" id="ratingStars">
-                                            ${[1,2,3,4,5,6,7,8,9,10].map(i => `
-                                                <i class="fas fa-star star" data-rating="${i}" onclick="setRating(${movie.id}, ${i})"></i>
-                                            `).join('')}
-                                        </div>
-                                        <span class="rating-value" id="ratingValue">0/10</span>
-                                    </div>
-                                    <div class="movie-actions">
-                                        <button class="btn btn-outline" onclick="addToWatchlist(${movie.id})" id="watchlistBtn">
-                                            <i class="fas fa-plus"></i> ADD TO WATCHLIST
-                                        </button>
-                                    </div>
-                                ` : ''}
-                            </div>
-                        </div>
+function emptyMsg(msg) {
+  return `<div style="padding:3rem;text-align:center;color:var(--muted)">${msg}</div>`;
+}
 
-                        <div class="comments-section">
-                            <h3><i class="far fa-comments"></i> COMMENTS (${comments.length})</h3>
-                            ${currentUser ? `
-                                <div class="comment-form">
-                                    <input type="text" id="commentInput" placeholder="Add a comment...">
-                                    <button class="btn btn-primary" onclick="addComment(${movie.id})">POST</button>
-                                </div>
-                            ` : '<p>Login to comment</p>'}
-                            <div id="commentsList">
-                                ${comments.map(comment => `
-                                    <div class="comment">
-                                        <div class="comment-header">
-                                            <span class="comment-username"><i class="fas fa-user-circle"></i> ${comment.username}</span>
-                                            <span>${new Date(comment.created_at).toLocaleDateString()}</span>
-                                        </div>
-                                        <p>${comment.content}</p>
-                                        ${currentUser?.role === 'owner' ? `
-                                            <div class="comment-actions">
-                                                <button class="btn btn-danger btn-small" onclick="deleteComment(${comment.id})">DELETE</button>
-                                            </div>
-                                        ` : ''}
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-                `;
+function showToast(msg, type = 'success') {
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.innerHTML = `${type === 'success' ? '✓' : '✕'} ${msg}`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3200);
+}
 
-                // Initialize Video.js player
-                setTimeout(() => {
-                    if (document.getElementById('moviePlayer')) {
-                        currentPlayer = videojs('moviePlayer', {
-                            fluid: true,
-                            playbackRates: [0.5, 1, 1.5, 2],
-                            controlBar: {
-                                children: [
-                                    'playToggle',
-                                    'volumePanel',
-                                    'currentTimeDisplay',
-                                    'timeDivider',
-                                    'durationDisplay',
-                                    'progressControl',
-                                    'playbackRateMenuButton',
-                                    'fullscreenToggle'
-                                ]
-                            }
-                        });
+// ════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  checkAuth();
 
-                        // Track progress
-                        currentPlayer.on('timeupdate', () => {
-                            const progress = Math.floor((currentPlayer.currentTime() / currentPlayer.duration()) * 100);
-                            if (currentUser && !isNaN(progress) && progress > 0 && progress % 10 === 0) {
-                                updateWatchProgress(movie.id, progress);
-                            }
-                        });
-                    }
-                }, 100);
+  // Handle admin route via hash
+  if (window.location.hash === '#admin') {
+    goAdmin();
+  } else {
+    initHome();
+  }
 
-                // Check if movie is in watchlist
-                if (currentUser) {
-                    checkWatchlistStatus(movie.id);
-                }
-
-            } catch (error) {
-                console.error('Error loading movie:', error);
-                container.innerHTML = '<p style="text-align: center;">Failed to load movie. Please try again.</p>';
-            }
-        }
-
-        // Rating functions
-        function setRating(movieId, rating) {
-            userRating = rating;
-            const stars = document.querySelectorAll('.star');
-            stars.forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
-            });
-            document.getElementById('ratingValue').textContent = `${rating}/10`;
-            submitRating(movieId, rating);
-        }
-
-        async function submitRating(movieId, rating) {
-            try {
-                const response = await fetch(`${API_URL}/movies/${movieId}/rate?rating=${rating}`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                if (response.ok) {
-                    showAlert('Rating submitted!', 'success');
-                }
-            } catch (error) {
-                console.error('Error submitting rating:', error);
-            }
-        }
-
-        // Watchlist functions
-        async function addToWatchlist(movieId) {
-            try {
-                const response = await fetch(`${API_URL}/user/watchlist/${movieId}`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                if (response.ok) {
-                    showAlert('Added to watchlist!', 'success');
-                    document.getElementById('watchlistBtn').innerHTML = '<i class="fas fa-check"></i> IN WATCHLIST';
-                }
-            } catch (error) {
-                console.error('Error adding to watchlist:', error);
-            }
-        }
-
-        async function checkWatchlistStatus(movieId) {
-            try {
-                const response = await fetch(`${API_URL}/user/watchlist`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                const inWatchlist = data.watchlist?.some(m => m.id == movieId);
-                if (inWatchlist) {
-                    document.getElementById('watchlistBtn').innerHTML = '<i class="fas fa-check"></i> IN WATCHLIST';
-                }
-            } catch (error) {
-                console.error('Error checking watchlist:', error);
-            }
-        }
-
-        // Update watch progress
-        async function updateWatchProgress(movieId, progress) {
-            try {
-                await fetch(`${API_URL}/user/history/${movieId}?progress=${progress}`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-            } catch (error) {
-                console.error('Error updating progress:', error);
-            }
-        }
-
-        // Add comment
-        async function addComment(movieId) {
-            const content = document.getElementById('commentInput').value.trim();
-            if (!content) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ content, movie_id: movieId })
-                });
-                
-                if (response.ok) {
-                    showAlert('Comment added!', 'success');
-                    showWatchPage(null, movieId);
-                }
-            } catch (error) {
-                console.error('Error adding comment:', error);
-            }
-        }
-
-        // Delete comment
-        async function deleteComment(commentId) {
-            if (!confirm('Delete this comment?')) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/comments/${commentId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                if (response.ok) {
-                    showAlert('Comment deleted', 'success');
-                    location.reload();
-                }
-            } catch (error) {
-                console.error('Error deleting comment:', error);
-            }
-        }
-
-        // Profile Page
-        async function showProfile(container) {
-            if (!currentUser) {
-                showPage('home');
-                return;
-            }
-
-            container.innerHTML = `
-                <div class="profile-container">
-                    <div class="profile-header">
-                        <img src="${currentUser.avatar_url || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=e50914&color=fff&size=128'}" class="profile-avatar" alt="Avatar">
-                        <div class="profile-info">
-                            <h2 class="profile-username">${currentUser.username}</h2>
-                            <p class="profile-bio">${currentUser.bio || 'No bio yet'}</p>
-                            <div class="profile-stats" id="profileStats">
-                                <div class="stat-item">
-                                    <div class="stat-value">0</div>
-                                    <div class="stat-label">WATCHLIST</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">0</div>
-                                    <div class="stat-label">HISTORY</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">0</div>
-                                    <div class="stat-label">COMMENTS</div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline" onclick="showEditProfile()">EDIT PROFILE</button>
-                    </div>
-
-                    <div class="profile-tabs">
-                        <div class="profile-tab active" onclick="switchProfileTab('watchlist')">WATCHLIST</div>
-                        <div class="profile-tab" onclick="switchProfileTab('history')">HISTORY</div>
-                        <div class="profile-tab" onclick="switchProfileTab('comments')">COMMENTS</div>
-                    </div>
-
-                    <div class="profile-content" id="profileContent">
-                        <div class="loading"><div class="spinner"></div></div>
-                    </div>
-                </div>
-            `;
-
-            await loadProfileStats();
-            await loadWatchlist();
-        }
-
-        async function loadProfileStats() {
-            try {
-                const response = await fetch(`${API_URL}/user/profile`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                if (data.profile?.stats) {
-                    document.querySelector('.profile-stats').innerHTML = `
-                        <div class="stat-item">
-                            <div class="stat-value">${data.profile.stats.watchlist || 0}</div>
-                            <div class="stat-label">WATCHLIST</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${data.profile.stats.history || 0}</div>
-                            <div class="stat-label">HISTORY</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">${data.profile.stats.comments || 0}</div>
-                            <div class="stat-label">COMMENTS</div>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
-        }
-
-        async function loadWatchlist() {
-            try {
-                const response = await fetch(`${API_URL}/user/watchlist`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                const content = document.getElementById('profileContent');
-                
-                if (!data.watchlist?.length) {
-                    content.innerHTML = '<p style="text-align: center;">Your watchlist is empty</p>';
-                } else {
-                    content.innerHTML = data.watchlist.map(movie => `
-                        <div class="watchlist-item" onclick="showWatchPage(null, ${movie.id})">
-                            <img src="${movie.thumbnail || 'https://via.placeholder.com/80x120'}" class="watchlist-thumb" alt="${movie.title}">
-                            <div class="watchlist-info">
-                                <div class="watchlist-title">${movie.title}</div>
-                                <div class="watchlist-meta">
-                                    <span>${movie.release_year || 'N/A'}</span>
-                                    <span><i class="fas fa-star" style="color: gold;"></i> ${movie.rating ? movie.rating.toFixed(1) : '0.0'}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Error loading watchlist:', error);
-            }
-        }
-
-        async function loadHistory() {
-            try {
-                const response = await fetch(`${API_URL}/user/history`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                const content = document.getElementById('profileContent');
-                
-                if (!data.history?.length) {
-                    content.innerHTML = '<p style="text-align: center;">No watch history</p>';
-                } else {
-                    content.innerHTML = data.history.map(item => `
-                        <div class="history-item" onclick="showWatchPage(null, ${item.movie.id})">
-                            <img src="${item.movie.thumbnail || 'https://via.placeholder.com/80x120'}" class="history-thumb" alt="${item.movie.title}">
-                            <div class="history-info">
-                                <div class="history-title">${item.movie.title}</div>
-                                <div class="history-meta">
-                                    <span>${new Date(item.last_watched).toLocaleDateString()}</span>
-                                    <span>${item.completed ? 'Completed' : 'In Progress'}</span>
-                                </div>
-                                <div class="history-progress">
-                                    <div class="progress-fill" style="width: ${item.progress || 0}%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Error loading history:', error);
-            }
-        }
-
-        function switchProfileTab(tab) {
-            document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            if (tab === 'watchlist') loadWatchlist();
-            else if (tab === 'history') loadHistory();
-            else if (tab === 'comments') loadUserComments();
-        }
-
-        // Chat Page
-        async function showChat(container) {
-            container.innerHTML = `
-                <h1 class="section-title"><i class="fas fa-comments"></i> GLOBAL CHAT</h1>
-                <div class="chat-container">
-                    <div class="tags-container" id="tagSelector">
-                        <button class="tag-btn" data-tag="general">#general</button>
-                        <button class="tag-btn" data-tag="movies">#movies</button>
-                        <button class="tag-btn" data-tag="tv">#tv</button>
-                        <button class="tag-btn" data-tag="help">#help</button>
-                        <button class="tag-btn" data-tag="spoilers">#spoilers</button>
-                        <button class="tag-btn" data-tag="random">#random</button>
-                    </div>
-                    <div class="chat-messages" id="chatMessages">
-                        <div class="loading"><div class="spinner"></div></div>
-                    </div>
-                    ${currentUser ? `
-                        <div class="chat-input">
-                            <input type="text" id="chatInput" placeholder="Type your message..." maxlength="500">
-                            <button class="btn btn-primary" onclick="sendChatMessage()">SEND</button>
-                        </div>
-                    ` : '<p style="text-align: center;">Login to chat</p>'}
-                </div>
-            `;
-
-            // Load messages
-            await loadChatMessages();
-            
-            // Auto refresh
-            if (chatInterval) clearInterval(chatInterval);
-            chatInterval = setInterval(loadChatMessages, 3000);
-            
-            // Tag click handlers
-            document.querySelectorAll('.tag-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    selectedTag = btn.dataset.tag;
-                    loadChatMessages();
-                });
-            });
-        }
-
-        async function loadChatMessages() {
-            try {
-                let url = `${API_URL}/chat/messages?limit=50`;
-                if (selectedTag) url += `&tag=${selectedTag}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                const container = document.getElementById('chatMessages');
-                if (!data.messages?.length) {
-                    container.innerHTML = '<p style="text-align: center;">No messages</p>';
-                    return;
-                }
-                
-                container.innerHTML = data.messages.map(msg => `
-                    <div class="chat-message">
-                        <div class="chat-message-header">
-                            <span class="chat-message-username">
-                                <i class="fas fa-user-circle"></i> ${msg.username}
-                            </span>
-                            <span>${new Date(msg.created_at).toLocaleTimeString()}</span>
-                        </div>
-                        <div>${msg.content}</div>
-                        <div class="chat-tags">
-                            ${msg.tags.map(t => `<span class="chat-tag">#${t}</span>`).join('')}
-                        </div>
-                        ${currentUser?.role === 'owner' || currentUser?.username === msg.username ? `
-                            <button class="btn btn-danger btn-small" onclick="deleteChatMessage(${msg.id})">DELETE</button>
-                        ` : ''}
-                    </div>
-                `).join('');
-                
-                container.scrollTop = container.scrollHeight;
-            } catch (error) {
-                console.error('Error loading messages:', error);
-            }
-        }
-
-        async function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const content = input.value.trim();
-            if (!content) return;
-            
-            const tags = [];
-            document.querySelectorAll('.tag-btn.active').forEach(btn => {
-                tags.push(btn.dataset.tag);
-            });
-            
-            try {
-                const response = await fetch(`${API_URL}/chat/messages`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ content, tags })
-                });
-                
-                if (response.ok) {
-                    input.value = '';
-                    await loadChatMessages();
-                }
-            } catch (error) {
-                console.error('Error sending message:', error);
-            }
-        }
-
-        async function deleteChatMessage(messageId) {
-            if (!confirm('Delete this message?')) return;
-            
-            try {
-                await fetch(`${API_URL}/chat/messages/${messageId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                showAlert('Message deleted', 'success');
-                await loadChatMessages();
-            } catch (error) {
-                console.error('Error deleting message:', error);
-            }
-        }
-
-        // Admin Dashboard
-        async function showAdminDashboard() {
-            if (!currentUser || currentUser.role !== 'owner') {
-                showPage('home');
-                return;
-            }
-
-            const container = document.getElementById('mainContainer');
-            container.innerHTML = `
-                <div class="admin-dashboard">
-                    <div class="admin-sidebar">
-                        <h3><i class="fas fa-crown" style="color: gold;"></i> ADMIN</h3>
-                        <ul class="admin-menu">
-                            <li class="active" onclick="switchAdminTab('dashboard')">📊 DASHBOARD</li>
-                            <li onclick="switchAdminTab('users')">👥 USERS</li>
-                            <li onclick="switchAdminTab('movies')">🎬 MOVIES</li>
-                            <li onclick="switchAdminTab('chat')">💬 CHAT</li>
-                            <li onclick="switchAdminTab('upload')">📤 UPLOAD</li>
-                        </ul>
-                    </div>
-                    <div class="admin-content">
-                        <div class="admin-section active" id="admin-dashboard">
-                            <h2>DASHBOARD</h2>
-                            <div class="admin-stats" id="statsContainer">
-                                <div class="loading"><div class="spinner"></div></div>
-                            </div>
-                        </div>
-                        <div class="admin-section" id="admin-users">
-                            <h2>USERS</h2>
-                            <div id="usersList"><div class="loading"><div class="spinner"></div></div></div>
-                        </div>
-                        <div class="admin-section" id="admin-movies">
-                            <h2>MOVIES</h2>
-                            <div id="moviesList"><div class="loading"><div class="spinner"></div></div></div>
-                        </div>
-                        <div class="admin-section" id="admin-chat">
-                            <h2>CHAT MODERATION</h2>
-                            <div id="chatList"><div class="loading"><div class="spinner"></div></div></div>
-                        </div>
-                        <div class="admin-section" id="admin-upload">
-                            <h2>UPLOAD MOVIE</h2>
-                            <div class="upload-form">
-                                <form id="uploadForm" onsubmit="uploadMovie(event)">
-                                    <input type="text" id="movieTitle" placeholder="Title" required>
-                                    <textarea id="movieDescription" placeholder="Description" rows="4" required></textarea>
-                                    <input type="text" id="movieGenre" placeholder="Genre (comma separated)" required>
-                                    <input type="number" id="movieYear" placeholder="Release Year" required>
-                                    <select id="movieType" required>
-                                        <option value="Movie">Movie</option>
-                                        <option value="TV Show">TV Show</option>
-                                    </select>
-                                    <input type="file" id="movieThumbnail" accept="image/*" required>
-                                    <input type="file" id="movieVideo" accept="video/*" required>
-                                    <button type="submit" class="btn btn-primary" style="width: 100%;">UPLOAD</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            await loadAdminStats();
-            await loadAdminUsers();
-            await loadAdminMovies();
-            await loadAdminChat();
-        }
-
-        function switchAdminTab(tab) {
-            document.querySelectorAll('.admin-menu li').forEach(li => li.classList.remove('active'));
-            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(`admin-${tab}`).classList.add('active');
-        }
-
-        async function loadAdminStats() {
-            try {
-                const response = await fetch(`${API_URL}/admin/stats`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const stats = await response.json();
-                document.getElementById('statsContainer').innerHTML = `
-                    <div class="stat-card"><div class="stat-number">${stats.movies || 0}</div><div>MOVIES</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.users || 0}</div><div>USERS</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.messages || 0}</div><div>MESSAGES</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.comments || 0}</div><div>COMMENTS</div></div>
-                    <div class="stat-card"><div class="stat-number">${stats.storage_used_gb || 0}GB</div><div>STORAGE</div></div>
-                `;
-            } catch (error) {
-                console.error('Error loading stats:', error);
-            }
-        }
-
-        async function loadAdminUsers() {
-            try {
-                const response = await fetch(`${API_URL}/admin/users`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                const list = document.getElementById('usersList');
-                
-                if (!data.users?.length) {
-                    list.innerHTML = '<p>No users</p>';
-                    return;
-                }
-                
-                list.innerHTML = `
-                    <table class="admin-table">
-                        <thead><tr><th>USER</th><th>ROLE</th><th>JOINED</th><th>ACTIONS</th></tr></thead>
-                        <tbody>
-                            ${data.users.map(user => `
-                                <tr>
-                                    <td>${user.username}</td>
-                                    <td><span style="color: ${user.role === 'owner' ? 'gold' : user.role === 'banned' ? 'red' : 'white'}">${user.role}</span></td>
-                                    <td>${user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</td>
-                                    <td>
-                                        ${user.role !== 'owner' ? `
-                                            <button class="btn btn-danger btn-small" onclick="toggleUserRole('${user.id}')">
-                                                ${user.role === 'banned' ? 'UNBAN' : 'BAN'}
-                                            </button>
-                                        ` : ''}
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-            } catch (error) {
-                console.error('Error loading users:', error);
-            }
-        }
-
-        async function loadAdminMovies() {
-            try {
-                const response = await fetch(`${API_URL}/admin/movies`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                const list = document.getElementById('moviesList');
-                
-                if (!data.movies?.length) {
-                    list.innerHTML = '<p>No movies</p>';
-                    return;
-                }
-                
-                list.innerHTML = `
-                    <table class="admin-table">
-                        <thead><tr><th>TITLE</th><th>TYPE</th><th>YEAR</th><th>VIEWS</th><th>ACTIONS</th></tr></thead>
-                        <tbody>
-                            ${data.movies.map(movie => `
-                                <tr>
-                                    <td>${movie.title}</td>
-                                    <td>${movie.type}</td>
-                                    <td>${movie.release_year}</td>
-                                    <td>${movie.views || 0}</td>
-                                    <td>
-                                        <button class="btn btn-danger btn-small" onclick="adminDeleteMovie(${movie.id})">DELETE</button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-            } catch (error) {
-                console.error('Error loading movies:', error);
-            }
-        }
-
-        async function loadAdminChat() {
-            try {
-                const response = await fetch(`${API_URL}/admin/chat?limit=100`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                const list = document.getElementById('chatList');
-                
-                if (!data.messages?.length) {
-                    list.innerHTML = '<p>No messages</p>';
-                    return;
-                }
-                
-                list.innerHTML = `
-                    <table class="admin-table">
-                        <thead><tr><th>USER</th><th>MESSAGE</th><th>TIME</th><th>ACTIONS</th></tr></thead>
-                        <tbody>
-                            ${data.messages.map(msg => `
-                                <tr>
-                                    <td>${msg.username}</td>
-                                    <td>${msg.content}</td>
-                                    <td>${new Date(msg.created_at).toLocaleString()}</td>
-                                    <td>
-                                        <button class="btn btn-danger btn-small" onclick="adminDeleteChatMessage(${msg.id})">DELETE</button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-            } catch (error) {
-                console.error('Error loading chat:', error);
-            }
-        }
-
-        async function uploadMovie(event) {
-            event.preventDefault();
-            
-            const formData = new FormData();
-            formData.append('title', document.getElementById('movieTitle').value);
-            formData.append('description', document.getElementById('movieDescription').value);
-            formData.append('genre', document.getElementById('movieGenre').value);
-            formData.append('release_year', document.getElementById('movieYear').value);
-            formData.append('type', document.getElementById('movieType').value);
-            formData.append('thumbnail', document.getElementById('movieThumbnail').files[0]);
-            formData.append('video', document.getElementById('movieVideo').files[0]);
-            
-            try {
-                const response = await fetch(`${API_URL}/admin/movies/upload`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` },
-                    body: formData
-                });
-                
-                if (response.ok) {
-                    showAlert('Movie uploaded!', 'success');
-                    document.getElementById('uploadForm').reset();
-                    switchAdminTab('movies');
-                    await loadAdminMovies();
-                } else {
-                    const error = await response.json();
-                    showAlert(error.detail || 'Upload failed', 'error');
-                }
-            } catch (error) {
-                console.error('Error uploading:', error);
-                showAlert('Upload failed', 'error');
-            }
-        }
-
-        async function toggleUserRole(userId) {
-            try {
-                const response = await fetch(`${API_URL}/admin/users/${userId}/toggle-role`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                if (response.ok) {
-                    showAlert('User role updated', 'success');
-                    await loadAdminUsers();
-                }
-            } catch (error) {
-                console.error('Error toggling role:', error);
-            }
-        }
-
-        async function adminDeleteMovie(movieId) {
-            if (!confirm('Delete this movie?')) return;
-            
-            try {
-                const response = await fetch(`${API_URL}/admin/movies/${movieId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                if (response.ok) {
-                    showAlert('Movie deleted', 'success');
-                    await loadAdminMovies();
-                }
-            } catch (error) {
-                console.error('Error deleting movie:', error);
-            }
-        }
-
-        async function adminDeleteChatMessage(messageId) {
-            if (!confirm('Delete this message?')) return;
-            
-            try {
-                await fetch(`${API_URL}/admin/chat/${messageId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                showAlert('Message deleted', 'success');
-                await loadAdminChat();
-            } catch (error) {
-                console.error('Error deleting message:', error);
-            }
-        }
-
-        // Auth functions
-        function openModal(mode) {
-            document.getElementById('authModal').classList.add('active');
-            document.getElementById('modalTitle').textContent = mode === 'login' ? 'LOGIN' : 'SIGN UP';
-            document.getElementById('emailField').style.display = mode === 'login' ? 'none' : 'block';
-            document.getElementById('modalToggle').innerHTML = mode === 'login' 
-                ? "Don't have an account? SIGN UP" 
-                : "Already have an account? LOGIN";
-        }
-
-        function closeModal() {
-            document.getElementById('authModal').classList.remove('active');
-            document.getElementById('authForm').reset();
-        }
-
-        function toggleAuthMode() {
-            const title = document.getElementById('modalTitle');
-            const emailField = document.getElementById('emailField');
-            const toggle = document.getElementById('modalToggle');
-
-            if (title.textContent === 'LOGIN') {
-                title.textContent = 'SIGN UP';
-                emailField.style.display = 'block';
-                toggle.innerHTML = 'Already have an account? LOGIN';
-            } else {
-                title.textContent = 'LOGIN';
-                emailField.style.display = 'none';
-                toggle.innerHTML = "Don't have an account? SIGN UP";
-            }
-        }
-
-        async function handleAuth(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const email = document.getElementById('email').value;
-            const isLogin = document.getElementById('modalTitle').textContent === 'LOGIN';
-
-            try {
-                const endpoint = isLogin ? '/auth/login' : '/auth/register';
-                const body = isLogin ? { username, password } : { username, password, email };
-
-                const response = await fetch(`${API_URL}${endpoint}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body)
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    if (isLogin) {
-                        currentUser = data.user;
-                        authToken = data.token;
-                        localStorage.setItem('user', JSON.stringify(data.user));
-                        localStorage.setItem('token', data.token);
-                        updateAuthUI();
-                        showAlert(`Welcome, ${username}!`, 'success');
-                        closeModal();
-                        showPage('home');
-                    } else {
-                        showAlert('Account created! Please login.', 'success');
-                        openModal('login');
-                    }
-                } else {
-                    showAlert(data.detail || 'Authentication failed', 'error');
-                }
-            } catch (error) {
-                console.error('Auth error:', error);
-                showAlert('Connection error', 'error');
-            }
-        }
-
-        function updateAuthUI() {
-            const authButtons = document.getElementById('authButtons');
-            const userMenu = document.getElementById('userMenu');
-            const usernameDisplay = document.getElementById('usernameDisplay');
-            const profileLink = document.getElementById('profileLink');
-
-            if (currentUser) {
-                authButtons.style.display = 'none';
-                userMenu.style.display = 'flex';
-                profileLink.style.display = 'inline-block';
-                usernameDisplay.innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.username}`;
-                
-                if (currentUser.role === 'owner' && !document.getElementById('adminLink')) {
-                    const adminLink = document.createElement('a');
-                    adminLink.id = 'adminLink';
-                    adminLink.href = '#';
-                    adminLink.innerHTML = '<i class="fas fa-crown"></i> ADMIN';
-                    adminLink.onclick = () => showPage('admin');
-                    document.querySelector('.nav-links').insertBefore(adminLink, profileLink);
-                }
-            } else {
-                authButtons.style.display = 'flex';
-                userMenu.style.display = 'none';
-                profileLink.style.display = 'none';
-                document.getElementById('adminLink')?.remove();
-            }
-        }
-
-        function logout() {
-            currentUser = null;
-            authToken = null;
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
-            updateAuthUI();
-            showAlert('Logged out', 'success');
-            showPage('home');
-            
-            if (chatInterval) {
-                clearInterval(chatInterval);
-                chatInterval = null;
-            }
-        }
-
-        // Initialize
-        window.onload = () => showPage('home');
-    </script>
+  // Keyboard shortcut: Ctrl+Shift+A = admin login
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+      e.preventDefault();
+      authToken ? showPage('admin') : showLoginScreen();
+    }
+  });
+});
+</script>
 </body>
 </html>
