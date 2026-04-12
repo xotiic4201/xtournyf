@@ -1605,14 +1605,25 @@ footer .footer-logo {
     <!-- Settings Tab -->
     <div class="admin-tab-panel" id="tab-settings">
       <div class="admin-form">
-        <div class="form-title">⚙ BACKEND CONFIGURATION</div>
-        <div class="form-group" style="margin-bottom:1rem">
-          <label>Backend API URL</label>
-          <input class="form-control" id="settings-api-url" placeholder="https://your-app.onrender.com" />
+        <div class="form-title">⚙ CONFIGURATION</div>
+        <div style="background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);border-radius:8px;padding:1rem;margin-bottom:1.25rem;font-size:0.825rem;line-height:1.6">
+          <strong style="color:var(--neon)">🚀 Quick Start (No backend needed!)</strong><br>
+          Just add your free TMDB API key below — you can browse and watch movies/TV instantly.<br>
+          Get a free key at <a href="https://www.themoviedb.org/settings/api" target="_blank" style="color:var(--neon2)">themoviedb.org/settings/api</a>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>🔑 TMDB API Key <span style="color:var(--neon)">(required to browse content)</span></label>
+            <input class="form-control" id="settings-tmdb-key" placeholder="Paste your TMDB API key here" />
+          </div>
+          <div class="form-group">
+            <label>Backend API URL <span style="color:var(--muted)">(optional — Render.com)</span></label>
+            <input class="form-control" id="settings-api-url" placeholder="https://your-app.onrender.com" />
+          </div>
         </div>
         <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
         <p style="color:var(--muted);font-size:0.75rem;margin-top:0.75rem">
-          Set your Render backend URL. This is stored in localStorage.
+          Settings are stored in your browser (localStorage). The TMDB key works entirely client-side — no backend needed.
         </p>
       </div>
 
@@ -1686,10 +1697,78 @@ footer .footer-logo {
   JAVASCRIPT
 ═══════════════════════════════════════ -->
 <script>
-// ════════════════════════════════════════════════
-//  CONFIG — change API_BASE to your Render URL
-// ════════════════════════════════════════════════
-let API_BASE = localStorage.getItem('xstream_api_base') || 'https://xstream-ucw0.onrender.com';
+let API_BASE = localStorage.getItem('https://xstream-ucw0.onrender.com') || '';
+let TMDB_KEY = localStorage.getItem('xstream_tmdb_key') || '';
+
+const TMDB_ROOT = 'https://api.themoviedb.org/3';
+const TMDB_IMG  = 'https://image.tmdb.org/t/p/w500';
+const TMDB_WIDE = 'https://image.tmdb.org/t/p/original';
+
+// ── Client-side embed URL builder (no backend needed) ──────────────────────
+function buildEmbedSources(type, tmdbId, season=1, episode=1) {
+  if (type === 'movie') {
+    return [
+      { name: 'VidSrc',       url: `https://vidsrc.me/embed/movie/${tmdbId}` },
+      { name: 'VidSrc2',      url: `https://vidsrc.to/embed/movie/${tmdbId}` },
+      { name: 'VidSrc3',      url: `https://vidsrc.xyz/embed/movie?tmdb=${tmdbId}` },
+      { name: '2Embed',       url: `https://www.2embed.cc/embed/${tmdbId}` },
+      { name: 'AutoEmbed',    url: `https://autoembed.cc/movie/tmdb/${tmdbId}` },
+      { name: 'EmbedSu',     url: `https://embed.su/embed/movie/${tmdbId}` },
+      { name: 'SmashyStream', url: `https://player.smashy.stream/movie/${tmdbId}` },
+    ];
+  } else {
+    return [
+      { name: 'VidSrc',       url: `https://vidsrc.me/embed/tv/${tmdbId}/${season}/${episode}` },
+      { name: 'VidSrc2',      url: `https://vidsrc.to/embed/tv/${tmdbId}/${season}/${episode}` },
+      { name: 'VidSrc3',      url: `https://vidsrc.xyz/embed/tv?tmdb=${tmdbId}&season=${season}&episode=${episode}` },
+      { name: '2Embed',       url: `https://www.2embed.cc/embedtv/${tmdbId}&s=${season}&e=${episode}` },
+      { name: 'AutoEmbed',    url: `https://autoembed.cc/tv/tmdb/${tmdbId}-${season}-${episode}` },
+      { name: 'EmbedSu',     url: `https://embed.su/embed/tv/${tmdbId}/${season}/${episode}` },
+      { name: 'SmashyStream', url: `https://player.smashy.stream/tv/${tmdbId}?s=${season}&e=${episode}` },
+    ];
+  }
+}
+
+// ── Direct TMDB fetch (client-side) ──────────────────────────────────────
+async function tmdbFetch(path, params={}) {
+  if (!TMDB_KEY) return null;
+  const url = new URL(TMDB_ROOT + path);
+  url.searchParams.set('api_key', TMDB_KEY);
+  url.searchParams.set('language', 'en-US');
+  Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, v));
+  try {
+    const res = await fetch(url.toString());
+    return res.ok ? res.json() : null;
+  } catch(e) { return null; }
+}
+
+function fmtMovie(m) {
+  return {
+    id: m.id, tmdb_id: m.id,
+    title: m.title || m.name || '',
+    overview: m.overview || '',
+    poster: m.poster_path ? TMDB_IMG + m.poster_path : '',
+    backdrop: m.backdrop_path ? TMDB_WIDE + m.backdrop_path : '',
+    rating: Math.round((m.vote_average||0)*10)/10,
+    year: (m.release_date || m.first_air_date || '').slice(0, 4),
+    type: m.media_type || (m.title ? 'movie' : 'tv'),
+    source: 'tmdb',
+  };
+}
+
+// ── Backend API helper (only used when API_BASE is set) ──────────────────
+async function api(path, opts = {}) {
+  if (!API_BASE) throw new Error('NO_BACKEND');
+  const url = API_BASE.replace(/\/$/, '') + path;
+  const headers = { 'Content-Type': 'application/json' };
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+  const res = await fetch(url, { headers, ...opts });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
 
 // ════════════════════════════════════════════════
 //  STATE
@@ -1711,21 +1790,6 @@ let currentSources = [];
 let activeSourceIdx = 0;
 
 // ════════════════════════════════════════════════
-//  API HELPER
-// ════════════════════════════════════════════════
-async function api(path, opts = {}) {
-  const url = API_BASE + path;
-  const headers = { 'Content-Type': 'application/json' };
-  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
-  const res = await fetch(url, { headers, ...opts });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `HTTP ${res.status}`);
-  }
-  return res.json();
-}
-
-// ════════════════════════════════════════════════
 //  NAVIGATION
 // ════════════════════════════════════════════════
 function showPage(name) {
@@ -1735,25 +1799,17 @@ function showPage(name) {
   const nb = document.getElementById(`nav-${name}`);
   if (nb) nb.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-
-  if (name === 'home') initHome();
+  if (name === 'home')   initHome();
   if (name === 'movies') { moviesPage = 1; loadMovies(moviesMode); }
-  if (name === 'tv') { tvPage = 1; loadTV(tvMode); }
+  if (name === 'tv')     { tvPage = 1; loadTV(tvMode); }
   if (name === 'sports') initSports();
-  if (name === 'admin') initAdmin();
+  if (name === 'admin')  initAdmin();
 }
 
 function goAdmin() {
-  if (authToken) {
-    showPage('admin');
-  } else {
-    showLoginScreen();
-  }
+  authToken ? showPage('admin') : showLoginScreen();
 }
 
-// ════════════════════════════════════════════════
-//  NAVBAR SCROLL
-// ════════════════════════════════════════════════
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
 });
@@ -1768,16 +1824,111 @@ async function initHome() {
   loadHomeSports();
 }
 
+// ─── Universal data fetcher: tries backend, falls back to TMDB direct ────
+async function fetchTrending(type) { // type = 'movie' | 'tv'
+  if (API_BASE) {
+    try {
+      const d = await api(`/api/trending/${type === 'movie' ? 'movies' : 'tv'}`);
+      return d.results || [];
+    } catch(e) {}
+  }
+  // Direct TMDB fallback
+  const d = await tmdbFetch(`/trending/${type}/week`);
+  return d ? d.results.map(fmtMovie) : [];
+}
+
+async function fetchSearch(q) {
+  if (API_BASE) {
+    try {
+      const d = await api(`/api/search?q=${encodeURIComponent(q)}`);
+      return d.results || [];
+    } catch(e) {}
+  }
+  const d = await tmdbFetch('/search/multi', { query: q });
+  return d ? (d.results || []).filter(r => r.media_type === 'movie' || r.media_type === 'tv').map(fmtMovie) : [];
+}
+
+async function fetchMovieDetail(id) {
+  if (API_BASE) {
+    try { return await api(`/api/movie/${id}`); } catch(e) {}
+  }
+  const d = await tmdbFetch(`/movie/${id}`, { append_to_response: 'credits,videos' });
+  if (!d) return null;
+  const m = fmtMovie(d);
+  m.runtime  = d.runtime;
+  m.tagline  = d.tagline || '';
+  m.genres   = (d.genres||[]).map(g => g.name);
+  m.cast     = (d.credits?.cast||[]).slice(0,10).map(c => ({
+    name: c.name, character: c.character,
+    photo: c.profile_path ? TMDB_IMG + c.profile_path : ''
+  }));
+  m.trailer  = (() => {
+    const v = (d.videos?.results||[]).find(v => v.type==='Trailer' && v.site==='YouTube');
+    return v ? `https://youtube.com/embed/${v.key}` : null;
+  })();
+  m.embed_sources = buildEmbedSources('movie', id);
+  return m;
+}
+
+async function fetchTVDetail(id) {
+  if (API_BASE) {
+    try { return await api(`/api/tv/${id}`); } catch(e) {}
+  }
+  const d = await tmdbFetch(`/tv/${id}`, { append_to_response: 'credits,videos' });
+  if (!d) return null;
+  const m = fmtMovie(d);
+  m.type     = 'tv';
+  m.seasons  = d.number_of_seasons || 1;
+  m.episodes = d.number_of_episodes || 0;
+  m.status   = d.status || '';
+  m.tagline  = d.tagline || '';
+  m.genres   = (d.genres||[]).map(g => g.name);
+  m.cast     = (d.credits?.cast||[]).slice(0,10).map(c => ({
+    name: c.name, character: c.character,
+    photo: c.profile_path ? TMDB_IMG + c.profile_path : ''
+  }));
+  m.trailer  = (() => {
+    const v = (d.videos?.results||[]).find(v => v.type==='Trailer' && v.site==='YouTube');
+    return v ? `https://youtube.com/embed/${v.key}` : null;
+  })();
+  m.embed_sources = buildEmbedSources('tv', id, 1, 1);
+  return m;
+}
+
+async function fetchTVSeason(tmdbId, season) {
+  if (API_BASE) {
+    try { return await api(`/api/tv/${tmdbId}/season/${season}`); } catch(e) {}
+  }
+  const d = await tmdbFetch(`/tv/${tmdbId}/season/${season}`);
+  if (!d) return { season, episodes: [] };
+  return {
+    season,
+    episodes: (d.episodes||[]).map(ep => ({
+      id: ep.id,
+      episode_number: ep.episode_number,
+      name: ep.name || `Episode ${ep.episode_number}`,
+      overview: ep.overview || '',
+      still: ep.still_path ? TMDB_IMG + ep.still_path : '',
+      runtime: ep.runtime,
+      embed_sources: buildEmbedSources('tv', tmdbId, season, ep.episode_number),
+    }))
+  };
+}
+
 async function loadHero() {
   try {
-    const data = await api('/api/trending/movies');
-    heroItems = data.results.slice(0, 6);
+    const results = await fetchTrending('movie');
+    heroItems = results.slice(0, 6);
+    if (!heroItems.length) throw new Error('empty');
     renderHero(0);
     renderHeroDots();
     startHeroRotation();
   } catch(e) {
-    document.getElementById('hero-title').textContent = 'xStream';
-    document.getElementById('hero-overview').textContent = 'Free movies, TV shows, and live sports.';
+    document.getElementById('hero-title').textContent = 'Welcome to xStream';
+    document.getElementById('hero-overview').textContent = TMDB_KEY
+      ? 'Free movies, TV shows, and live sports.'
+      : '⚙ Add your free TMDB API key in Settings → Admin Panel (Ctrl+Shift+A) to start browsing content.';
+    document.getElementById('hero-bg').style.background = 'linear-gradient(135deg, #080c10 0%, #131b24 100%)';
   }
 }
 
@@ -1796,38 +1947,35 @@ function renderHero(idx) {
   `;
   document.getElementById('hero-play-btn').onclick = () => openDetail(item.id, item.type);
   document.getElementById('hero-info-btn').onclick = () => openDetail(item.id, item.type);
-  document.querySelectorAll('.hero-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  document.querySelectorAll('.hero-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
 }
 
 function renderHeroDots() {
-  const el = document.getElementById('hero-dots');
-  el.innerHTML = heroItems.map((_, i) => `<div class="hero-dot${i===0?' active':''}" onclick="renderHero(${i})"></div>`).join('');
+  document.getElementById('hero-dots').innerHTML =
+    heroItems.map((_,i) => `<div class="hero-dot${i===0?' active':''}" onclick="renderHero(${i})"></div>`).join('');
 }
 
 function startHeroRotation() {
   clearInterval(heroTimer);
-  heroTimer = setInterval(() => {
-    const next = (heroIndex + 1) % heroItems.length;
-    renderHero(next);
-  }, 7000);
+  heroTimer = setInterval(() => { renderHero((heroIndex+1) % heroItems.length); }, 7000);
 }
 
 async function loadHomeMovies() {
   const row = document.getElementById('home-movies-row');
   row.innerHTML = skeletonCards(10);
-  try {
-    const data = await api('/api/trending/movies');
-    row.innerHTML = data.results.slice(0, 10).map(m => movieCard(m)).join('');
-  } catch(e) { row.innerHTML = errorMsg('Could not load movies'); }
+  const results = await fetchTrending('movie');
+  row.innerHTML = results.length
+    ? results.slice(0,10).map(m => movieCard(m)).join('')
+    : errorMsg('Add your TMDB API key in Admin → Settings to browse movies');
 }
 
 async function loadHomeTV() {
   const row = document.getElementById('home-tv-row');
   row.innerHTML = skeletonCards(10);
-  try {
-    const data = await api('/api/trending/tv');
-    row.innerHTML = data.results.slice(0, 10).map(m => movieCard(m)).join('');
-  } catch(e) { row.innerHTML = errorMsg('Could not load TV shows'); }
+  const results = await fetchTrending('tv');
+  row.innerHTML = results.length
+    ? results.slice(0,10).map(m => movieCard(m)).join('')
+    : errorMsg('Add your TMDB API key in Admin → Settings to browse TV shows');
 }
 
 async function loadHomeSports() {
@@ -1836,8 +1984,23 @@ async function loadHomeSports() {
   try {
     const data = await api('/api/sports/live');
     allSports = data.results;
-    row.innerHTML = data.results.slice(0, 8).map(s => sportsCard(s)).join('');
-  } catch(e) { row.innerHTML = errorMsg('Could not load sports'); }
+    row.innerHTML = data.results.slice(0,8).map(s => sportsCard(s)).join('');
+  } catch(e) {
+    // Show default sports tiles
+    allSports = defaultSportsStreams();
+    row.innerHTML = allSports.map(s => sportsCard(s)).join('');
+  }
+}
+
+function defaultSportsStreams() {
+  return [
+    { id:'d1', title:'NBA Live', league:'nba', embed_url:'https://sportsurge.net/#NBA', status:'live', home_team:'Multiple Games', away_team:'', thumbnail:'' },
+    { id:'d2', title:'NFL Live', league:'nfl', embed_url:'https://sportsurge.net/#NFL', status:'live', home_team:'Multiple Games', away_team:'', thumbnail:'' },
+    { id:'d3', title:'Soccer Live', league:'soccer', embed_url:'https://sportsurge.net/#Soccer', status:'live', home_team:'Multiple Leagues', away_team:'', thumbnail:'' },
+    { id:'d4', title:'F1 Live', league:'f1', embed_url:'https://sportsurge.net/#F1', status:'live', home_team:'Race Day', away_team:'', thumbnail:'' },
+    { id:'d5', title:'UFC / MMA', league:'ufc', embed_url:'https://sportsurge.net/#MMA', status:'live', home_team:'Fight Night', away_team:'', thumbnail:'' },
+    { id:'d6', title:'NHL Live', league:'nhl', embed_url:'https://sportsurge.net/#NHL', status:'live', home_team:'Multiple Games', away_team:'', thumbnail:'' },
+  ];
 }
 
 // ════════════════════════════════════════════════
@@ -1852,29 +2015,38 @@ async function loadMovies(mode, btn) {
   }
   const grid = document.getElementById('movies-grid');
   grid.innerHTML = skeletonGrid(20);
+
   try {
-    let data;
     if (mode === 'custom') {
-      data = await api('/api/custom/content?category=movie');
-      grid.innerHTML = data.results.length ? data.results.map(m => movieCard(m, true)).join('') : emptyMsg('No custom movies yet');
+      const data = await api('/api/custom/content?category=movie');
+      grid.innerHTML = data.results.length ? data.results.map(m => movieCard(m, true)).join('') : emptyMsg('No custom movies yet. Add them via the Admin Panel.');
       document.getElementById('movies-load-more').style.display = 'none';
       return;
     }
-    const endpoint = mode === 'trending' ? '/api/trending/movies' : mode === 'top_rated' ? '/api/movies/top-rated' : '/api/movies/popular';
-    data = await api(endpoint);
-    grid.innerHTML = data.results.map(m => movieCard(m)).join('');
-    document.getElementById('movies-load-more').style.display = data.total_pages > 1 ? 'inline-flex' : 'none';
-  } catch(e) { grid.innerHTML = errorMsg(e.message); }
+  } catch(e) {
+    if (mode === 'custom') { grid.innerHTML = emptyMsg('Backend not connected. Set API URL in Admin → Settings.'); return; }
+  }
+
+  const endpoint = mode === 'top_rated' ? '/movie/top_rated' : mode === 'popular' ? '/movie/popular' : '/trending/movie/week';
+  const raw = await tmdbFetch(endpoint, { page: 1 });
+  if (!raw) {
+    grid.innerHTML = TMDB_KEY
+      ? errorMsg('Could not reach TMDB. Try again.')
+      : emptyMsg('⚙ No TMDB API key set. Go to Admin → Settings and add your key.');
+    document.getElementById('movies-load-more').style.display = 'none';
+    return;
+  }
+  grid.innerHTML = raw.results.map(m => movieCard(fmtMovie(m))).join('');
+  document.getElementById('movies-load-more').style.display = (raw.total_pages||1) > 1 ? 'inline-flex' : 'none';
 }
 
 async function loadMoreMovies() {
   moviesPage++;
-  const endpoint = moviesMode === 'trending' ? '/api/trending/movies' : moviesMode === 'top_rated' ? '/api/movies/top-rated' : '/api/movies/popular';
-  try {
-    const data = await api(`${endpoint}?page=${moviesPage}`);
-    document.getElementById('movies-grid').insertAdjacentHTML('beforeend', data.results.map(m => movieCard(m)).join(''));
-    if (moviesPage >= data.total_pages) document.getElementById('movies-load-more').style.display = 'none';
-  } catch(e) { showToast(e.message, 'error'); }
+  const endpoint = moviesMode === 'top_rated' ? '/movie/top_rated' : moviesMode === 'popular' ? '/movie/popular' : '/trending/movie/week';
+  const raw = await tmdbFetch(endpoint, { page: moviesPage });
+  if (!raw) return;
+  document.getElementById('movies-grid').insertAdjacentHTML('beforeend', raw.results.map(m => movieCard(fmtMovie(m))).join(''));
+  if (moviesPage >= (raw.total_pages||1)) document.getElementById('movies-load-more').style.display = 'none';
 }
 
 // ════════════════════════════════════════════════
@@ -1889,29 +2061,36 @@ async function loadTV(mode, btn) {
   }
   const grid = document.getElementById('tv-grid');
   grid.innerHTML = skeletonGrid(20);
+
   try {
-    let data;
     if (mode === 'custom') {
-      data = await api('/api/custom/content?category=tv');
-      grid.innerHTML = data.results.length ? data.results.map(m => movieCard(m, true)).join('') : emptyMsg('No custom shows yet');
+      const data = await api('/api/custom/content?category=tv');
+      grid.innerHTML = data.results.length ? data.results.map(m => movieCard(m, true)).join('') : emptyMsg('No custom shows yet.');
       document.getElementById('tv-load-more').style.display = 'none';
       return;
     }
-    const endpoint = mode === 'trending' ? '/api/trending/tv' : '/api/tv/popular';
-    data = await api(endpoint);
-    grid.innerHTML = data.results.map(m => movieCard(m)).join('');
-    document.getElementById('tv-load-more').style.display = data.total_pages > 1 ? 'inline-flex' : 'none';
-  } catch(e) { grid.innerHTML = errorMsg(e.message); }
+  } catch(e) {
+    if (mode === 'custom') { grid.innerHTML = emptyMsg('Backend not connected.'); return; }
+  }
+
+  const endpoint = mode === 'popular' ? '/tv/popular' : '/trending/tv/week';
+  const raw = await tmdbFetch(endpoint, { page: 1 });
+  if (!raw) {
+    grid.innerHTML = TMDB_KEY ? errorMsg('Could not reach TMDB.') : emptyMsg('⚙ Add your TMDB API key in Admin → Settings.');
+    document.getElementById('tv-load-more').style.display = 'none';
+    return;
+  }
+  grid.innerHTML = raw.results.map(m => movieCard(fmtMovie({...m, media_type:'tv'}))).join('');
+  document.getElementById('tv-load-more').style.display = (raw.total_pages||1) > 1 ? 'inline-flex' : 'none';
 }
 
 async function loadMoreTV() {
   tvPage++;
-  const endpoint = tvMode === 'trending' ? '/api/trending/tv' : '/api/tv/popular';
-  try {
-    const data = await api(`${endpoint}?page=${tvPage}`);
-    document.getElementById('tv-grid').insertAdjacentHTML('beforeend', data.results.map(m => movieCard(m)).join(''));
-    if (tvPage >= data.total_pages) document.getElementById('tv-load-more').style.display = 'none';
-  } catch(e) { showToast(e.message, 'error'); }
+  const endpoint = tvMode === 'popular' ? '/tv/popular' : '/trending/tv/week';
+  const raw = await tmdbFetch(endpoint, { page: tvPage });
+  if (!raw) return;
+  document.getElementById('tv-grid').insertAdjacentHTML('beforeend', raw.results.map(m => movieCard(fmtMovie({...m, media_type:'tv'}))).join(''));
+  if (tvPage >= (raw.total_pages||1)) document.getElementById('tv-load-more').style.display = 'none';
 }
 
 // ════════════════════════════════════════════════
@@ -1927,21 +2106,20 @@ async function loadSportsLive() {
   try {
     const data = await api('/api/sports/live');
     allSports = data.results;
-    row.innerHTML = data.results.length ? data.results.map(s => sportsCard(s)).join('') : emptyMsg('No live streams right now');
-  } catch(e) { row.innerHTML = errorMsg(e.message); }
+  } catch(e) {
+    allSports = defaultSportsStreams();
+  }
+  row.innerHTML = allSports.map(s => sportsCard(s)).join('');
 }
 
 async function loadSportsSchedule() {
   const el = document.getElementById('sports-schedule');
   try {
     const data = await api('/api/sports/schedule');
-    if (!data.results.length) {
-      el.innerHTML = `<div style="color:var(--muted);font-size:0.875rem;padding:1rem">No upcoming games scheduled. Add them via the admin panel.</div>`;
-      return;
-    }
+    if (!data.results.length) throw new Error('empty');
     el.innerHTML = `<div style="display:grid;gap:0.75rem;padding:0 0 1rem">
       ${data.results.map(s => `
-        <div class="sports-card" style="width:100%;display:flex;align-items:center;gap:1rem;padding:1rem" onclick="openSportsStream('${s.embed_url}','${s.title}')">
+        <div class="sports-card" style="width:100%;max-width:600px;display:flex;align-items:center;gap:1rem;padding:1rem" onclick="openSportsStream('${s.embed_url.replace(/'/g,"\\'")}','${s.title.replace(/'/g,"\\'")}')">
           <div style="font-size:1.75rem">${leagueIcon(s.league)}</div>
           <div style="flex:1">
             <div class="sports-league">${s.league.toUpperCase()}</div>
@@ -1952,58 +2130,78 @@ async function loadSportsSchedule() {
         </div>
       `).join('')}
     </div>`;
-  } catch(e) { el.innerHTML = errorMsg(e.message); }
+  } catch(e) {
+    el.innerHTML = `<div style="color:var(--muted);font-size:0.875rem;padding:1rem">No upcoming games scheduled. Add them via the Admin Panel.</div>`;
+  }
 }
 
 function filterSportsLeague(league) {
   const row = document.getElementById('sports-live-row');
-  const filtered = league === 'all' ? allSports : allSports.filter(s => s.league && s.league.toLowerCase() === league);
+  const filtered = league === 'all' ? allSports : allSports.filter(s => (s.league||'').toLowerCase() === league);
   row.innerHTML = filtered.length ? filtered.map(s => sportsCard(s)).join('') : emptyMsg(`No live ${league.toUpperCase()} streams`);
 }
 
 function openSportsStream(url, title) {
   document.getElementById('detail-modal').style.display = 'flex';
   document.getElementById('modal-content').innerHTML = `
-    <div style="padding:1.5rem">
-      <h2 style="font-family:var(--font-display);font-size:1.2rem;letter-spacing:0.08em;margin-bottom:1rem;color:var(--neon)">${title}</h2>
-      <div class="watch-player">
-        <iframe src="${url}" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    <div style="padding:1.5rem 2rem 2rem">
+      <h2 style="font-family:var(--font-display);font-size:1.2rem;letter-spacing:0.08em;margin-bottom:1.25rem;color:var(--neon)">${title}</h2>
+      <div class="watch-player" id="sports-player-wrap">
+        <iframe id="sports-iframe" src="${url}" allowfullscreen allow="autoplay; encrypted-media" style="width:100%;height:100%;border:none"></iframe>
       </div>
-      <p style="color:var(--muted);font-size:0.75rem;margin-top:0.75rem">
-        ⚠ If the stream doesn't load, try opening it in a new tab.
-        <a href="${url}" target="_blank" style="color:var(--neon)">Open in new tab →</a>
-      </p>
+      <div style="margin-top:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem">
+        <div style="font-size:0.75rem;font-family:var(--font-display);letter-spacing:0.1em;color:var(--neon);margin-bottom:0.75rem">⚠ STREAM NOT LOADING IN PLAYER?</div>
+        <p style="color:var(--muted);font-size:0.825rem;line-height:1.6;margin-bottom:1rem">
+          Most free sports sites block embedding. Use the button below to open in a new tab — it will work there.
+        </p>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+          <a href="${url}" target="_blank" rel="noopener noreferrer" class="btn-play" style="text-decoration:none;font-size:0.875rem">▶ Open Stream in New Tab</a>
+          <button class="btn-info" onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(title+' live stream')}','_blank')">🔍 Find Alternatives</button>
+        </div>
+      </div>
     </div>
   `;
 }
 
 // ════════════════════════════════════════════════
-//  DETAIL MODAL
+//  DETAIL MODAL  — fully client-side, no backend required
 // ════════════════════════════════════════════════
 async function openDetail(id, type, isCustom) {
   document.getElementById('detail-modal').style.display = 'flex';
   document.getElementById('modal-content').innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:center;height:300px">
-      <div class="spinner"></div>
-    </div>
-  `;
+    <div style="display:flex;align-items:center;justify-content:center;height:300px"><div class="spinner"></div></div>`;
 
   try {
-    let item;
-    if (isCustom) {
-      // Custom content - just show the video directly
-      const data = await api('/api/custom/content');
-      item = data.results.find(r => r.id == id);
-      if (!item) throw new Error('Not found');
+    // ── Custom / MP4 content ──────────────────────────────────────────────
+    if (isCustom || type === 'custom') {
+      let item;
+      try {
+        const data = await api('/api/custom/content');
+        item = data.results.find(r => String(r.id) === String(id));
+      } catch(e) {}
+      if (!item) { document.getElementById('modal-content').innerHTML = `<div style="padding:2rem;text-align:center;color:var(--danger)">Content not found.</div>`; return; }
       showCustomModal(item);
       return;
     }
 
-    item = await api(`/api/${type}/${id}`);
-    currentModal = item;
-    currentModal.type = type;
-    currentSources = item.embed_sources || [];
+    // ── TMDB content — fetch detail client-side ───────────────────────────
+    let item;
+    if (type === 'movie') {
+      item = await fetchMovieDetail(id);
+    } else {
+      item = await fetchTVDetail(id);
+    }
+
+    if (!item) {
+      document.getElementById('modal-content').innerHTML = `<div style="padding:2rem;text-align:center;color:var(--danger)">Could not load details. Check your TMDB API key in Admin → Settings.</div>`;
+      return;
+    }
+
+    currentModal = { ...item, type };
+    currentSources = item.embed_sources || buildEmbedSources(type, id);
     activeSourceIdx = 0;
+    currentSeason  = 1;
+    currentEpisode = 1;
 
     const backdropHtml = item.backdrop
       ? `<img class="modal-backdrop" src="${item.backdrop}" onerror="this.style.display='none'" />`
@@ -2013,16 +2211,18 @@ async function openDetail(id, type, isCustom) {
       ${backdropHtml}
       <div class="modal-body">
         <div class="modal-poster">
-          ${item.poster ? `<img src="${item.poster}" alt="${item.title}" />` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem;">🎬</div>`}
+          ${item.poster
+            ? `<img src="${item.poster}" alt="${item.title.replace(/"/g,'')}" />`
+            : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:3rem">🎬</div>`}
         </div>
         <div class="modal-info">
           <div class="modal-title">${item.title}</div>
           <div class="modal-meta">
-            ${item.year ? `<span class="meta-badge">${item.year}</span>` : ''}
-            ${item.rating ? `<span class="meta-badge" style="color:var(--warn)">★ ${item.rating}</span>` : ''}
+            ${item.year    ? `<span class="meta-badge">${item.year}</span>` : ''}
+            ${item.rating  ? `<span class="meta-badge" style="color:var(--warn)">★ ${item.rating}</span>` : ''}
             ${item.runtime ? `<span class="meta-badge">${item.runtime} min</span>` : ''}
             ${item.seasons ? `<span class="meta-badge">${item.seasons} Seasons</span>` : ''}
-            ${(item.genres||[]).slice(0,3).map(g => `<span class="meta-badge">${g}</span>`).join('')}
+            ${(item.genres||[]).slice(0,3).map(g=>`<span class="meta-badge">${g}</span>`).join('')}
           </div>
           ${item.tagline ? `<div style="color:var(--neon);font-style:italic;font-size:0.875rem;margin-bottom:0.75rem">"${item.tagline}"</div>` : ''}
           <div class="modal-overview">${item.overview}</div>
@@ -2031,12 +2231,14 @@ async function openDetail(id, type, isCustom) {
             ${item.trailer ? `<button class="btn-info" onclick="playTrailer('${item.trailer}')">🎞 Trailer</button>` : ''}
           </div>
           ${item.cast && item.cast.length ? `
-            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem">CAST</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;margin-top:0.5rem">CAST</div>
             <div style="display:flex;gap:0.5rem;overflow-x:auto;padding-bottom:0.5rem">
-              ${item.cast.slice(0,8).map(c => `
+              ${item.cast.slice(0,8).map(c=>`
                 <div style="flex-shrink:0;text-align:center;width:60px">
                   <div style="width:50px;height:50px;border-radius:50%;overflow:hidden;background:var(--card);margin:0 auto 0.3rem">
-                    ${c.photo ? `<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover" />` : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:1.25rem">👤</div>`}
+                    ${c.photo
+                      ? `<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover" />`
+                      : `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:1.25rem">👤</div>`}
                   </div>
                   <div style="font-size:0.6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.name}</div>
                 </div>
@@ -2045,59 +2247,80 @@ async function openDetail(id, type, isCustom) {
           ` : ''}
         </div>
       </div>
-      <div id="watch-panel" style="display:none" class="section" style="padding-top:0">
+
+      <!-- ── WATCH PANEL (shown immediately when Watch Now is clicked) ── -->
+      <div id="watch-panel" style="display:none">
         <div style="padding:0 2rem 2rem">
           ${type === 'tv' ? `
             <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap">
               <select class="season-select" id="season-select" onchange="changeSeason(this.value)">
-                ${Array.from({length: item.seasons||1}, (_,i) => `<option value="${i+1}">Season ${i+1}</option>`).join('')}
+                ${Array.from({length: item.seasons||1},(_,i)=>`<option value="${i+1}">Season ${i+1}</option>`).join('')}
               </select>
-              <span style="color:var(--muted);font-size:0.8rem">Select episode below</span>
+              <span style="color:var(--muted);font-size:0.8rem">Choose an episode below</span>
             </div>
-            <div class="episode-grid" id="episode-grid">Loading episodes...</div>
+            <div class="episode-grid" id="episode-grid" style="margin-bottom:1rem">Loading episodes...</div>
           ` : ''}
-          <div class="watch-player" style="margin-top:${type==='tv'?'1rem':'0'}">
-            <iframe id="main-player" src="${currentSources[0]?.url||''}" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" sandbox="allow-scripts allow-same-origin allow-presentation allow-forms"></iframe>
+
+          <!-- Player -->
+          <div class="watch-player" id="player-wrap">
+            <iframe
+              id="main-player"
+              src="${currentSources[0]?.url || ''}"
+              allowfullscreen
+              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+              style="width:100%;height:100%;border:none;display:block">
+            </iframe>
           </div>
-          <div style="margin-top:0.75rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap">
-            <span style="font-size:0.75rem;color:var(--muted)">Sources:</span>
+
+          <!-- Source switcher -->
+          <div style="margin-top:0.75rem">
+            <div style="font-size:0.7rem;color:var(--muted);margin-bottom:0.4rem;font-family:var(--font-display);letter-spacing:0.08em">
+              IF PLAYER IS BLANK — TRY ANOTHER SOURCE:
+            </div>
             <div class="source-tabs" id="source-tabs">
-              ${currentSources.map((s,i) => `<button class="source-tab${i===0?' active':''}" onclick="switchSource(${i}, this)">${s.name}</button>`).join('')}
+              ${currentSources.map((s,i)=>`
+                <button class="source-tab${i===0?' active':''}" onclick="switchSource(${i},this)">${s.name}</button>
+              `).join('')}
             </div>
           </div>
-          <p style="color:var(--muted);font-size:0.75rem;margin-top:0.5rem">
-            If a source doesn't work, try the next one. 
-            <a href="${currentSources[0]?.url}" target="_blank" style="color:var(--neon)">Open externally →</a>
-          </p>
+          <div style="margin-top:0.75rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+            <a id="ext-link" href="${currentSources[0]?.url||'#'}" target="_blank" style="color:var(--neon);font-size:0.8rem">
+              ↗ Open current source in new tab
+            </a>
+            <span style="color:var(--muted);font-size:0.75rem">Some sources may ask to disable AdBlock</span>
+          </div>
         </div>
       </div>
     `;
 
     if (type === 'tv') loadEpisodes(id, 1);
+
   } catch(e) {
-    document.getElementById('modal-content').innerHTML = `<div style="padding:3rem;text-align:center;color:var(--danger)">Error: ${e.message}</div>`;
+    document.getElementById('modal-content').innerHTML =
+      `<div style="padding:3rem;text-align:center;color:var(--danger)">Error: ${e.message}</div>`;
   }
 }
 
 function showCustomModal(item) {
+  const isMp4 = /\.(mp4|m3u8|webm|ogg)(\?|$)/i.test(item.video_url);
   document.getElementById('modal-content').innerHTML = `
     <div style="padding:2rem">
-      <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
-        ${item.poster_url ? `<img src="${item.poster_url}" style="width:130px;border-radius:10px;object-fit:cover;flex-shrink:0" />` : ''}
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem">
+        ${item.poster_url ? `<img src="${item.poster_url}" style="width:130px;border-radius:10px;object-fit:cover;flex-shrink:0;aspect-ratio:2/3" />` : ''}
         <div style="flex:1">
           <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:0.5rem">${item.title}</h2>
           <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap">
-            ${item.year ? `<span class="meta-badge">${item.year}</span>` : ''}
+            ${item.year   ? `<span class="meta-badge">${item.year}</span>` : ''}
             ${item.rating ? `<span class="meta-badge" style="color:var(--warn)">★ ${item.rating}</span>` : ''}
-            ${item.genre ? `<span class="meta-badge">${item.genre}</span>` : ''}
+            ${item.genre  ? `<span class="meta-badge">${item.genre}</span>` : ''}
           </div>
-          <p style="color:rgba(232,238,244,0.75);line-height:1.7;margin-bottom:1.5rem">${item.description||''}</p>
+          <p style="color:rgba(232,238,244,0.75);line-height:1.7">${item.description||''}</p>
         </div>
       </div>
-      <div class="watch-player" style="margin-top:1.5rem">
-        ${item.video_url.endsWith('.mp4') || item.video_url.includes('.m3u8')
-          ? `<video controls style="width:100%;height:100%;" src="${item.video_url}">Your browser does not support video.</video>`
-          : `<iframe src="${item.video_url}" allowfullscreen allow="autoplay; encrypted-media"></iframe>`
+      <div class="watch-player">
+        ${isMp4
+          ? `<video controls autoplay style="width:100%;height:100%;background:#000" src="${item.video_url}">Your browser does not support video.</video>`
+          : `<iframe src="${item.video_url}" allowfullscreen allow="autoplay; encrypted-media; fullscreen" style="width:100%;height:100%;border:none"></iframe>`
         }
       </div>
     </div>
@@ -2105,17 +2328,19 @@ function showCustomModal(item) {
 }
 
 function showWatchPanel() {
-  document.getElementById('watch-panel').style.display = 'block';
-  document.getElementById('watch-panel').scrollIntoView({ behavior: 'smooth' });
+  const panel = document.getElementById('watch-panel');
+  if (!panel) return;
+  panel.style.display = 'block';
+  setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 
 function playTrailer(url) {
   document.getElementById('detail-modal').style.display = 'flex';
   document.getElementById('modal-content').innerHTML = `
     <div style="padding:1.5rem">
-      <h3 style="margin-bottom:1rem;font-family:var(--font-display)">TRAILER</h3>
+      <h3 style="margin-bottom:1rem;font-family:var(--font-display);letter-spacing:0.1em">🎞 TRAILER</h3>
       <div class="watch-player">
-        <iframe src="${url}?autoplay=1" allowfullscreen allow="autoplay"></iframe>
+        <iframe src="${url}?autoplay=1" allowfullscreen allow="autoplay" style="width:100%;height:100%;border:none"></iframe>
       </div>
     </div>
   `;
@@ -2126,26 +2351,28 @@ function switchSource(idx, btn) {
   document.querySelectorAll('.source-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const src = currentSources[idx]?.url;
-  if (src) {
-    document.getElementById('main-player').src = src;
-    document.querySelector('a[href*="open"]') && (document.querySelector('a').href = src);
+  if (!src) return;
+  // Replace iframe entirely to avoid browser caching the blocked state
+  const wrap = document.getElementById('player-wrap');
+  if (wrap) {
+    wrap.innerHTML = `<iframe id="main-player" src="${src}" allowfullscreen allow="autoplay; fullscreen; encrypted-media; picture-in-picture" style="width:100%;height:100%;border:none;display:block"></iframe>`;
   }
+  const extLink = document.getElementById('ext-link');
+  if (extLink) extLink.href = src;
 }
 
 async function loadEpisodes(tmdbId, season) {
   const grid = document.getElementById('episode-grid');
   if (!grid) return;
-  grid.innerHTML = 'Loading...';
-  try {
-    const data = await api(`/api/tv/${tmdbId}/season/${season}`);
-    grid.innerHTML = data.episodes.map(ep => `
-      <button class="episode-btn${ep.episode_number===1?' active':''}" onclick="watchEpisode(${tmdbId}, ${season}, ${ep.episode_number}, this)">
-        E${ep.episode_number}: ${ep.name}
-      </button>
-    `).join('');
-  } catch(e) {
-    grid.innerHTML = `<div style="color:var(--muted)">Could not load episodes</div>`;
-  }
+  grid.innerHTML = '<span style="color:var(--muted);font-size:0.8rem">Loading...</span>';
+  const data = await fetchTVSeason(tmdbId, season);
+  if (!data.episodes.length) { grid.innerHTML = '<span style="color:var(--muted)">No episodes found</span>'; return; }
+  grid.innerHTML = data.episodes.map(ep => `
+    <button class="episode-btn${ep.episode_number===1?' active':''}"
+      onclick="watchEpisode(${tmdbId}, ${season}, ${ep.episode_number}, this)">
+      E${ep.episode_number}: ${ep.name}
+    </button>
+  `).join('');
 }
 
 async function changeSeason(season) {
@@ -2153,30 +2380,36 @@ async function changeSeason(season) {
   if (currentModal) loadEpisodes(currentModal.id, currentSeason);
 }
 
-function watchEpisode(tmdbId, season, episode, btn) {
+async function watchEpisode(tmdbId, season, episode, btn) {
   currentEpisode = episode;
   document.querySelectorAll('.episode-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  const sources = currentSources; // rebuild if needed
-  // Update sources for this season/episode
-  fetch(`${API_BASE}/api/tv/${tmdbId}/season/${season}`)
-    .then(r => r.json())
-    .then(data => {
-      const ep = data.episodes.find(e => e.episode_number === episode);
-      if (ep && ep.embed_sources) {
-        currentSources = ep.embed_sources;
-        document.getElementById('main-player').src = currentSources[0]?.url || '';
-        document.getElementById('source-tabs').innerHTML = currentSources.map((s,i) =>
-          `<button class="source-tab${i===0?' active':''}" onclick="switchSource(${i}, this)">${s.name}</button>`
-        ).join('');
-      }
-    });
+  currentSources = buildEmbedSources('tv', tmdbId, season, episode);
+  activeSourceIdx = 0;
+  // Update player
+  const wrap = document.getElementById('player-wrap');
+  if (wrap) {
+    wrap.innerHTML = `<iframe id="main-player" src="${currentSources[0].url}" allowfullscreen allow="autoplay; fullscreen; encrypted-media; picture-in-picture" style="width:100%;height:100%;border:none;display:block"></iframe>`;
+  }
+  // Update source tabs
+  const tabs = document.getElementById('source-tabs');
+  if (tabs) {
+    tabs.innerHTML = currentSources.map((s,i) =>
+      `<button class="source-tab${i===0?' active':''}" onclick="switchSource(${i},this)">${s.name}</button>`
+    ).join('');
+  }
+  const extLink = document.getElementById('ext-link');
+  if (extLink) extLink.href = currentSources[0].url;
+  wrap?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function closeModal() {
   document.getElementById('detail-modal').style.display = 'none';
-  const player = document.getElementById('main-player');
-  if (player) player.src = '';
+  // Destroy player to stop audio
+  const wrap = document.getElementById('player-wrap');
+  if (wrap) wrap.innerHTML = '';
+  const mp = document.getElementById('main-player');
+  if (mp) mp.src = '';
 }
 
 function closeModalOutside(e) {
@@ -2201,34 +2434,28 @@ searchInput.addEventListener('keydown', e => {
 });
 
 document.addEventListener('click', e => {
-  if (!document.getElementById('search-wrap').contains(e.target)) {
+  if (!document.getElementById('search-wrap').contains(e.target))
     searchDropdown.classList.remove('show');
-  }
 });
 
 async function doSearch(q) {
-  try {
-    const data = await api(`/api/search?q=${encodeURIComponent(q)}`);
-    if (!data.results.length) {
-      searchDropdown.innerHTML = `<div style="padding:1rem;color:var(--muted);font-size:0.875rem;text-align:center">No results for "${q}"</div>`;
-      searchDropdown.classList.add('show');
-      return;
-    }
-    searchDropdown.innerHTML = data.results.slice(0, 8).map(item => `
-      <div class="search-result-item" onclick="openDetail(${item.id||item.tmdb_id}, '${item.type||'movie'}', ${!item.tmdb_id})">
-        <img src="${item.poster||item.poster_url||''}" onerror="this.style.background='var(--dark2)';this.src=''" />
-        <div>
-          <div style="font-size:0.875rem;font-weight:500">${item.title}</div>
-          <div style="font-size:0.75rem;color:var(--muted)">${item.year||''} · ${item.type||item.category||'movie'}</div>
-        </div>
-        ${item.rating ? `<span style="margin-left:auto;font-size:0.75rem;color:var(--warn)">★ ${item.rating}</span>` : ''}
-      </div>
-    `).join('');
+  const results = await fetchSearch(q);
+  if (!results.length) {
+    searchDropdown.innerHTML = `<div style="padding:1rem;color:var(--muted);font-size:0.875rem;text-align:center">No results for "${q}"</div>`;
     searchDropdown.classList.add('show');
-  } catch(e) {
-    searchDropdown.innerHTML = `<div style="padding:1rem;color:var(--danger);font-size:0.8rem">Search error: ${e.message}</div>`;
-    searchDropdown.classList.add('show');
+    return;
   }
+  searchDropdown.innerHTML = results.slice(0, 8).map(item => `
+    <div class="search-result-item" onclick="searchDropdown.classList.remove('show');openDetail(${item.id||item.tmdb_id},'${item.type||'movie'}')">
+      <img src="${item.poster||item.poster_url||''}" onerror="this.style.background='var(--dark2)';this.removeAttribute('src')" style="width:40px;height:56px;object-fit:cover;border-radius:4px;background:var(--dark2)" />
+      <div>
+        <div style="font-size:0.875rem;font-weight:500">${item.title}</div>
+        <div style="font-size:0.75rem;color:var(--muted)">${item.year||''} · ${(item.type||item.category||'movie').toUpperCase()}</div>
+      </div>
+      ${item.rating ? `<span style="margin-left:auto;font-size:0.75rem;color:var(--warn);flex-shrink:0">★ ${item.rating}</span>` : ''}
+    </div>
+  `).join('');
+  searchDropdown.classList.add('show');
 }
 
 // ════════════════════════════════════════════════
@@ -2239,19 +2466,23 @@ async function initAdmin() {
   loadAdminContent();
   loadAdminSports();
   const urlInput = document.getElementById('settings-api-url');
+  const keyInput = document.getElementById('settings-tmdb-key');
   if (urlInput) urlInput.value = API_BASE;
+  if (keyInput) keyInput.value = TMDB_KEY;
 }
 
 async function loadAdminDashboard() {
   try {
     const data = await api('/api/admin/dashboard');
-    document.getElementById('stat-total').textContent = data.total_content;
+    document.getElementById('stat-total').textContent  = data.total_content;
     document.getElementById('stat-movies').textContent = data.movies;
-    document.getElementById('stat-tv').textContent = data.tv_shows;
+    document.getElementById('stat-tv').textContent     = data.tv_shows;
     document.getElementById('stat-sports').textContent = data.sports;
-    document.getElementById('stat-streams').textContent = data.sports_streams;
-    document.getElementById('stat-tmdb').textContent = data.tmdb_configured ? '✅' : '❌';
-  } catch(e) { console.warn('Dashboard error:', e); }
+    document.getElementById('stat-streams').textContent= data.sports_streams;
+    document.getElementById('stat-tmdb').textContent   = data.tmdb_configured ? '✅' : '❌';
+  } catch(e) {
+    document.getElementById('stat-tmdb').textContent = TMDB_KEY ? '✅ (client)' : '❌';
+  }
 }
 
 async function loadAdminContent() {
@@ -2270,24 +2501,22 @@ async function loadAdminContent() {
         <td>${item.year||'–'}</td>
         <td>${item.rating||'–'}</td>
         <td style="color:var(--muted);font-size:0.75rem">${(item.created_at||'').split('T')[0]}</td>
-        <td>
-          <button class="btn-danger" onclick="deleteContent(${item.id})">Delete</button>
-        </td>
+        <td><button class="btn-danger" onclick="deleteContent(${item.id})">Delete</button></td>
       </tr>
     `).join('');
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--danger)">Error: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:2rem">Connect backend to manage custom content</td></tr>`;
   }
 }
 
 async function loadAdminSports() {
   const tbody = document.getElementById('sports-tbody');
   try {
-    const live = await api('/api/sports/live');
+    const live     = await api('/api/sports/live');
     const schedule = await api('/api/sports/schedule');
     const all = [...live.results.filter(s => typeof s.id === 'number'), ...schedule.results];
     if (!all.length) {
-      tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:2rem">No sports streams added</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:2rem">No custom streams yet</td></tr>`;
       return;
     }
     tbody.innerHTML = all.map(s => `
@@ -2300,33 +2529,32 @@ async function loadAdminSports() {
       </tr>
     `).join('');
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--danger)">Error: ${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:2rem">Connect backend to manage streams</td></tr>`;
   }
 }
 
 async function adminAddContent() {
-  const title = document.getElementById('add-title').value.trim();
+  const title     = document.getElementById('add-title').value.trim();
   const video_url = document.getElementById('add-video-url').value.trim();
   if (!title || !video_url) { showToast('Title and Video URL are required', 'error'); return; }
   try {
     await api('/api/admin/add', {
       method: 'POST',
       body: JSON.stringify({
-        title,
-        video_url,
-        poster_url: document.getElementById('add-poster').value.trim(),
+        title, video_url,
+        poster_url:  document.getElementById('add-poster').value.trim(),
         description: document.getElementById('add-description').value.trim(),
-        category: document.getElementById('add-category').value,
-        genre: document.getElementById('add-genre').value.trim(),
-        year: parseInt(document.getElementById('add-year').value) || null,
-        rating: parseFloat(document.getElementById('add-rating').value) || 0,
+        category:    document.getElementById('add-category').value,
+        genre:       document.getElementById('add-genre').value.trim(),
+        year:        parseInt(document.getElementById('add-year').value) || null,
+        rating:      parseFloat(document.getElementById('add-rating').value) || 0,
       })
     });
     showToast('Content added!', 'success');
     ['add-title','add-video-url','add-poster','add-description','add-genre','add-year','add-rating'].forEach(id => document.getElementById(id).value = '');
     loadAdminContent();
     loadAdminDashboard();
-  } catch(e) { showToast(e.message, 'error'); }
+  } catch(e) { showToast('Backend not connected. Set API URL in Settings.', 'error'); }
 }
 
 async function deleteContent(id) {
@@ -2340,28 +2568,27 @@ async function deleteContent(id) {
 }
 
 async function adminAddSports() {
-  const title = document.getElementById('sp-title').value.trim();
+  const title     = document.getElementById('sp-title').value.trim();
   const embed_url = document.getElementById('sp-url').value.trim();
   if (!title || !embed_url) { showToast('Title and URL required', 'error'); return; }
   try {
     await api('/api/admin/sports/add', {
       method: 'POST',
       body: JSON.stringify({
-        title,
-        league: document.getElementById('sp-league').value,
-        embed_url,
-        thumbnail: document.getElementById('sp-thumb').value.trim(),
-        status: document.getElementById('sp-status').value,
+        title, embed_url,
+        league:     document.getElementById('sp-league').value,
+        thumbnail:  document.getElementById('sp-thumb').value.trim(),
+        status:     document.getElementById('sp-status').value,
         start_time: document.getElementById('sp-time').value,
-        home_team: document.getElementById('sp-home').value.trim(),
-        away_team: document.getElementById('sp-away').value.trim(),
+        home_team:  document.getElementById('sp-home').value.trim(),
+        away_team:  document.getElementById('sp-away').value.trim(),
       })
     });
     showToast('Stream added!', 'success');
     ['sp-title','sp-url','sp-thumb','sp-time','sp-home','sp-away'].forEach(id => document.getElementById(id).value = '');
     loadAdminSports();
     loadAdminDashboard();
-  } catch(e) { showToast(e.message, 'error'); }
+  } catch(e) { showToast('Backend not connected. Set API URL in Settings.', 'error'); }
 }
 
 async function deleteSports(id) {
@@ -2381,34 +2608,29 @@ function switchAdminTab(tab, btn) {
 }
 
 function saveSettings() {
-  const url = document.getElementById('settings-api-url').value.trim();
-  if (!url) { showToast('Enter a valid URL', 'error'); return; }
-  API_BASE = url;
-  localStorage.setItem('xstream_api_base', url);
-  showToast('Settings saved! Reload to apply.', 'success');
+  const url = (document.getElementById('settings-api-url').value || '').trim();
+  const key = (document.getElementById('settings-tmdb-key').value || '').trim();
+  if (url) { API_BASE = url; localStorage.setItem('xstream_api_base', url); }
+  else      { API_BASE = ''; localStorage.removeItem('xstream_api_base'); }
+  if (key) { TMDB_KEY = key; localStorage.setItem('xstream_tmdb_key', key); }
+  else      { TMDB_KEY = ''; localStorage.removeItem('xstream_tmdb_key'); }
+  showToast('Settings saved! Reloading...', 'success');
+  setTimeout(() => location.reload(), 1200);
 }
 
 // ════════════════════════════════════════════════
 //  AUTH
 // ════════════════════════════════════════════════
-function showLoginScreen() {
-  document.getElementById('login-screen').style.display = 'flex';
-}
-
-function hideLogin() {
-  document.getElementById('login-screen').style.display = 'none';
-}
+function showLoginScreen() { document.getElementById('login-screen').style.display = 'flex'; }
+function hideLogin()       { document.getElementById('login-screen').style.display = 'none'; }
 
 async function doLogin() {
   const username = document.getElementById('login-username').value.trim();
   const password = document.getElementById('login-password').value;
-  const errEl = document.getElementById('login-error');
+  const errEl    = document.getElementById('login-error');
   errEl.style.display = 'none';
   try {
-    const data = await api('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ username, password })
-    });
+    const data = await api('/api/auth/login', { method:'POST', body: JSON.stringify({ username, password }) });
     authToken = data.token;
     localStorage.setItem('xstream_token', authToken);
     hideLogin();
@@ -2416,7 +2638,7 @@ async function doLogin() {
     document.getElementById('admin-btn').style.display = 'flex';
     showToast('Welcome back, admin!', 'success');
   } catch(e) {
-    errEl.textContent = 'Invalid credentials. Check username/password.';
+    errEl.textContent = 'Invalid credentials. Check username/password, and make sure your backend URL is set in Settings.';
     errEl.style.display = 'block';
   }
 }
@@ -2430,7 +2652,7 @@ function adminLogout() {
 }
 
 async function checkAuth() {
-  if (!authToken) return;
+  if (!authToken || !API_BASE) return;
   try {
     await api('/api/auth/check');
     document.getElementById('admin-btn').style.display = 'flex';
@@ -2443,17 +2665,16 @@ async function checkAuth() {
 // ════════════════════════════════════════════════
 //  CARD TEMPLATES
 // ════════════════════════════════════════════════
-function movieCard(item, isCustom = false) {
-  const id = item.id || item.tmdb_id;
-  const type = item.type || item.category || 'movie';
-  const isCustomContent = isCustom || item.source !== 'tmdb';
+function movieCard(item, isCustom=false) {
+  const id   = item.id || item.tmdb_id;
+  const type = isCustom ? 'custom' : (item.type || 'movie');
+  const poster = item.poster || item.poster_url || '';
   return `
-    <div class="card" onclick="openDetail(${id}, '${isCustomContent ? 'custom' : type}', ${isCustomContent})">
+    <div class="card" onclick="openDetail(${id},'${type}',${isCustom})">
       <div class="card-poster">
-        ${item.poster || item.poster_url
-          ? `<img src="${item.poster || item.poster_url}" alt="${item.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-poster-fallback><span>🎬</span></div>'" />`
-          : `<div class="card-poster-fallback"><span>🎬</span></div>`
-        }
+        ${poster
+          ? `<img src="${poster}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-poster-fallback>🎬</div>'" />`
+          : `<div class="card-poster-fallback">🎬</div>`}
         <div class="card-overlay"><div class="card-play-btn">▶</div></div>
         ${item.rating ? `<div class="card-rating">★ ${item.rating}</div>` : ''}
         <div class="card-type-badge">${type.toUpperCase()}</div>
@@ -2462,38 +2683,37 @@ function movieCard(item, isCustom = false) {
         <div class="card-title">${item.title}</div>
         <div class="card-year">${item.year || ''}</div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function sportsCard(s) {
   const isLive = s.status === 'live';
+  const safeTitle = (s.title||'').replace(/'/g,"\\'");
+  const safeUrl   = (s.embed_url||'').replace(/'/g,"\\'");
   return `
-    <div class="sports-card" onclick="openSportsStream('${s.embed_url}','${s.title.replace(/'/g,"\\'")}')">
-      <div class="sports-thumb">
+    <div class="sports-card" onclick="openSportsStream('${safeUrl}','${safeTitle}')">
+      <div class="sports-thumb" style="position:relative">
         ${s.thumbnail
-          ? `<img src="${s.thumbnail}" onerror="this.parentElement.innerHTML='<span style=font-size:3rem>${leagueIcon(s.league)}</span>'" />`
-          : `<span style="font-size:3rem">${leagueIcon(s.league)}</span>`
-        }
-      </div>
-      <div class="card-live-badge" style="position:absolute;top:8px;left:8px;${isLive?'':'background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2)'}">
-        ${isLive ? `<span class="live-dot"></span>LIVE` : '📅'}
+          ? `<img src="${s.thumbnail}" onerror="this.parentElement.innerHTML='<div style=display:flex;align-items:center;justify-content:center;height:140px;font-size:3rem>${leagueIcon(s.league)}</div>'" />`
+          : `<div style="display:flex;align-items:center;justify-content:center;height:140px;font-size:3rem">${leagueIcon(s.league)}</div>`}
+        <div class="card-live-badge" style="${isLive?'':'background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.2)'}">
+          ${isLive ? `<span class="live-dot"></span>LIVE` : '📅'}
+        </div>
       </div>
       <div class="sports-card-body">
         <div class="sports-league">${(s.league||'').toUpperCase()}</div>
         <div class="sports-title">${s.title}</div>
         <div class="sports-teams">
           <span>${s.home_team||''}</span>
-          ${s.home_team && s.away_team ? '<span style="color:var(--neon)">vs</span>' : ''}
+          ${s.home_team && s.away_team ? `<span style="color:var(--neon)">vs</span>` : ''}
           <span>${s.away_team||''}</span>
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function leagueIcon(league) {
-  const icons = { nba:'🏀', nfl:'🏈', soccer:'⚽', f1:'🏎️', ufc:'🥊', nhl:'🏒', mlb:'⚾', other:'🏆' };
+  const icons = { nba:'🏀',nfl:'🏈',soccer:'⚽',f1:'🏎️',ufc:'🥊',nhl:'🏒',mlb:'⚾',other:'🏆' };
   return icons[(league||'').toLowerCase()] || '🏆';
 }
 
@@ -2501,22 +2721,20 @@ function leagueIcon(league) {
 //  UI HELPERS
 // ════════════════════════════════════════════════
 function skeletonCards(n) {
-  return Array(n).fill(0).map(() => `
+  return Array(n).fill(0).map(()=>`
     <div style="flex-shrink:0;width:160px">
       <div class="skeleton" style="width:100%;aspect-ratio:2/3;border-radius:10px"></div>
       <div class="skeleton" style="height:12px;margin-top:8px;width:80%"></div>
       <div class="skeleton" style="height:10px;margin-top:4px;width:40%"></div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function skeletonGrid(n) {
-  return Array(n).fill(0).map(() => `
+  return Array(n).fill(0).map(()=>`
     <div>
       <div class="skeleton" style="width:100%;aspect-ratio:2/3;border-radius:10px"></div>
       <div class="skeleton" style="height:12px;margin-top:8px;width:80%"></div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function errorMsg(msg) {
@@ -2524,15 +2742,15 @@ function errorMsg(msg) {
 }
 
 function emptyMsg(msg) {
-  return `<div style="padding:3rem;text-align:center;color:var(--muted)">${msg}</div>`;
+  return `<div style="padding:3rem;text-align:center;color:var(--muted);grid-column:1/-1">${msg}</div>`;
 }
 
-function showToast(msg, type = 'success') {
+function showToast(msg, type='success') {
   const el = document.createElement('div');
   el.className = `toast toast-${type}`;
-  el.innerHTML = `${type === 'success' ? '✓' : '✕'} ${msg}`;
+  el.innerHTML = `${type==='success'?'✓':'✕'} ${msg}`;
   document.body.appendChild(el);
-  setTimeout(() => el.remove(), 3200);
+  setTimeout(()=>el.remove(), 3200);
 }
 
 // ════════════════════════════════════════════════
@@ -2540,15 +2758,8 @@ function showToast(msg, type = 'success') {
 // ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
-
-  // Handle admin route via hash
-  if (window.location.hash === '#admin') {
-    goAdmin();
-  } else {
-    initHome();
-  }
-
-  // Keyboard shortcut: Ctrl+Shift+A = admin login
+  if (window.location.hash === '#admin') { goAdmin(); }
+  else { initHome(); }
   document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.shiftKey && e.key === 'A') {
       e.preventDefault();
